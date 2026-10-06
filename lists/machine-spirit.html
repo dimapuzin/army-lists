@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Inevitable Force of Machine Spirit · Phase Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ef; --surface:#fdfbfa; --surface-2:#f8f5f2; --ink:#24130f; --muted:#6d5d52;
+  --brass:#8a6a1f; --red:#8e1f17; --teal:#2f6f64; --line:#d8cfc4; --chip:#f0ece6;
+  --head:"Saira Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#20110f; --surface:#301b19; --surface-2:#3b221f; --ink:#ece3d6; --muted:#ab9b8d;
+    --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --line:#553732; --chip:#472d29;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#20110f; --surface:#301b19; --surface-2:#3b221f; --ink:#ece3d6; --muted:#ab9b8d;
+  --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --line:#553732; --chip:#472d29;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 60px);}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* Larger invisible tap zones for finger use, without adding visual height */
+.pick button,.chip,.reminders a,summary{position:relative}
+.pick button::after,.chip::after,.reminders a::after,summary::after{content:"";position:absolute;inset:-4px -2px}
+
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+/* Hero */
+.hero{max-width:1080px;margin:0 auto;padding:10px 16px 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px}
+.hero .back{flex-basis:100%;font-family:var(--head);font-weight:600;font-size:1rem;color:var(--muted);text-decoration:none}
+.hero .back:hover{color:var(--red)}
+.hero h1{font-family:var(--head);font-weight:700;font-size:clamp(1.35rem,3.2vw,1.75rem);line-height:1.1;margin:0}
+.hero .meta{display:flex;flex-wrap:wrap;gap:2px 18px;font-family:var(--head);font-size:1rem;color:var(--muted)}
+.hero .meta b{color:var(--ink);font-weight:700}
+
+/* Controls */
+.controls{max-width:1080px;margin:0 auto;padding:0 16px 10px;display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:8px 22px;align-items:start}
+.ctrl-col{display:grid;gap:8px;align-content:start;min-width:0}
+.ctrl-col + .ctrl-col{border-left:1px solid var(--line);padding-left:22px}
+@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr)}.ctrl-col + .ctrl-col{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:8px}}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.ctrl-label{font-family:var(--head);font-weight:600;color:var(--muted);font-size:1rem;margin-right:4px}
+.pick{display:flex;flex-wrap:nowrap;gap:4px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.pick::-webkit-scrollbar{display:none}
+.pick button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font-family:var(--head);font-weight:600;font-size:.8rem;line-height:1.2;cursor:pointer;text-align:left;white-space:nowrap;flex:0 0 auto}
+.pick button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.track-label{flex-basis:100%;margin-bottom:-3px}
+.chips{display:grid;gap:6px}
+.chip-cols{display:grid;grid-template-columns:repeat(3,max-content);justify-content:space-between;gap:4px 8px;align-items:start}
+.chip-col{display:grid;gap:4px;align-content:start}
+.chip-col h4{margin:0;font-family:var(--head);font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.chip-col .chip{white-space:nowrap;text-align:left;border-radius:12px;line-height:1.15;padding:3.5px 11px}
+.chips>.chip{justify-self:start}
+@media (max-width:480px){.chip-cols{grid-template-columns:1fr}}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 11px;font-family:var(--head);font-weight:600;font-size:.8rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Unit profile */
+.profile{max-width:1080px;margin:0 auto 10px;padding:0 16px}
+.profile[hidden]{display:none}
+.prof-box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:8px 12px 10px}
+.prof-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-bottom:4px}
+.prof-head h2{font-family:var(--head);font-weight:700;font-size:1.4rem;line-height:1.1;margin:0}
+.prof-tags{display:flex;flex-wrap:wrap;gap:3px;margin:0 0 4px}
+.prof-tags span{font-family:var(--head);font-weight:600;font-size:.88rem;line-height:1.2;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.prof-head span{font-family:var(--head);font-weight:600;color:var(--muted)}
+.prof-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 18px}
+.prof-grid .full{grid-column:1/-1}
+.tbl-wrap{overflow-x:auto}
+.prof-box h3{font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);margin:6px 0 2px}
+.prof-box table{border-collapse:collapse;width:100%;font-size:.92rem}
+.prof-box th{font-family:var(--head);font-weight:600;color:var(--muted);text-align:center;padding:2px 5px;border-bottom:1px solid var(--line);white-space:nowrap}
+.prof-box td{text-align:center;padding:3px 5px;border-bottom:1px solid var(--line);font-family:var(--head);font-weight:600;font-size:1rem;white-space:nowrap}
+.prof-box th:first-child,.prof-box td:first-child{text-align:left}
+.prof-box td.w{white-space:normal;min-width:9em}
+.prof-box td.w .kw{display:block;font-family:var(--body);font-weight:400;font-size:.82rem;color:var(--muted);line-height:1.3}
+.prof-box td .cnt{color:var(--brass);margin-right:4px}
+.prof-box tr:last-child td{border-bottom:0}
+.prof-box table.stats{width:auto;min-width:min(100%,560px)}
+.prof-box table.stats th:not(:first-child),.prof-box table.stats td:not(:first-child){width:3.4em}
+.prof-box table.stats td:first-child{padding-right:18px}
+@media (max-width:760px){.prof-grid{grid-template-columns:1fr}}
+
+/* Phase rail */
+.rail{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.rail{display:flex;align-items:stretch}
+.rail-top{flex:0 0 auto;border:0;border-left:1px solid var(--line);border-bottom:3px solid transparent;background:none;color:var(--red);padding:6px 10px 5px;font-family:var(--head);font-weight:700;font-size:1.05rem;cursor:pointer;white-space:nowrap}
+.rail-inner{flex:1 1 auto;min-width:0;max-width:1080px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+.rail-inner::-webkit-scrollbar{display:none}
+.rail a{flex:1 0 auto;justify-content:center;display:flex;align-items:baseline;gap:4px;padding:6px 3px 5px;text-decoration:none;color:var(--muted);font-family:var(--head);font-weight:700;font-size:1.05rem;border-bottom:3px solid transparent;white-space:nowrap}
+.rail a .n{font-size:.85rem;color:var(--brass)}
+.rail a.enemy .n{color:var(--teal)}
+.rail a.active{color:var(--ink);border-bottom-color:var(--red)}
+.rail a.enemy.active{border-bottom-color:var(--teal)}
+
+/* Phases */
+main{max-width:1080px;margin:0 auto;padding:4px 16px 40px}
+.phase{padding-top:18px}
+.phase-head{display:grid;grid-template-columns:auto 1fr;gap:0 12px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:8px}
+.phase-num{font-family:var(--head);font-weight:700;font-size:3.6rem;line-height:.8;color:var(--red)}
+.phase.enemy .phase-num{color:var(--teal)}
+.phase-head h2{font-family:var(--head);font-weight:700;font-size:2rem;line-height:1;margin:0}
+.phase-head.toggle{cursor:pointer;position:relative;padding-right:28px}
+.phase-head.toggle::after{content:"▾";position:absolute;right:4px;bottom:6px;font-size:1.3rem;line-height:1;color:var(--muted);transition:transform .15s}
+.phase.collapsed .phase-head.toggle::after{transform:rotate(-90deg)}
+.phase.collapsed .phase-head{margin-bottom:0}
+.phase-body[hidden]{display:none}
+.phase-head p{grid-column:2;margin:1px 0 0;color:var(--muted);font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:6px}
+.empty{color:var(--muted);font-style:italic;margin:0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 14px;align-items:start}
+.col > h3{font-family:var(--head);font-weight:700;font-size:1.05rem;color:var(--muted);margin:0 0 4px;display:flex;align-items:baseline;gap:6px}
+.col > h3 .count{font-size:.9rem;color:var(--brass)}
+.col.strats > h3{color:var(--brass)}
+.col .grid{grid-template-columns:1fr}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:4px;padding:8px 12px 6px;display:flex;flex-direction:column;gap:2px}
+.card.k-strat{border-left-color:var(--brass)}
+.card.k-det{border-left-color:var(--red)}
+.card.k-army{border-left-color:var(--ink)}
+.card.k-enh{border-left-color:var(--teal)}
+.card.dim{opacity:.45}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card h3{font-family:var(--head);font-weight:700;font-size:1.3rem;line-height:1.1;margin:0}
+.cost{font-family:var(--head);font-weight:700;color:var(--brass);white-space:nowrap}
+.src{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted);line-height:1.25}
+.when{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--red)}
+.phase.enemy .when{color:var(--teal)}
+.sum{margin:1px 0 0}
+.opts{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:3px}
+.opts li{background:var(--surface-2);border-radius:3px;padding:3px 8px;font-size:.95rem}
+.opts b{font-family:var(--head);font-size:1.02rem}
+.opts li.on{outline:2px solid var(--red)}
+.note{font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:3px;margin-top:2px}
+details{margin-top:auto;padding-top:1px}
+summary{cursor:pointer;font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted)}
+details p{font-size:.92rem;margin:3px 0 0;white-space:pre-line}
+
+.reminders{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.reminders span{font-family:var(--head);font-weight:600;color:var(--muted)}
+.reminders a{font-family:var(--head);font-weight:600;font-size:.95rem;padding:1px 8px;border-radius:3px;background:var(--chip);color:var(--ink);text-decoration:none}
+.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--brass)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
+
+footer{max-width:1080px;margin:0 auto;padding:0 16px 24px;color:var(--muted);font-size:.9rem}
+@media (max-width:560px){
+  body{font-size:16px}
+  .hero,.controls,main,footer{padding-left:10px;padding-right:10px}
+  .card{padding:7px 10px 5px}
+  .phase{padding-top:14px}
+  .grid{grid-template-columns:1fr}
+  .phase-num{font-size:2.8rem}
+  .phase-head h2{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="../index.html">← All army lists</a>
+  <h1>The Inevitable Force of Machine Spirit</h1>
+  <div class="meta">
+    <span>Detachments: <b>Cohort Cybernetica</b> + <b>Lords of the Forge</b></span>
+    <span>Force Disposition: <b>Priority Assets</b></span>
+    <span>Warlord: <b>Belisarius Cawl</b></span>
+  </div>
+</header>
+
+<section class="controls" aria-label="Table tools">
+ <div class="ctrl-col">
+  <div class="ctrl-row">
+    <span class="ctrl-label track-label">This round's Imperative</span>
+    <div class="pick" id="imp">
+      <button data-v="none" aria-pressed="true">None</button>
+      <button data-v="protector" aria-pressed="false">Protector</button>
+      <button data-v="conqueror" aria-pressed="false">Conqueror</button>
+    </div>
+  </div>
+  <div class="ctrl-row">
+    <span class="ctrl-label track-label">Cawl's canticle</span>
+    <div class="pick" data-track="canticle">
+      <button data-v="none">None</button>
+      <button data-v="vengeance">Re-roll hits against one enemy unit</button>
+      <button data-v="mantra">Battleline; +1 OC and Ld within 6"</button>
+      <button data-v="shroud">Stealth for units within 6"</button>
+    </div>
+  </div>
+  <div class="ctrl-row">
+    <span class="ctrl-label track-label">Thulia's Icon of War</span>
+    <div class="pick" data-track="icon">
+      <button data-v="none">None</button>
+      <button data-v="devotion">Shoot and charge after Advancing</button>
+      <button data-v="adaptive">Shoot and charge after Falling Back</button>
+      <button data-v="fires">Both Imperatives active for one unit</button>
+    </div>
+  </div>
+ </div>
+ <div class="ctrl-col">
+  <div class="ctrl-row">
+    <span class="ctrl-label track-label">Show unit</span>
+    <div class="chips" id="chips"></div>
+  </div>
+ </div>
+</section>
+
+<section class="profile" id="profile" hidden aria-live="polite"></section>
+
+<nav class="rail" aria-label="Phases"><div class="rail-inner" id="rail"></div><button type="button" class="rail-top" id="toTop" aria-label="Back to the top of the page">↑ Top</button></nav>
+
+<main id="main"></main>
+
+<footer>Built from the roster file and the army, detachment and stratagem rules you supplied. Enhancements not taken in this list are left out. Tap “Full rule” on any card for the original wording.</footer>
+
+<script>
+const UNITS = {
+  cawl:"Belisarius Cawl", thulia:"Thulia Ghuld", kastelan:"Kastelans + Datasmith",
+  enginseer:"Enginseer", rangers:"Skitarii Rangers ×2", fusiliers:"Fusiliers + Marshal", servitors:"Servitor Battleclade",
+  strider:"Ironstrider Ballistarii", onager:"Onager Dunecrawler", skorpius:"Skorpius Disintegrator"
+};
+const UNIT_GROUPS = {
+  "Characters":["cawl","thulia","enginseer"],
+  "Infantry":["fusiliers","rangers","servitors"],
+  "Vehicle":["kastelan","strider","onager","skorpius"]
+};
+const COLLAPSIBLE = ["round"];      // phases with a fold-away body
+const collapsed = new Set(COLLAPSIBLE); // collapsed by default
+const ALL = Object.keys(UNITS);
+const PROFILES = {"cawl": {"copies": 1, "models": [{"n": "Belisarius Cawl", "c": 1, "st": ["8\"", "8", "2+", "4+", "10", "6+", "3"]}], "ranged": [{"n": "Solar atomiser", "c": 1, "r": "18\"", "a": "3", "sk": "2+", "s": "14", "ap": "-4", "d": "D6", "k": "Melta 3"}], "melee": [{"n": "Arc Scourge", "c": 1, "r": "Melee", "a": "4", "sk": "2+", "s": "5", "ap": "-1", "d": "1", "k": "Anti-Vehicle 4+, Devastating Wounds, Extra Attacks"}, {"n": "Cawl's Omnissian axe", "c": 1, "r": "Melee", "a": "4", "sk": "2+", "s": "8", "ap": "-2", "d": "2", "k": ""}, {"n": "Mechadendrite hive", "c": 1, "r": "Melee", "a": "2D6", "sk": "3+", "s": "4", "ap": "0", "d": "1", "k": "Extra Attacks"}], "tags": ["Epic Hero", "Monster", "Character", "Tech-Priest", "Faction: Adeptus Mechanicus", "Imperium", "Cult Mechanicus", "Mobile"]}, "thulia": {"copies": 1, "models": [{"n": "Thulia Ghuld", "c": 1, "st": ["8\"", "8", "2+", "4+", "10", "6+", "3"]}], "ranged": [{"n": "Jericho-class conversion resonator - shockwave", "c": 1, "r": "24\"", "a": "D6+2", "sk": "2+", "s": "6", "ap": "-2", "d": "1", "k": "Blast, Sustained Hits 1"}, {"n": "Jericho-class conversion resonator - titanic impact", "c": 1, "r": "24\"", "a": "2", "sk": "2+", "s": "12", "ap": "-3", "d": "D6+2", "k": "Devastating Wounds"}], "melee": [{"n": "Rod of the War Forge - strike", "c": 1, "r": "Melee", "a": "6", "sk": "2+", "s": "10", "ap": "-2", "d": "3", "k": ""}, {"n": "Rod of the War Forge - sweep", "c": 1, "r": "Melee", "a": "12", "sk": "2+", "s": "6", "ap": "-1", "d": "1", "k": ""}], "tags": ["Epic Hero", "Monster", "Character", "Tech-Priest", "Faction: Adeptus Mechanicus", "Imperium", "Cult Mechanicus", "Mobile"]}, "kastelan": {"copies": 1, "models": [{"n": "Cybernetica Datasmith", "c": 1, "st": ["8\"", "4", "2+", "4+", "3", "7+", "1"]}, {"n": "Kastelan Robot", "c": 4, "st": ["8\"", "9", "2+", "5+", "7", "7+", "2"]}], "ranged": [{"n": "Mechanicus pistol", "c": 1, "r": "12\"", "a": "1", "sk": "3+", "s": "6", "ap": "-1", "d": "1", "k": "Devastating Wounds, Pistol"}, {"n": "Incendine combustor", "c": 4, "r": "12\"", "a": "D6", "sk": "N/A", "s": "6", "ap": "-1", "d": "1", "k": "Ignores Cover, Torrent"}], "melee": [{"n": "Power fist", "c": 1, "r": "Melee", "a": "2", "sk": "3+", "s": "8", "ap": "-2", "d": "2", "k": ""}, {"n": "Twin Kastelan fist", "c": 4, "r": "Melee", "a": "4", "sk": "4+", "s": "12", "ap": "-2", "d": "3", "k": "Twin-linked"}], "tags": ["Faction: Adeptus Mechanicus", "Imperium", "Vehicle", "Walker", "Legio Cybernetica", "Mobile", "Tech-Priest", "Character"]}, "enginseer": {"copies": 1, "models": [{"n": "Tech-Priest Enginseer", "c": 1, "st": ["6\"", "4", "3+", "4+", "3", "7+", "1"]}], "ranged": [{"n": "Mechanicus pistol", "c": 1, "r": "12\"", "a": "1", "sk": "3+", "s": "6", "ap": "-1", "d": "1", "k": "Devastating Wounds, Pistol"}], "melee": [{"n": "Omnissian axe", "c": 1, "r": "Melee", "a": "3", "sk": "4+", "s": "6", "ap": "-2", "d": "2", "k": ""}, {"n": "Servo arm", "c": 1, "r": "Melee", "a": "1", "sk": "4+", "s": "6", "ap": "-2", "d": "2", "k": "Extra Attacks"}], "tags": ["Enginseer", "Imperium", "Faction: Adeptus Mechanicus", "Tech-Priest", "Character", "Infantry", "Cult Mechanicus"]}, "rangers": {"copies": 2, "models": [{"n": "Skitarii Rangers", "c": 10, "st": ["6\"", "3", "4+", "5+", "1", "7+", "2"]}], "ranged": [{"n": "Galvanic rifle", "c": 7, "r": "30\"", "a": "2", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": ""}, {"n": "Arc rifle", "c": 1, "r": "30\"", "a": "1", "sk": "4+", "s": "8", "ap": "-1", "d": "D3", "k": "Anti-Vehicle 4+, Devastating Wounds, Rapid Fire 1"}, {"n": "Plasma caliver - supercharge", "c": 1, "r": "30\"", "a": "2", "sk": "4+", "s": "8", "ap": "-3", "d": "2", "k": "Hazardous"}, {"n": "Plasma caliver - standard", "c": 1, "r": "30\"", "a": "2", "sk": "4+", "s": "7", "ap": "-2", "d": "1", "k": ""}, {"n": "Transuranic arquebus", "c": 1, "r": "36\"", "a": "1", "sk": "4+", "s": "7", "ap": "-2", "d": "D3", "k": "Heavy, Precision"}], "melee": [{"n": "Close combat weapon", "c": 10, "r": "Melee", "a": "1", "sk": "4+", "s": "3", "ap": "0", "d": "1", "k": ""}], "tags": ["Rangers", "Imperium", "Faction: Adeptus Mechanicus", "Infantry", "Skitarii", "Battleline", "Recon Augury"]}, "fusiliers": {"copies": 1, "models": [{"n": "Skitarii Marshal", "c": 1, "st": ["6\"", "3", "4+", "5+", "3", "6+", "1"]}, {"n": "Hastarii Fusilier Alpha", "c": 1, "st": ["5\"", "4", "3+", "5+", "2", "7+", "1"]}, {"n": "Hastarii Fusilier", "c": 4, "st": ["5\"", "4", "3+", "5+", "2", "7+", "1"]}], "ranged": [{"n": "Mechanicus pistol", "c": 1, "r": "12\"", "a": "1", "sk": "3+", "s": "6", "ap": "-1", "d": "1", "k": "Devastating Wounds, Pistol"}, {"n": "Hastarii phosphor blaster", "c": 5, "r": "18\"", "a": "2", "sk": "4+", "s": "5", "ap": "0", "d": "1", "k": "Ignores Cover"}, {"n": "Neutron fusil", "c": 5, "r": "24\"", "a": "1", "sk": "4+", "s": "12", "ap": "-3", "d": "D6+1", "k": ""}], "melee": [{"n": "Control stave", "c": 1, "r": "Melee", "a": "4", "sk": "3+", "s": "6", "ap": "-1", "d": "1", "k": ""}, {"n": "Power weapon", "c": 1, "r": "Melee", "a": "2", "sk": "4+", "s": "5", "ap": "-2", "d": "1", "k": ""}, {"n": "Close combat weapon", "c": 4, "r": "Melee", "a": "1", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": ""}], "tags": ["Imperium", "Faction: Adeptus Mechanicus", "Infantry", "Skitarii", "Hastarii", "Fusiliers", "Character", "Marshal"]}, "servitors": {"copies": 1, "models": [{"n": "Servitor Underseer", "c": 1, "st": ["6\"", "4", "4+", "4+", "2", "7+", "1"]}, {"n": "Combat Servitor", "c": 8, "st": ["6\"", "4", "4+", "6+", "1", "8+", "1"]}], "ranged": [{"n": "Mechanicus pistol", "c": 1, "r": "12\"", "a": "1", "sk": "4+", "s": "6", "ap": "-1", "d": "1", "k": "Devastating Wounds, Pistol"}, {"n": "Heavy arc rifle", "c": 1, "r": "30\"", "a": "1", "sk": "4+", "s": "8", "ap": "-2", "d": "3", "k": "Anti-VEHICLE 4+, Rapid Fire 1"}, {"n": "Heavy bolter", "c": 1, "r": "36\"", "a": "3", "sk": "4+", "s": "5", "ap": "-1", "d": "2", "k": "Heavy, Sustained Hits 1"}, {"n": "Phosphor blaster", "c": 6, "r": "24\"", "a": "1", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": "Ignores Cover, Rapid Fire 1"}], "melee": [{"n": "Dataspikes", "c": 1, "r": "Melee", "a": "4", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": ""}, {"n": "Servo-claw", "c": 8, "r": "Melee", "a": "2", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": ""}], "tags": ["Faction: Adeptus Mechanicus", "Infantry", "Imperium", "Cult Mechanicus"]}, "strider": {"copies": 1, "models": [{"n": "Ironstrider Ballistarii", "c": 2, "st": ["10\"", "7", "3+", "5+", "7", "7+", "2"]}], "ranged": [{"n": "Twin cognis autocannon", "c": 2, "r": "48\"", "a": "4", "sk": "4+", "s": "9", "ap": "-1", "d": "3", "k": "Sustained Hits 1, Twin-linked"}], "melee": [{"n": "Ironstrider feet", "c": 2, "r": "Melee", "a": "3", "sk": "4+", "s": "5", "ap": "0", "d": "1", "k": ""}], "tags": ["Vehicle", "Smoke", "Skitarii", "Faction: Adeptus Mechanicus", "Walker", "Imperium"]}, "onager": {"copies": 2, "models": [{"n": "Onager Dunecrawler", "c": 1, "st": ["8\"", "10", "2+", "4+", "11", "7+", "3"]}], "ranged": [{"n": "Twin Onager heavy phosphor blaster", "c": 1, "r": "36\"", "a": "12", "sk": "4+", "s": "6", "ap": "-1", "d": "2", "k": "Ignores Cover, Twin-linked"}], "melee": [{"n": "Dunecrawler legs", "c": 1, "r": "Melee", "a": "3", "sk": "4+", "s": "6", "ap": "0", "d": "1", "k": ""}], "tags": ["Imperium", "Vehicle", "Walker", "Skitarii", "Faction: Adeptus Mechanicus", "Smoke"]}, "skorpius": {"copies": 2, "models": [{"n": "Skorpius Disintegrator", "c": 1, "st": ["10\"", "10", "2+", "-", "12", "7+", "3"]}], "ranged": [{"n": "Cognis heavy stubber", "c": 3, "r": "36\"", "a": "3", "sk": "4+", "s": "4", "ap": "0", "d": "1", "k": "Rapid Fire 3, Sustained Hits 1"}, {"n": "Disruptor missile launcher", "c": 1, "r": "36\"", "a": "3", "sk": "4+", "s": "9", "ap": "-2", "d": "D6", "k": "Twin-linked"}, {"n": "Ferrumite cannon", "c": 1, "r": "48\"", "a": "3", "sk": "4+", "s": "12", "ap": "-3", "d": "D6+1", "k": ""}], "melee": [{"n": "Armoured hull", "c": 1, "r": "Melee", "a": "3", "sk": "4+", "s": "6", "ap": "0", "d": "1", "k": ""}], "tags": ["Imperium", "Faction: Adeptus Mechanicus", "Skitarii", "Vehicle", "Smoke", "Frame"]}};
+const COHORT_TARGETS = ["kastelan","strider","onager","skorpius"];
+const TECHPRIESTS = ["cawl","thulia","kastelan","enginseer"];
+
+const PHASES = [
+  {id:"round", n:"◆", name:"Start of battle round", short:"Battle round", desc:"Each battle round, before either player's Command phase."},
+  {id:"command", n:"1", name:"Command phase", desc:"Your turn. Most choices and every Cohort Cybernetica stratagem happen here."},
+  {id:"movement", n:"2", name:"Movement phase", desc:"Your turn."},
+  {id:"shooting", n:"3", name:"Shooting phase", desc:"Your turn."},
+  {id:"charge", n:"4", name:"Charge phase", desc:"Your turn."},
+  {id:"fight", n:"5", name:"Fight phase", desc:"Both turns."},
+  {id:"enemy", n:"⟲", name:"Opponent's turn", desc:"Reactive rules while the enemy shoots or fights.", enemy:true},
+  {id:"always", n:"∞", name:"Always on & any phase", short:"Always on", desc:"Passive rules to keep in mind all game."}
+];
+
+const E = [
+/* ---------- ROUND ---------- */
+{id:"doctrina",ph:"round",kind:"army",name:"Doctrina Imperatives",src:"Army rule · every unit",units:ALL,when:"Start of each battle round",
+ sum:"Pick one Imperative for the whole army until the end of the round.",
+ opts:[
+  ["protector","Protector","Ranged weapons gain [HEAVY] and +1 BS. Melee attacks against Battleline units, or units within 6\" of friendly Battleline, get −1 to hit."],
+  ["conqueror","Conqueror","Ranged weapons gain [ASSAULT], melee weapons +1 WS. Battleline units, and units within 6\" of friendly Battleline, get +1 AP on all attacks."]],
+ full:"Protector: ranged weapons have [HEAVY]; improve BS of ranged weapons by 1; each time a melee attack targets this unit, if it has BATTLELINE and/or is within 6\" of one or more friendly ADEPTUS MECHANICUS BATTLELINE units, subtract 1 from the Hit roll.\nConqueror: ranged weapons have [ASSAULT]; improve WS of melee weapons by 1; each time a model in this unit makes an attack, if this unit has BATTLELINE and/or is within 6\" of one or more friendly ADEPTUS MECHANICUS BATTLELINE units, improve the AP of that attack by 1."},
+
+/* ---------- COMMAND ---------- */
+{id:"canticles",ph:"command",kind:"unit",name:"Canticles of the Omnissiah",src:"Belisarius Cawl",units:["cawl"],when:"Start of your Command phase",
+ sum:"Cawl takes one canticle until your next Command phase.",
+ opts:[
+  ["vengeance","Invocation of Machine Vengeance","Pick one enemy unit. Every Adeptus Mechanicus unit can re-roll Hit rolls against it."],
+  ["mantra","Mantra of Discipline","Cawl becomes BATTLELINE. Friendly AdMech within 6\" get +1 OC and +1 to Battle-shock / Leadership tests."],
+  ["shroud","Shroudpsalm","Friendly AdMech units within 6\" have Stealth."]],
+ note:"Mantra makes Cawl a Battleline source for Doctrina bonuses and the Onager's Emanatus Forcefield.",
+ full:"At the start of your Command phase, select one ability below. Until the start of your next Command phase, this model has that ability.\nInvocation of Machine Vengeance (Aura): select one enemy unit as your Machine Vengeance target. Each time a model in a friendly ADEPTUS MECHANICUS unit makes an attack that targets it, you can re-roll the Hit roll.\nMantra of Discipline: this model has BATTLELINE and Binharic Courage (Aura): while a friendly ADEPTUS MECHANICUS unit is within 6\", add 1 to its OC and add 1 to its Battle-shock and Leadership tests.\nShroudpsalm (Aura): while a friendly ADEPTUS MECHANICUS unit is within 6\" of this model, that unit has Stealth."},
+{id:"selfrepair",ph:"command",kind:"unit",name:"Self-repair Mechanisms",src:"Belisarius Cawl",units:["cawl"],when:"Start of your Command phase",
+ sum:"Cawl regains up to D3 lost wounds.",full:"At the start of your Command phase, this model regains up to D3 lost wounds."},
+{id:"icon",ph:"command",kind:"unit",name:"Rod of the War Forge · Icon of War",src:"Thulia Ghuld",units:["thulia","rangers","fusiliers","strider","onager","skorpius"],when:"Your Command phase",
+ sum:"Thulia takes one Icon of War ability, and can grant it to one Skitarii (or Thulia) unit within 6\" until your next Command phase.",
+ opts:[
+  ["devotion","Fanatical Devotion","That unit can shoot and charge after Advancing."],
+  ["adaptive","Adaptive Tactics","That unit can shoot and charge after Falling Back."],
+  ["fires","The Fires of Mars","Both Protector and Conqueror Imperatives are active for that unit."]],
+ note:"Skitarii units here: Rangers, Fusiliers, Ironstriders, Onagers, Skorpius.",
+ full:"Rod of the War Forge: in your Command phase, select one ability in the Icon of War section. Until the start of your next Command phase, this model has that ability.\nFanatical Devotion: select one friendly SKITARII or THULIA GHULD unit within 6\"; until the start of your next Command phase, it is eligible to shoot and declare a charge in a turn in which it Advanced.\nAdaptive Tactics: as above, but in a turn in which it Fell Back.\nThe Fires of Mars: as above; the Conqueror and Protector Imperatives are both active for that unit."},
+{id:"protocols",ph:"command",kind:"unit",name:"Battle Protocols",src:"Cybernetica Datasmith",units:["kastelan"],when:"Your Command phase",
+ sum:"Switch the Kastelans to a new protocol. It stays until you change it.",
+ opts:[
+  [null,"Protector Protocol","+2 Attacks on Kastelan ranged weapons."],
+  [null,"Conqueror Protocol","+2 Attacks on Kastelan melee weapons."],
+  [null,"Aegis Protocol","+1 Toughness."]],
+ full:"In your Command phase, if this model is leading a Kastelan Robots unit, you can select one protocol for that unit to enter. Once a unit enters a protocol, it remains in it until it enters a different one."},
+{id:"blessing",ph:"command",kind:"unit",name:"Omnissiah's Blessing",src:"Tech-Priest Enginseer",units:["enginseer"],when:"Your Command phase",
+ sum:"One friendly AdMech model within 3\" regains up to D3 wounds. If it's a Vehicle, it also gets Feel No Pain 5+ until your next Command phase.",
+ full:"In your Command phase, select one friendly Adeptus Mechanicus model within 3\" of this model. That model regains up to D3 lost wounds and, if it is a Vehicle model, until the start of your next Command phase it has Feel No Pain 5+. Each model can only be selected once per Command phase."},
+{id:"s-motive",ph:"command",kind:"strat",name:"Motive Imperative",src:"Cohort Cybernetica · Battle Tactic",cost:"1CP",units:COHORT_TARGETS,
+ sum:"One AdMech VEHICLE unit: +3\" Move and +1 to Advance and Charge rolls until your next Command phase.",
+ full:"TARGET: One ADEPTUS MECHANICUS VEHICLE unit from your army.\nEFFECT: Until the start of your next Command phase, add 3\" to the Move characteristic of models in your unit and add 1 to Advance and Charge rolls made for it."},
+{id:"s-auto",ph:"command",kind:"strat",name:"Auto-Divinatory Targeting",src:"Cohort Cybernetica · Battle Tactic",cost:"1CP",units:COHORT_TARGETS,
+ sum:"Pick a unit and an objective. Its ranged weapons become BS 3+ with [IGNORES COVER], but can only shoot targets within range of that objective.",
+ full:"TARGET: One LEGIO CYBERNETICA or ADEPTUS MECHANICUS VEHICLE unit from your army, and one objective marker.\nEFFECT: Until the start of your next Command phase, ranged weapons equipped by models in your unit have BS 3+ and [IGNORES COVER], but they can only target units within range of the selected objective marker."},
+{id:"s-resurgent",ph:"command",kind:"strat",name:"Machine Spirit Resurgent",src:"Cohort Cybernetica · Epic Deed",cost:"1CP",units:COHORT_TARGETS,
+ sum:"A unit below Starting Strength re-rolls Hit rolls. Below Half-strength, it re-rolls Wound rolls too.",
+ note:"Single-model vehicles count once they've lost a wound.",
+ full:"TARGET: One LEGIO CYBERNETICA or ADEPTUS MECHANICUS VEHICLE unit from your army that is below its Starting Strength.\nEFFECT: Until the start of your next Command phase, each time a model in your unit makes an attack, you can re-roll the Hit roll. If your unit is Below Half-strength, you can re-roll the Wound roll as well."},
+{id:"s-superiority",ph:"command",kind:"strat",name:"Machine Superiority",src:"Cohort Cybernetica · Epic Deed",cost:"1CP",units:COHORT_TARGETS,
+ sum:"Until end of turn: the unit can shoot after Falling Back and ignores all modifiers to its characteristics and rolls (except saves).",
+ note:"Cancels Damaged −1 to hit and Heavy/cover penalties this turn.",
+ full:"TARGET: One LEGIO CYBERNETICA or ADEPTUS MECHANICUS VEHICLE unit from your army.\nEFFECT: Until the end of the turn, your unit is eligible to shoot in a turn in which it Fell Back and you can ignore any or all modifiers to its characteristics and/or to any roll or test made for it (excluding modifiers to saving throws)."},
+{id:"s-transcendent",ph:"command",kind:"strat",name:"Transcendent Cogitation",src:"Cohort Cybernetica · Strategic Ploy",cost:"1CP",units:COHORT_TARGETS,
+ sum:"Both Conqueror and Protector Imperatives are active for one unit until your next Command phase.",
+ full:"TARGET: One LEGIO CYBERNETICA or ADEPTUS MECHANICUS VEHICLE unit from your army.\nEFFECT: Until the start of your next Command phase, the Conqueror Imperative and Protector Imperative are both active for your unit."},
+{id:"s-benevolence",ph:"command",kind:"strat",name:"Benevolence of the Omnissiah",src:"Cohort Cybernetica · Battle Tactic",cost:"1CP",units:COHORT_TARGETS,
+ sum:"Feel No Pain 6+ (5+ against mortal wounds) until your next Command phase.",
+ full:"TARGET: One LEGIO CYBERNETICA or ADEPTUS MECHANICUS VEHICLE unit from your army.\nEFFECT: Until the start of your next Command phase, models in your unit have Feel No Pain 6+, improved to Feel No Pain 5+ against mortal wounds."},
+
+/* ---------- MOVEMENT ---------- */
+{id:"cyberpsalm",ph:"movement",kind:"det",name:"Cyber-Psalm Programming",src:"Detachment rule · Cohort Cybernetica",units:["kastelan"],
+ sum:"Legio Cybernetica units get +2\" Move and +1 OC (unless Battle-shocked). Here: Kastelans and the Datasmith.",
+ full:"Add 2\" to the Move characteristic of models in LEGIO CYBERNETICA units from your army. In addition, unless that unit is Battle-shocked, add 1 to the Objective Control characteristic of models in that unit."},
+{id:"scuttling",ph:"movement",kind:"unit",name:"Scuttling Walker",src:"Onager Dunecrawler",units:["onager"],
+ sum:"On Normal, Advance and Fall Back moves, can move through friendly Monsters, Vehicles and terrain 4\" tall or less.",
+ full:"Each time this model makes a Normal, Advance or Fall Back move, it can move through friendly MONSTER and VEHICLE models and sections of terrain features that are 4\" or less in height."},
+{id:"elevated",ph:"movement",kind:"unit",name:"Elevated Strider",src:"Ironstrider Ballistarii",units:["strider"],
+ sum:"Can shoot after Advancing or Falling Back, and re-rolls Desperate Escape tests.",
+ full:"This unit is eligible to shoot in a turn in which it Fell Back or Advanced, and you can re-roll Desperate Escape tests taken for models in this unit."},
+{id:"network",ph:"movement",kind:"unit",name:"Network Override",src:"Servitor Battleclade",units:["servitors"],
+ sum:"With a Tech-Priest in the unit: can perform an Action after Advancing, and can shoot after starting an Action.",
+ full:"While this unit contains one or more TECH-PRIEST models, this unit is:\n- Eligible to perform an Action in a turn in which it Advanced.\n- Eligible to shoot in a turn in which it started an Action."},
+{id:"s-overloaded",ph:"movement",kind:"strat",name:"Overloaded Safeguards",src:"Lords of the Forge",cost:"1CP",units:TECHPRIESTS,when:"When a Tech-Priest unit Falls Back",
+ sum:"That Fall Back move doesn't stop the unit from shooting or charging.",
+ full:"WHEN: Your Movement phase, when a friendly TECH-PRIEST unit is selected to make a fall-back move.\nEFFECT: That move does not prevent your unit from being eligible to shoot/declare a charge."},
+
+/* ---------- SHOOTING ---------- */
+{id:"secutor",ph:"shooting",kind:"unit",name:"Secutor of Olympus",src:"Thulia Ghuld",units:["thulia"],when:"Start of your Shooting phase",
+ sum:"Pick an enemy VEHICLE within 12\" and roll a D6: on 2+ it suffers D3+1 mortal wounds.",
+ full:"At the start of your Shooting phase, select one enemy VEHICLE unit within 12\" of this model and roll one D6: on a 2+, that enemy unit suffers D3+1 mortal wounds."},
+{id:"baffling",ph:"shooting",kind:"det",name:"Baffling Data Screed",src:"War-form Mantles · every Tech-Priest",units:TECHPRIESTS,when:"When a Tech-Priest is selected to shoot",
+ sum:"If not Battle-shocked, roll a D6. On 2+ choose: an enemy VEHICLE within 12\" takes a Battle-shock roll at −1, or this unit's shots don't stop it being hidden.",
+ note:"Tech-Priests: Cawl, Thulia, Datasmith, Enginseer. Each enemy unit can only be picked once per turn.",
+ full:"In your Shooting phase, when this unit is selected to shoot, if this unit is not battle-shocked, you can use this ability. Roll one D6:\n- On a 2+, select one enemy VEHICLE unit within 12\" of this unit. That enemy unit makes a battle-shock roll, with −1 to that roll. A unit cannot be selected for this ability more than once per turn.\n- Or: on 2+, those ranged attacks do not prevent this unit from being hidden."},
+{id:"s-avarice",ph:"shooting",kind:"strat",name:"Holy Avarice",src:"Lords of the Forge",cost:"1CP",units:TECHPRIESTS,when:"When a Tech-Priest unit starts an Action",
+ sum:"Starting that Action doesn't stop the unit from shooting.",
+ full:"WHEN: Your Shooting phase, when a friendly TECH-PRIEST unit starts an action.\nEFFECT: That action does not prevent your unit from being eligible to shoot."},
+{id:"edict",ph:"shooting",kind:"unit",name:"Control Edict",src:"Skitarii Marshal",units:["fusiliers","rangers"],
+ sum:"While leading a unit, that unit re-rolls Hit rolls (shooting and melee).",
+ full:"While this model is leading a unit, each time a model in that unit makes an attack, you can re-roll the Hit roll."},
+{id:"helms",ph:"shooting",kind:"unit",name:"Monocular Targeting Helms",src:"Hastarii Fusiliers",units:["fusiliers"],
+ sum:"Neutron fusil attacks against Monsters or Vehicles have [IGNORES COVER].",
+ full:"Each time a model in this unit makes an attack with a neutron fusil against a MONSTER or VEHICLE unit, that attack has [IGNORES COVER]."},
+{id:"salvoes",ph:"shooting",kind:"unit",name:"Blistering Salvoes",src:"Skorpius Disintegrator",units:["skorpius"],
+ sum:"Ferrumite cannon gets +1 to hit against Monsters and Vehicles.",
+ note:"The belleros energy cannon half doesn't apply — this list runs ferrumite cannons.",
+ full:"Each time this model makes an attack with a belleros energy cannon that targets an INFANTRY unit, add 1 to the Hit roll. Each time this model makes an attack with a ferrumite cannon that targets a MONSTER or VEHICLE unit, add 1 to the Hit roll."},
+
+/* ---------- FIGHT ---------- */
+{id:"vengeance",ph:"fight",kind:"unit",name:"Vengeance for the Omnissiah",src:"Tech-Priest Enginseer",units:["enginseer"],
+ sum:"Once a friendly AdMech Vehicle dies within 12\", the Enginseer's Omnissian axe has 6 Attacks for the rest of the battle.",
+ full:"If a friendly ADEPTUS MECHANICUS VEHICLE model is destroyed within 12\" of this model, until the end of the battle, this model's Omnissian axe has an Attacks characteristic of 6."},
+
+/* ---------- ENEMY TURN ---------- */
+{id:"repulsor",ph:"enemy",kind:"unit",name:"Repulsor Grid",src:"Kastelan Robots",units:["kastelan"],when:"When the Kastelans are shot",
+ sum:"Each unmodified 6 on a save deals 1 mortal wound back to the shooting unit after it finishes.",
+ full:"When an enemy unit targets this unit with ranged attacks, until that enemy unit has shot, when this unit makes a save roll: on an unmodified 6, that enemy unit suffers 1 mortal wound after it has shot."},
+{id:"s-prognosis",ph:"enemy",kind:"strat",name:"Scriptural Prognosis",src:"Lords of the Forge",cost:"1CP",units:TECHPRIESTS,when:"Opponent's Shooting phase or any Fight phase",
+ sum:"When a Tech-Priest unit within range of an objective is targeted, those attacks get −1 AP.",
+ full:"WHEN: In your opponent's Shooting phase or the Fight phase, when an enemy unit targets a friendly TECH-PRIEST unit that is within range of an objective.\nEFFECT: Attacks that target your unit have −1 AP until that enemy unit has attacked."},
+{id:"emanatus",ph:"enemy",kind:"unit",name:"Emanatus Forcefield",src:"Onager Dunecrawler · Aura",units:["onager","rangers","cawl"],
+ sum:"Friendly AdMech Battleline models wholly within 6\" get a 4+ invulnerable save against ranged attacks.",
+ note:"Covers the Rangers, and Cawl while he has Mantra of Discipline.",
+ full:"While a friendly ADEPTUS MECHANICUS BATTLELINE model is wholly within 6\" of this model, that model has a 4+ invulnerable save against ranged attacks."},
+
+/* ---------- ALWAYS ---------- */
+{id:"mantles",ph:"always",kind:"det",name:"War-form Mantles",src:"Detachment rule · Lords of the Forge",units:TECHPRIESTS,
+ sum:"Every Tech-Priest has a 4+ invulnerable save and Feel No Pain 5+.",
+ full:"Friendly TECH-PRIEST models have a 4+ invulnerable save and Feel No Pain 5+. They also gain Baffling Data Screed (see Shooting phase)."},
+{id:"uplink",ph:"always",kind:"unit",name:"Servo-skull Uplink",src:"Skitarii Marshal",units:["fusiliers","rangers"],when:"Once per battle · start of any phase",
+ sum:"Remove Battle-shock from one friendly Skitarii unit within 6\".",
+ full:"Once per battle, at the start of any phase, you can select one friendly SKITARII unit that is Battle-shocked and within 6\" of this model. That unit is no longer Battle-shocked."},
+{id:"tether",ph:"always",kind:"unit",name:"Data-tethers",src:"Rangers data-tether · Ironstriders · Skorpius",units:["rangers","strider","skorpius"],when:"Whenever the unit is targeted by a Stratagem",
+ sum:"Roll a D6: on 5+ you gain 1CP.",
+ note:"Ironstriders and Skorpius are both valid Cohort Cybernetica targets — prefer them for strats.",
+ full:"Enhanced data-tether / Broad spectrum data-tether: each time you select this unit as the target of a Stratagem, roll one D6: on a 5+, you gain 1CP."},
+{id:"scouted",ph:"command",kind:"unit",name:"Objective Scouted",src:"Skitarii Rangers",units:["rangers"],when:"End of your Command phase",
+ sum:"Objective markers this unit is in range of stay under your control until your opponent controls them.",
+ full:"At the end of your Command phase, if this unit is within range of an objective marker you control, that objective marker remains under your control, even if you have no models within range of it, until your opponent controls it at the start or end of any turn."},
+{id:"bodyguard",ph:"always",kind:"unit",name:"Mechanicus Bodyguard",src:"Belisarius Cawl · Thulia Ghuld",units:["cawl","thulia"],
+ sum:"Lone Operative while within 3\" of another friendly AdMech unit.",
+ full:"While this model is within 3\" of one or more other friendly ADEPTUS MECHANICUS units, this model has the Lone Operative ability."},
+{id:"enginseer-lo",ph:"always",kind:"unit",name:"Enginseer",src:"Tech-Priest Enginseer",units:["enginseer"],
+ sum:"Lone Operative while within 3\" of a friendly AdMech Vehicle, unless leading a unit.",
+ full:"While this model is within 3\" of one or more friendly ADEPTUS MECHANICUS VEHICLE units, unless it is leading a unit, this model has the Lone Operative ability."},
+{id:"robotic",ph:"always",kind:"unit",name:"Robotic Bodyguard",src:"Kastelan Robots",units:["kastelan"],
+ sum:"The leading Datasmith has Feel No Pain 4+.",
+ full:"While a CYBERNETICA DATASMITH model is leading this unit, that model has Feel No Pain 4+."},
+{id:"severed",ph:"always",kind:"unit",name:"Data-severed",src:"Cybernetica Datasmith",units:["kastelan"],
+ sum:"Once no Kastelans remain, the Datasmith loses VEHICLE and becomes INFANTRY.",
+ full:"If there are no KASTELAN ROBOT models in this unit: this unit loses VEHICLE and has INFANTRY."},
+{id:"damaged",ph:"always",kind:"unit",name:"Damaged: 1–4 wounds remaining",src:"Onager Dunecrawler · Skorpius Disintegrator",units:["onager","skorpius"],
+ sum:"−1 to all Hit rolls while on 1–4 wounds.",
+ note:"Machine Superiority ignores this.",
+ full:"While this model has 1–4 wounds remaining, each time this model makes an attack, subtract 1 from the Hit roll."},
+{id:"demise",ph:"always",kind:"unit",name:"Deadly Demise",src:"Vehicles",units:["kastelan","strider","onager","skorpius"],
+ sum:"Ironstriders and Kastelans: Deadly Demise 1. Onagers and Skorpius: Deadly Demise D3.",
+ full:"Deadly Demise 1: Ironstrider Ballistarii, Kastelan Robots.\nDeadly Demise D3: Onager Dunecrawler, Skorpius Disintegrator."},
+{id:"supreme",ph:"always",kind:"unit",name:"Supreme Commander",src:"Belisarius Cawl · Thulia Ghuld",units:["cawl","thulia"],
+ sum:"Each says it must be your Warlord. The roster names Cawl as Warlord.",
+ note:"Both carry this rule — worth checking the list is legal with your opponent or TO.",
+ full:"If this model is in your army, it must be your WARLORD."}
+];
+
+/* Cross-phase reminders: ids of cards that matter in other phases */
+const REMIND = {
+  movement:["s-motive","icon","s-superiority"],
+  shooting:["doctrina","canticles","icon","elevated","network","s-auto","s-superiority","s-resurgent","damaged"],
+  charge:["s-motive","icon","s-overloaded"],
+  fight:["doctrina","edict","protocols","s-prognosis","s-resurgent","damaged"],
+  enemy:["canticles","s-benevolence","mantles","blessing"]
+};
+const IMP_LINE = {
+  shooting:{protector:"Protector active: ranged weapons have [HEAVY] and +1 BS.",conqueror:"Conqueror active: ranged weapons have [ASSAULT]; Battleline and units within 6\" of Battleline get +1 AP."},
+  fight:{protector:"Protector active: melee attacks targeting Battleline (or units within 6\" of it) are −1 to hit.",conqueror:"Conqueror active: +1 WS on melee weapons; Battleline and units within 6\" of it get +1 AP."},
+  enemy:{protector:"Protector active: enemy melee attacks into Battleline (or units within 6\" of it) are −1 to hit.",conqueror:"Conqueror active: remember +1 AP for Battleline-adjacent units when fighting back."}
+};
+
+/* ---------- state ---------- */
+const store = {
+  get(k,d){try{const v=localStorage.getItem("msp-"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("msp-"+k,JSON.stringify(v))}catch(e){}}
+};
+let state = {imp:store.get("imp","none"), canticle:store.get("canticle","none"), icon:store.get("icon","none"), unit:null};
+const isOn = k => !!k && (k===state.imp || k===state.canticle || k===state.icon);
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId = Object.fromEntries(E.map(e=>[e.id,e]));
+
+function cardHTML(e){
+  const opts = e.opts ? `<ul class="opts">${e.opts.map(([k,n,t])=>`<li class="${isOn(k)?"on":""}"><b>${esc(n)}</b> — ${esc(t)}</li>`).join("")}</ul>`:"";
+  return `<article class="card k-${e.kind}" id="c-${e.id}" data-id="${e.id}">
+    <div class="card-top"><h3>${esc(e.name)}</h3>${e.cost?`<span class="cost">${esc(e.cost)}</span>`:""}</div>
+    <div class="src">${esc(e.src)}</div>
+    ${e.when?`<div class="when">${esc(e.when)}</div>`:""}
+    <p class="sum">${esc(e.sum)}</p>${opts}
+    ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
+    <details><summary>Full rule</summary><p>${esc(e.full)}</p></details>
+  </article>`;
+}
+
+function matches(e){
+  if(state.unit && !e.units.includes(state.unit)) return false;
+  return true;
+}
+
+function render(){
+  const main=document.getElementById("main");
+  main.innerHTML = PHASES.map(p=>{
+    const items=E.filter(e=>e.ph===p.id && matches(e));
+    const rem=(REMIND[p.id]||[]).map(id=>byId[id]).filter(e=>e && (!state.unit||e.units.includes(state.unit)));
+    const imp = IMP_LINE[p.id] && state.imp!=="none" ? `<p class="note" style="border:0;padding:0;margin:0 0 12px;color:var(--ink)"><b style="font-family:var(--head)">${esc(IMP_LINE[p.id][state.imp])}</b></p>`:"";
+    const abil=items.filter(e=>e.kind!=="strat"), strat=items.filter(e=>e.kind==="strat");
+    const filtered=state.unit;
+    const col=(cls,title,list,emptyMsg)=>`<div class="col ${cls}"><h3>${title}${list.length?`<span class="count">${list.length}</span>`:""}</h3>${
+      list.length?`<div class="grid">${list.map(cardHTML).join("")}</div>`:`<p class="empty">${filtered?"Nothing here for this filter.":emptyMsg}</p>`}</div>`;
+    const body = `<div class="cols">${col("abil","Abilities",abil,"No abilities trigger only in this phase.")}${col("strats","Stratagems",strat,"No stratagems in this phase.")}</div>`;
+    const remHTML = rem.length?`<div class="reminders"><span>Also in play:</span>${rem.map(e=>`<a href="#c-${e.id}" data-jump="${e.id}">${esc(e.name)}</a>`).join("")}</div>`:"";
+    const fold=COLLAPSIBLE.includes(p.id), shut=fold&&collapsed.has(p.id);
+    return `<section class="phase${p.enemy?" enemy":""}${shut?" collapsed":""}" id="p-${p.id}">
+      <div class="phase-head${fold?" toggle":""}"${fold?` role="button" tabindex="0" aria-expanded="${!shut}" data-fold="${p.id}"`:""}><span class="phase-num" aria-hidden="true">${p.n}</span><h2>${esc(p.name)}</h2><p>${esc(p.desc)}</p></div>
+      <div class="phase-body"${shut?" hidden":""}>${imp}${body}${remHTML}</div></section>`;
+  }).join("");
+  observe();
+}
+
+function buildRail(){
+  document.getElementById("rail").innerHTML = PHASES.map(p=>`<a href="#p-${p.id}" class="${p.enemy?"enemy":""}" data-p="${p.id}"><span class="n">${p.n}</span>${esc(p.short||p.name.replace(" phase",""))}</a>`).join("");
+}
+function renderProfile(){
+  const box=document.getElementById("profile");
+  const u=state.unit && PROFILES[state.unit];
+  if(!u){box.hidden=true; box.innerHTML=""; return;}
+  const cnt=c=>c>1?`<span class="cnt">${c}×</span>`:"";
+  const models=`<div class="tbl-wrap"><table class="stats"><thead><tr><th>Model</th><th>M</th><th>T</th><th>Sv</th><th>InSv</th><th>W</th><th>Ld</th><th>OC</th></tr></thead><tbody>${
+    u.models.map(m=>`<tr><td>${cnt(m.c)}${esc(m.n)}</td>${m.st.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const wtable=(list,melee)=>list.length?`<div class="tbl-wrap"><table><thead><tr><th>Weapon</th>${melee?"":"<th>Range</th>"}<th>A</th><th>${melee?"WS":"BS"}</th><th>S</th><th>AP</th><th>D</th></tr></thead><tbody>${
+    list.map(w=>`<tr><td class="w">${cnt(w.c)}${esc(w.n)}${w.k?`<span class="kw">${esc(w.k)}</span>`:""}</td>${melee?"":`<td>${esc(w.r)}</td>`}<td>${esc(w.a)}</td><td>${esc(w.sk)}</td><td>${esc(w.s)}</td><td>${esc(w.ap)}</td><td>${esc(w.d)}</td></tr>`).join("")}</tbody></table></div>`:`<p class="empty">None</p>`;
+  box.innerHTML=`<div class="prof-box">
+    <div class="prof-head"><h2>${esc(UNITS[state.unit])}</h2>${u.copies>1?`<span>${u.copies} units in the roster · profile per unit</span>`:""}</div>
+    ${u.tags&&u.tags.length?`<div class="prof-tags" aria-label="Keywords">${u.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
+    <div class="prof-grid">
+      <div class="full"><h3>Characteristics</h3>${models}</div>
+      <div><h3>Ranged weapons</h3>${wtable(u.ranged,false)}</div>
+      <div><h3>Melee weapons</h3>${wtable(u.melee,true)}</div>
+    </div></div>`;
+  box.hidden=false;
+}
+function buildChips(){
+  const wrap=document.getElementById("chips");
+  const chip=(k)=>`<button class="chip" data-u="${k}" aria-pressed="${state.unit===k}">${esc(UNITS[k])}</button>`;
+  wrap.innerHTML=`<button class="chip" data-u="" aria-pressed="${!state.unit}">All</button>`+
+    `<div class="chip-cols">`+Object.entries(UNIT_GROUPS).map(([g,keys])=>
+      `<div class="chip-col"><h4>${esc(g)}</h4>${[...keys].sort((a,b)=>UNITS[a].localeCompare(UNITS[b])).map(chip).join("")}</div>`).join("")+`</div>`;
+}
+
+let io, activePhase=null;
+function setActive(id){
+  if(id===activePhase) return;            // nothing changed: no DOM work at all
+  activePhase=id;
+  const rail=document.getElementById("rail");
+  let target=null;
+  rail.querySelectorAll("a").forEach(l=>{const on=l.dataset.p===id; l.classList.toggle("active",on); if(on) target=l;});
+  if(!target) return;
+  // Scroll only the rail, horizontally, and only if the tab is out of view.
+  // (scrollIntoView would also scroll the page and break momentum scrolling.)
+  const left=target.offsetLeft, right=left+target.offsetWidth;
+  if(left<rail.scrollLeft || right>rail.scrollLeft+rail.clientWidth){
+    rail.scrollTo({left:Math.max(0,left-24)});
+  }
+}
+function observe(){
+  if(io) io.disconnect();
+  io=new IntersectionObserver(ents=>{
+    for(const en of ents){ if(en.isIntersecting){ setActive(en.target.id.slice(2)); } }
+  },{rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll(".phase").forEach(s=>io.observe(s));
+}
+
+/* events */
+document.getElementById("imp").addEventListener("click",ev=>{
+  const b=ev.target.closest("button"); if(!b) return;
+  state.imp=b.dataset.v; store.set("imp",state.imp);
+  document.querySelectorAll("#imp button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  render();
+});
+document.querySelectorAll("#imp button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===state.imp));
+document.querySelectorAll(".pick[data-track]").forEach(group=>{
+  const key=group.dataset.track;
+  const sync=()=>group.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state[key]));
+  sync();
+  group.addEventListener("click",ev=>{
+    const b=ev.target.closest("button"); if(!b) return;
+    state[key]=b.dataset.v; store.set(key,state[key]); sync(); render();
+  });
+});
+document.getElementById("toTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+document.getElementById("chips").addEventListener("click",ev=>{
+  const b=ev.target.closest(".chip"); if(!b) return;
+  state.unit=b.dataset.u||null; buildChips(); renderProfile(); render();
+});
+function setFold(sec,open){
+  const head=sec.querySelector("[data-fold]"); if(!head) return;
+  if(open) collapsed.delete(head.dataset.fold); else collapsed.add(head.dataset.fold);
+  sec.classList.toggle("collapsed",!open);
+  sec.querySelector(".phase-body").hidden=!open;
+  head.setAttribute("aria-expanded",open);
+}
+document.addEventListener("click",ev=>{
+  const h=ev.target.closest("[data-fold]");
+  if(h) setFold(h.closest(".phase"),h.getAttribute("aria-expanded")!=="true");
+});
+document.addEventListener("keydown",ev=>{
+  const h=ev.target.closest&&ev.target.closest("[data-fold]");
+  if(h&&(ev.key==="Enter"||ev.key===" ")){ev.preventDefault(); setFold(h.closest(".phase"),h.getAttribute("aria-expanded")!=="true");}
+});
+document.addEventListener("click",ev=>{
+  const a=ev.target.closest("[data-jump]"); if(!a) return;
+  const c=document.getElementById("c-"+a.dataset.jump);
+  if(c){const sec=c.closest(".phase"); if(sec&&sec.classList.contains("collapsed")) setFold(sec,true);ev.preventDefault(); c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
+    c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");}
+});
+
+buildRail(); buildChips(); render();
+</script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Mighty Forces of Combined Cities · Phase Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ebe3c8; --surface:#f7f2de; --surface-2:#f0e9cf; --ink:#24130f; --muted:#6d5d52;
+  --brass:#8a6a1f; --red:#8e1f17; --teal:#2f6f64; --blue:#2f5f9a; --line:#cfc39a; --chip:#e4dbb8;
+  --head:"Saira Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#24200f; --surface:#322c18; --surface-2:#3d3620; --ink:#ece3d6; --muted:#ab9b8d;
+    --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --blue:#7aa7d9; --line:#5c5230; --chip:#483f24;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#24200f; --surface:#322c18; --surface-2:#3d3620; --ink:#ece3d6; --muted:#ab9b8d;
+  --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --blue:#7aa7d9; --line:#5c5230; --chip:#483f24;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 60px);}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* Larger invisible tap zones for finger use, without adding visual height */
+.pick button,.chip,.reminders a,summary,.phase-head.toggle{position:relative}
+.pick button::after,.chip::after,.reminders a::after,summary::after{content:"";position:absolute;inset:-4px -2px}
+
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+/* Hero */
+.hero{max-width:1080px;margin:0 auto;padding:10px 16px 6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px}
+.hero .back{flex-basis:100%;font-family:var(--head);font-weight:600;font-size:1rem;color:var(--muted);text-decoration:none}
+.hero .back:hover{color:var(--red)}
+.hero h1{font-family:var(--head);font-weight:700;font-size:clamp(1.35rem,3.2vw,1.75rem);line-height:1.1;margin:0}
+.hero .meta{display:flex;flex-wrap:wrap;gap:2px 18px;font-family:var(--head);font-size:1rem;color:var(--muted)}
+.hero .meta b{color:var(--ink);font-weight:700}
+
+/* Controls */
+.controls{max-width:1080px;margin:0 auto;padding:0 16px 10px;display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:8px 22px;align-items:start}
+.ctrl-col{display:grid;gap:8px;align-content:start;min-width:0}
+.ctrl-col + .ctrl-col{justify-self:end}
+.ctrl-col + .ctrl-col .ctrl-row,.ctrl-col + .ctrl-col .chips{justify-content:flex-end;justify-items:end}
+.ctrl-col + .ctrl-col .chip-cols{justify-content:end}
+.ctrl-col + .ctrl-col .track-label{text-align:right}
+@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr)}.ctrl-col + .ctrl-col{justify-self:stretch;border-top:1px solid var(--line);padding-top:8px}.ctrl-col + .ctrl-col .ctrl-row,.ctrl-col + .ctrl-col .chips{justify-content:flex-start;justify-items:start}.ctrl-col + .ctrl-col .chip-cols{justify-content:start}.ctrl-col + .ctrl-col .track-label{text-align:left}}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.ctrl-label{font-family:var(--head);font-weight:600;color:var(--muted);font-size:1rem;margin-right:4px}
+.pick{display:flex;flex-wrap:nowrap;gap:4px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.pick::-webkit-scrollbar{display:none}
+.pick button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font-family:var(--head);font-weight:600;font-size:.8rem;line-height:1.2;cursor:pointer;text-align:left;white-space:nowrap;flex:0 0 auto}
+.pick button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.track-label{flex-basis:100%;margin-bottom:-3px}
+.chips{display:grid;gap:6px}
+.chip-cols{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:4px 28px;align-items:start}
+.chip-col{display:grid;gap:4px;align-content:start}
+.chip-col h4{margin:0;font-family:var(--head);font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.chip-col .chip{white-space:nowrap;text-align:left;border-radius:12px;line-height:1.15;padding:3.5px 11px}
+.chips>.chip{justify-self:start}
+.ctrl-col + .ctrl-col .chips>.chip{justify-self:end}
+@media (max-width:760px){.ctrl-col + .ctrl-col .chips>.chip{justify-self:start}}
+@media (max-width:480px){.chip-cols{grid-template-columns:1fr}}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 11px;font-family:var(--head);font-weight:600;font-size:.8rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* Unit profile */
+.profile{max-width:1080px;margin:0 auto 10px;padding:0 16px}
+.profile[hidden]{display:none}
+.prof-box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:8px 12px 10px}
+.prof-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-bottom:4px}
+.prof-head h2{font-family:var(--head);font-weight:700;font-size:1.4rem;line-height:1.1;margin:0}
+.prof-tags{display:flex;flex-wrap:wrap;gap:3px;margin:0 0 4px}
+.prof-tags span{font-family:var(--head);font-weight:600;font-size:.88rem;line-height:1.2;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.prof-head span{font-family:var(--head);font-weight:600;color:var(--muted)}
+.prof-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 18px}
+.tbl-wrap{overflow-x:auto}
+.prof-box h3{font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);margin:6px 0 2px}
+.prof-box table{border-collapse:collapse;width:100%;font-size:.92rem}
+.prof-box th{font-family:var(--head);font-weight:600;color:var(--muted);text-align:center;padding:2px 5px;border-bottom:1px solid var(--line);white-space:nowrap}
+.prof-box td{text-align:center;padding:3px 5px;border-bottom:1px solid var(--line);font-family:var(--head);font-weight:600;font-size:1rem;white-space:nowrap}
+.prof-box th:first-child,.prof-box td:first-child{text-align:left}
+.prof-box td.w{white-space:normal;min-width:9em}
+.prof-box td.w .kw{display:block;font-family:var(--body);font-weight:400;font-size:.82rem;color:var(--muted);line-height:1.3}
+.prof-box td .cnt{color:var(--brass);margin-right:4px}
+.prof-box tr:last-child td{border-bottom:0}
+.prof-box table.stats{width:auto;min-width:min(100%,360px)}
+.prof-box table.stats th,.prof-box table.stats td{width:4.2em}
+
+/* Phase rail */
+.rail{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.rail{display:flex;align-items:stretch}
+.rail-top{flex:0 0 auto;border:0;border-left:1px solid var(--line);border-bottom:3px solid transparent;background:none;color:var(--red);padding:6px 10px 5px;font-family:var(--head);font-weight:700;font-size:1.05rem;cursor:pointer;white-space:nowrap}
+.rail-inner{flex:1 1 auto;min-width:0;max-width:1080px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+.rail-inner::-webkit-scrollbar{display:none}
+.rail a{flex:1 0 auto;justify-content:center;display:flex;align-items:baseline;gap:4px;padding:6px 3px 5px;text-decoration:none;color:var(--muted);font-family:var(--head);font-weight:700;font-size:1.05rem;border-bottom:3px solid transparent;white-space:nowrap}
+.rail a .n{font-size:.85rem;color:var(--brass)}
+.rail a.active{color:var(--ink);border-bottom-color:var(--red)}
+
+/* Phases */
+main{max-width:1080px;margin:0 auto;padding:4px 16px 40px}
+.phase{padding-top:18px}
+.phase-head{display:grid;grid-template-columns:auto 1fr;gap:0 12px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:8px}
+.phase-num{font-family:var(--head);font-weight:700;font-size:3.6rem;line-height:.8;color:var(--red)}
+.phase-head h2{font-family:var(--head);font-weight:700;font-size:2rem;line-height:1;margin:0}
+.phase-head.toggle{cursor:pointer;position:relative;padding-right:28px}
+.phase-head.toggle::after{content:"▾";position:absolute;right:4px;bottom:6px;font-size:1.3rem;line-height:1;color:var(--muted);transition:transform .15s}
+.phase.collapsed .phase-head.toggle::after{transform:rotate(-90deg)}
+.phase.collapsed .phase-head{margin-bottom:0}
+.phase-body[hidden]{display:none}
+.phase-head p{grid-column:2;margin:1px 0 0;color:var(--muted);font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:6px}
+.empty{color:var(--muted);font-style:italic;margin:0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 14px;align-items:start}
+.col > h3{font-family:var(--head);font-weight:700;font-size:1.05rem;color:var(--muted);margin:0 0 4px;display:flex;align-items:baseline;gap:6px}
+.col > h3 .count{font-size:.9rem;color:var(--brass)}
+.col.magic > h3{color:var(--brass)}
+.col .grid{grid-template-columns:1fr}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:4px;padding:8px 12px 6px;display:flex;flex-direction:column;gap:2px}
+.card.k-spell{border-left-color:var(--blue)}
+.card.k-prayer{border-left-color:var(--brass)}
+.card.k-det{border-left-color:var(--red)}
+.card.k-army{border-left-color:var(--ink)}
+.card.k-enh{border-left-color:var(--teal)}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card h3{font-family:var(--head);font-weight:700;font-size:1.3rem;line-height:1.1;margin:0}
+.cost{font-family:var(--head);font-weight:700;color:var(--brass);white-space:nowrap}
+.src{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted);line-height:1.25}
+.when{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--red)}
+.sum{margin:1px 0 0}
+.opts{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:3px}
+.opts li{background:var(--surface-2);border-radius:3px;padding:3px 8px;font-size:.95rem}
+.opts b{font-family:var(--head);font-size:1.02rem}
+.opts li.on{outline:2px solid var(--red)}
+.note{font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:3px;margin-top:2px}
+details{margin-top:auto;padding-top:1px}
+summary{cursor:pointer;font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted)}
+details p{font-size:.92rem;margin:3px 0 0;white-space:pre-line}
+
+.reminders{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.reminders span{font-family:var(--head);font-weight:600;color:var(--muted)}
+.reminders a{font-family:var(--head);font-weight:600;font-size:.95rem;padding:1px 8px;border-radius:3px;background:var(--chip);color:var(--ink);text-decoration:none}
+.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--brass)}100%{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
+
+footer{max-width:1080px;margin:0 auto;padding:0 16px 24px;color:var(--muted);font-size:.9rem}
+@media (max-width:560px){
+  body{font-size:16px}
+  .hero,.controls,main,footer{padding-left:10px;padding-right:10px}
+  .card{padding:7px 10px 5px}
+  .phase{padding-top:14px}
+  .grid{grid-template-columns:1fr}
+  .phase-num{font-size:2.8rem}
+  .phase-head h2{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="../index.html">← All army lists</a>
+  <h1>The Mighty Forces of Combined Cities</h1>
+  <div class="meta">
+    <span>Age of Sigmar 4th edition · <b>Cities of Sigmar</b></span>
+    <span>Battle formation: <b>Swift Reinforcements</b></span>
+    <span>General: <b>Freeguild Marshal and Relic Envoy</b></span>
+    <span>Lores: <b>Spells of the Collegiate Arcane</b> · <b>Scriptures of Sigmar</b></span>
+  </div>
+</header>
+
+<section class="controls" aria-label="Table tools">
+  <div class="ctrl-col">
+    <div class="ctrl-row">
+      <span class="ctrl-label track-label">Cogfort · Full Power! (pick any)</span>
+      <div class="pick" data-track="fp" data-multi>
+        <button data-v="none">None</button>
+        <button data-v="launch">−1 to hit against nearby allies (1)</button>
+        <button data-v="throttle">Move becomes 10" (2)</button>
+        <button data-v="solution">Re-roll 1 hit, 1 wound: cannon (3)</button>
+        <button data-v="escape">Shoot after retreating (6)</button>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label track-label">Cogfort · Special Ammunition</span>
+      <div class="pick" data-track="ammo">
+        <button data-v="none">None</button>
+        <button data-v="nullshot">−1 to enemy ward rolls</button>
+        <button data-v="heavy">+1 Rend on Godbreaker Cannon</button>
+        <button data-v="grape">D3 mortal damage around target</button>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label track-label">Battle tactic · Siege of Ashes (pick any)</span>
+      <div class="pick" data-track="tsiege" data-multi>
+        <button data-v="none">None</button>
+        <button data-v="t-form">Form a Wall</button>
+        <button data-v="t-outpost">Outpost Territory</button>
+        <button data-v="t-repel">Repel the Attackers</button>
+      </div>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label track-label">Battle tactic · Legend of the Parch (pick any)</span>
+      <div class="pick" data-track="tparch" data-multi>
+        <button data-v="none">None</button>
+        <button data-v="t-rescue">Daring Rescue</button>
+        <button data-v="t-command">Command from the Front</button>
+        <button data-v="t-legend">Hero of Legend</button>
+      </div>
+    </div>
+  </div>
+  <div class="ctrl-col">
+    <div class="ctrl-row">
+      <span class="ctrl-label track-label">Show unit</span>
+      <div class="chips" id="chips"></div>
+    </div>
+  </div>
+</section>
+
+<section class="profile" id="profile" hidden aria-live="polite"></section>
+
+<nav class="rail" aria-label="Phases"><div class="rail-inner" id="rail"></div><button type="button" class="rail-top" id="toTop" aria-label="Back to the top of the page">↑ Top</button></nav>
+
+<main id="main"></main>
+
+<footer>Built from the roster file and the battle traits, spell lore and prayer lore you supplied. Tap “Full rule” on any card for the original wording. “Under orders” comes from Form Up! and the Relic Envoy.</footer>
+
+<script>
+const UNITS = {
+  marshal:"Marshal & Relic Envoy", cavmarshal:"Cavalier-Marshal", forgepriest:"Mallus Forgepriest",
+  warforger:"Alchemite Warforger", cogfort:"Cannonade Cogfort",
+  gallants:"Freeguild Gallants", grenadiers:"Freeguild Grenadiers", steelhelms:"Freeguild Steelhelms ×2",
+  cavaliers:"Freeguild Cavaliers ×2"
+};
+const UNIT_GROUPS = {
+  "Heroes":["marshal","cavmarshal","forgepriest","warforger","cogfort"],
+  "Infantry":["gallants","grenadiers","steelhelms"],
+  "Cavalry":["cavaliers"]
+};
+const COLLAPSIBLE = ["round"];      // phases with a fold-away body
+const collapsed = new Set(COLLAPSIBLE); // collapsed by default
+const ALL = Object.keys(UNITS);
+const SHOOTERS = ["marshal","cavmarshal","cogfort","grenadiers"];
+const HEROES = ["marshal","cavmarshal","forgepriest","warforger","cogfort"];
+const PROFILES = {"marshal": {"copies": 1, "models": 1, "st": ["5\"", "5", "3+", "2"], "ranged": [{"n": "Duelling Pistols", "c": 1, "a": "4", "h": "3+", "w": "4+", "rd": "1", "d": "1", "k": "Shoot in Combat", "r": "10\""}], "melee": [{"n": "Master-forged Weapon", "c": 1, "a": "5", "h": "3+", "w": "4+", "rd": "1", "d": "2", "k": ""}], "tags": ["HERO", "ORDER", "CITIES OF SIGMAR", "INFANTRY", "SIGMARITE"]}, "cavmarshal": {"copies": 1, "models": 1, "st": ["10\"", "7", "3+", "2"], "ranged": [{"n": "Dragoon Pistol", "c": 1, "a": "4", "h": "3+", "w": "4+", "rd": "1", "d": "1", "k": "Shoot in Combat", "r": "10\""}], "melee": [{"n": "Master-forged Cavalier Sword", "c": 1, "a": "5", "h": "3+", "w": "4+", "rd": "1", "d": "2", "k": "Charge (+1 Damage)"}, {"n": "Warhorse's Steel-shod Hooves", "c": 1, "a": "2", "h": "5+", "w": "3+", "rd": "-", "d": "1", "k": "Companion"}], "tags": ["HERO", "ORDER", "CITIES OF SIGMAR", "CAVALRY", "SIGMARITE"]}, "gallants": {"copies": 1, "models": 10, "st": ["5\"", "2", "3+", "1"], "ranged": [], "melee": [{"n": "Weapons of Gallantry", "c": 10, "a": "2", "h": "3+", "w": "4+", "rd": "1", "d": "1", "k": ""}], "tags": ["CHAMPION", "ORDER", "CITIES OF SIGMAR", "STANDARD BEARER", "INFANTRY", "SIGMARITE"]}, "steelhelms": {"copies": 2, "models": 10, "st": ["5\"", "1", "4+", "1"], "ranged": [], "melee": [{"n": "Freeguild Weapons", "c": 10, "a": "2", "h": "4+", "w": "4+", "rd": "-", "d": "1", "k": ""}], "tags": ["INFANTRY", "CHAMPION", "ORDER", "CITIES OF SIGMAR", "MUSICIAN", "STANDARD BEARER", "SIGMARITE"]}, "cogfort": {"copies": 1, "models": 1, "st": ["6\"", "25", "3+", "10"], "ranged": [{"n": "Breacher Cannon", "c": 1, "a": "6", "h": "3+", "w": "3+", "rd": "1", "d": "2", "k": "Anti-Infantry (+1 Rend)", "r": "12\""}, {"n": "Crew's Leadshotters", "c": 1, "a": "6", "h": "4+", "w": "3+", "rd": "1", "d": "D3", "k": "Shoot In Combat", "r": "12\""}, {"n": "Godbreaker Cannon", "c": 1, "a": "4", "h": "4+", "w": "2+", "rd": "2", "d": "4", "k": "", "r": "24\""}], "melee": [{"n": "Crushing Iron Feet", "c": 1, "a": "4", "h": "4+", "w": "2+", "rd": "2", "d": "4", "k": "Companion"}], "tags": ["HERO", "ORDER", "CITIES OF SIGMAR", "SIGMARITE", "WAR MACHINE"]}, "forgepriest": {"copies": 1, "models": 1, "st": ["5\"", "5", "4+", "2"], "ranged": [], "melee": [{"n": "Meteoric Warhammer", "c": 1, "a": "4", "h": "4+", "w": "3+", "rd": "1", "d": "D3", "k": "Crit (Auto-wound)"}], "tags": ["HERO", "ORDER", "CITIES OF SIGMAR", "INFANTRY", "SIGMARITE", "PRIEST"]}, "cavaliers": {"copies": 2, "models": 5, "st": ["10\"", "3", "3+", "1"], "ranged": [], "melee": [{"n": "Cavalier Weapon", "c": 5, "a": "3", "h": "3+", "w": "4+", "rd": "1", "d": "1", "k": "Charge (+1 Damage)"}, {"n": "Warhorse's Steel‑shod Hooves", "c": 5, "a": "2", "h": "5+", "w": "3+", "rd": "-", "d": "1", "k": "Companion"}], "tags": ["CHAMPION", "ORDER", "CITIES OF SIGMAR", "CAVALRY", "STANDARD BEARER", "SIGMARITE"]}, "warforger": {"copies": 1, "models": 1, "st": ["5\"", "5", "5+", "2"], "ranged": [], "melee": [{"n": "Tongstaff", "c": 1, "a": "3", "h": "4+", "w": "4+", "rd": "1", "d": "D3", "k": ""}], "tags": ["HERO", "ORDER", "CITIES OF SIGMAR", "INFANTRY", "WIZARD", "SIGMARITE"]}, "grenadiers": {"copies": 1, "models": 10, "st": ["5\"", "1", "4+", "1"], "ranged": [{"n": "Ruin-sweeper Arsenal", "c": 10, "a": "1", "h": "4+", "w": "2+", "rd": "2", "d": "1", "k": "", "r": "10\""}], "melee": [{"n": "Grenadier Bardiche", "c": 10, "a": "2", "h": "4+", "w": "4+", "rd": "1", "d": "2", "k": ""}], "tags": ["INFANTRY", "ORDER", "CITIES OF SIGMAR", "SIGMARITE", "CHAMPION"]}};
+
+const PHASES = [
+  {id:"round", n:"◆", name:"Start of battle round", short:"Battle round", desc:"Each battle round, before the turns begin."},
+  {id:"hero", n:"1", name:"Hero phase", desc:"Your turn. Orders, spells, prayers and special moves."},
+  {id:"movement", n:"2", name:"Movement phase", desc:"Your turn."},
+  {id:"shooting", n:"3", name:"Shooting phase", desc:"Your turn."},
+  {id:"charge", n:"4", name:"Charge phase", desc:"Mostly your turn; a few rules fire in any charge phase."},
+  {id:"combat", n:"5", name:"Combat phase", desc:"Both turns."},
+  {id:"end", n:"6", name:"End of turn", desc:"Battle tactics are scored here."},
+  {id:"always", n:"∞", name:"Always on & setup", short:"Always on", desc:"Passive rules and one-off setup."}
+];
+
+/* kind: army = battle trait, det = battle formation, unit = unit ability, enh = enhancement, spell = spell (red), prayer = prayer (brass) */
+const E = [
+/* ---------- BATTLE ROUND ---------- */
+{id:"form",ph:"round",kind:"army",name:"Form Up!",src:"Battle trait · Army",units:ALL,when:"Start of battle round",
+ sum:"Pick a unit to use this, then 2 other visible friendly units wholly within 12\" of it. None can be under orders, and all three must be different unit types. All three are under orders for the rest of the battle round.",
+ note:"Unit type = warscroll name, so two Freeguild Steelhelms (or two Freeguild Cavaliers) units count as the same type.",
+ full:"DECLARE: Pick a friendly CITIES OF SIGMAR unit to use this ability, then pick 2 other visible friendly CITIES OF SIGMAR units wholly within 12\" of it to be the targets.\nThe unit using this ability and the targets:\n• cannot be under orders.\n• must each be a different unit type.\nEFFECT: For the rest of the battle round, the unit using this ability and the targets are under orders.\nDESIGNER'S NOTE: 'Unit type' refers to the name of the warscroll (Core Rules, 4.0), e.g. 'Freeguild Cavalier-Marshal' or 'Cannonade Cogfort'."},
+
+/* ---------- HERO ---------- */
+{id:"dawn",ph:"hero",kind:"det",name:"Dawnbringer Crusade",src:"Battle formation · Swift Reinforcements",units:ALL,when:"Once per turn (army) · Your Hero phase",
+ sum:"Pick a friendly unit (not a Hero Cities of Sigmar Infantry) wholly within friendly territory. If in combat it can move 6\"; if not in combat it can move 6\" but cannot move into combat.",
+ note:"In combat: can move through enemy combat ranges, but can only end in combat with units it was already in combat with (it need not end in combat). Keyword: MOVE.",
+ full:"TIMING: Once Per Turn (Army), Your Hero Phase\nDECLARE: Pick a friendly non-HERO CITIES OF SIGMAR INFANTRY unit wholly within friendly territory to use this ability.\nEFFECT: If that unit is in combat, it can move 6\". It can move through the combat ranges of enemy units but can only end that move in combat with units it was in combat with at the start of the move. It does not have to end the move in combat.\nIf that unit is not in combat, it can move 6\". It cannot move into combat during any part of that move.\nKEYWORDS: MOVE"},
+{id:"relic",ph:"hero",kind:"unit",name:"Attendant Relic Envoy",src:"Freeguild Marshal and Relic Envoy",units:["marshal"],when:"Once per turn (army) · Your Hero phase",
+ sum:"The Relic Envoy is a token. Pick a visible friendly SIGMARITE unit wholly within 18\" that is not under orders and place the Envoy next to it. While the Marshal is under orders and on the battlefield and the Envoy is next to the target, the target is under orders.",
+ note:"Front-line Commander (Combat phase) also measures from the Envoy.",
+ full:"TIMING: Once Per Turn (Army), Your Hero Phase\nDECLARE: This unit's Relic Envoy is a token. Pick a visible friendly SIGMARITE unit wholly within 18\" of this unit and not under orders to be the target.\nEFFECT: Place this unit's Relic Envoy next to the target. While this unit is under orders and on the battlefield and this unit's Relic Envoy is next to the target, the target is under orders."},
+{id:"crucible",ph:"hero",kind:"unit",name:"Runic Crucible",src:"Alchemite Warforger",units:["warforger"],when:"Once per turn (army) · Your Hero phase",
+ sum:"Pick a visible friendly SIGMARITE unit wholly within 12\". Make an arcane manipulation roll of D6: on a 3+, the target's melee weapons have Crit (Mortal) until the start of your next turn.",
+ full:"TIMING: Once Per Turn (Army), Your Hero Phase\nDECLARE: Pick a visible friendly SIGMARITE unit wholly within 12\" of this unit to be the target.\nEFFECT: Make an arcane manipulation roll of D6. On a 3+, the target's melee weapons have Crit (Mortal) until the start of your next turn."},
+{id:"fullpower",ph:"hero",kind:"unit",name:"Full Power!",src:"Cannonade Cogfort",units:["cogfort"],when:"Once per turn (army) · Any Hero phase",
+ sum:"Pick 1 or more effects. For each, the Cogfort gains the listed number of heat tokens. Then Overheating is rolled.",
+ opts:[
+  ["launch","1 heat · Launch Countermeasures!","Until the start of your next turn, subtract 1 from hit rolls for shooting attacks that target other friendly SIGMARITE units wholly within 12\" of this unit that are under orders."],
+  ["throttle","2 heat · Full Throttle","For the rest of the turn, this unit's Move characteristic is 10\"."],
+  ["solution","3 heat · Calculate Firing Solution!","For the rest of the turn, each time this unit uses a SHOOT ability, re-roll 1 hit roll and 1 wound roll for attacks made with its Godbreaker Cannon."],
+  ["escape","6 heat · Get Us Out of Here!","For the rest of the turn, this unit can use SHOOT abilities even if it used a RETREAT ability in the same turn."]],
+ note:"Remove heat with Emergency Bellows (end of any turn) or by rolling 5+ on Overheating.",
+ full:"TIMING: Once Per Turn (Army), Any Hero Phase\nEFFECT: Pick 1 or more of the following effects. For each effect you pick, give this unit a number of heat tokens equal to the number beside it.\n1 Launch Countermeasures!: Until the start of your next turn, subtract 1 from hit rolls for shooting attacks that target other friendly SIGMARITE units while they are wholly within 12\" of this unit and are under orders.\n2 Full Throttle: For the rest of the turn, this unit's Move characteristic is 10\".\n3 Calculate Firing Solution!: For the rest of the turn, each time this unit uses a SHOOT ability, you can re-roll 1 hit roll and 1 wound roll for shooting attacks made with this unit's Godbreaker Cannon.\n6 Get Us Out of Here!: For the rest of the turn, this unit can use SHOOT abilities even if it used a RETREAT ability in the same turn."},
+{id:"overheat",ph:"hero",kind:"unit",name:"Overheating",src:"Cannonade Cogfort",units:["cogfort"],when:"Right after Full Power! resolves",
+ sum:"Roll one dice per heat token. For each 5+, allocate 1 damage point to the Cogfort (no ward rolls) and remove 1 heat token.",
+ full:"Immediately after resolving this unit's 'Full Power!' ability, you must roll a number of dice equal to the number of heat tokens this unit has. For each 5+, allocate 1 damage point to this unit (ward rolls cannot be made for those damage points), then remove 1 of this unit's heat tokens."},
+{id:"speed",ph:"hero",kind:"spell",name:"Speed of the Twin-Tailed Comet",src:"Spells of the Collegiate Arcane · Spell, Unlimited",cost:"Cast 6",units:["warforger"],when:"Your Hero phase",
+ sum:"A friendly CITIES OF SIGMAR Wizard casts (2D6). For the rest of the turn, add 3\" to the Move of friendly non-WAR MACHINE CITIES OF SIGMAR units wholly within 12\" of the caster and visible to them.",
+ full:"TIMING: Your Hero Phase. Casting value 6. Keywords: SPELL, UNLIMITED\nDECLARE: Pick a friendly CITIES OF SIGMAR WIZARD to cast this spell, then make a casting roll of 2D6.\nEFFECT: For the rest of the turn, add 3\" to the Move characteristic of friendly non-WAR MACHINE CITIES OF SIGMAR units while they are wholly within 12\" of the caster and visible to them."},
+{id:"curse",ph:"hero",kind:"spell",name:"Curse of Scorched Metal",src:"Spells of the Collegiate Arcane · Spell",cost:"Cast 7",units:["warforger"],when:"Your Hero phase",
+ sum:"Pick a visible enemy unit within 18\" of the caster. Until the start of your next turn, the first time it uses an ATTACK ability, it suffers 1 mortal damage per unmodified hit roll of 1 (after the ability resolves).",
+ full:"TIMING: Your Hero Phase. Casting value 7. Keywords: SPELL\nDECLARE: Pick a friendly CITIES OF SIGMAR WIZARD to cast this spell, pick a visible enemy unit within 18\" of them to be the target, then make a casting roll of 2D6.\nEFFECT: Until the start of your next turn, the first time the target uses an ATTACK ability, for each unmodified hit roll of 1 for an attack made by the target as part of that ATTACK ability, inflict 1 mortal damage on the target after the ATTACK ability has been resolved."},
+{id:"highstar",ph:"hero",kind:"spell",name:"High Star's Light",src:"Spells of the Collegiate Arcane · Spell",cost:"Cast 6",units:["warforger"],when:"Your Hero phase",
+ sum:"Pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of the caster. Add 1 to the Attacks of its melee weapons for the rest of the turn.",
+ full:"TIMING: Your Hero Phase. Casting value 6. Keywords: SPELL\nDECLARE: Pick a friendly CITIES OF SIGMAR WIZARD to cast this spell, pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of them to be the target, then make a casting roll of 2D6.\nEFFECT: Add 1 to the Attacks characteristic of the target's melee weapons for the rest of the turn."},
+{id:"aegis",ph:"hero",kind:"prayer",name:"Holy Aegis",src:"Scriptures of Sigmar · Prayer, Unlimited",cost:"Chant 3",units:["forgepriest"],when:"Your Hero phase",
+ sum:"Pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of the Priest (chanting roll D6). On 7+, pick a second target. Until the start of your next turn, ignore the first damage point allocated to each target in each phase.",
+ full:"TIMING: Your Hero Phase. Chanting value 3. Keywords: PRAYER, UNLIMITED\nDECLARE: Pick a friendly CITIES OF SIGMAR PRIEST to chant this prayer, pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of them to be the target, then make a chanting roll of D6.\nEFFECT: If the chanting roll was 7+, you can pick another eligible unit to be a second target. Until the start of your next turn, ignore the first damage point that would be allocated to each target in each phase."},
+{id:"reckoning",ph:"hero",kind:"prayer",name:"Reckoning of Sinners",src:"Scriptures of Sigmar · Prayer",cost:"Chant 5",units:["forgepriest"],when:"Your Hero phase",
+ sum:"Pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of the Priest (chanting roll D6). On 10+, pick a second target. Until the start of your next turn, enemy units have a maximum control score of 1 while in combat with any target.",
+ full:"TIMING: Your Hero Phase. Chanting value 5. Keywords: PRAYER\nDECLARE: Pick a friendly CITIES OF SIGMAR PRIEST to chant this prayer, pick a visible friendly CITIES OF SIGMAR unit wholly within 12\" of them to be the target, then make a chanting roll of D6.\nEFFECT: If the chanting roll was 10+, you can pick another eligible unit to be a second target. Until the start of your next turn, enemy units have a maximum control score of 1 while they are in combat with any of the targets."},
+{id:"benediction",ph:"hero",kind:"prayer",name:"Benediction of the High Heavens",src:"Scriptures of Sigmar · Prayer",cost:"Chant 3",units:["forgepriest"],when:"Your Hero phase",
+ sum:"Pick ANOTHER visible friendly CITIES OF SIGMAR unit wholly within 12\" of the Priest (chanting roll D6). Heal (D3) the target and the chanter. On 7+, instead Heal (D3) each visible friendly CITIES OF SIGMAR unit wholly within 12\" of the chanter.",
+ full:"TIMING: Your Hero Phase. Chanting value 3. Keywords: PRAYER\nDECLARE: Pick a friendly CITIES OF SIGMAR PRIEST to chant this prayer, pick another visible friendly CITIES OF SIGMAR unit wholly within 12\" of them to be the target, then make a chanting roll of D6.\nEFFECT: Heal (D3) the target and the chanter. If the chanting roll was 7+, Heal (D3) each visible friendly CITIES OF SIGMAR unit wholly within 12\" of the chanter instead."},
+
+/* ---------- MOVEMENT ---------- */
+{id:"consecrate",ph:"movement",kind:"unit",name:"Consecrate the Land",src:"Mallus Forgepriest",units:["forgepriest"],when:"Once per turn (army) · Your Movement phase",
+ sum:"Pick an objective you control that the Forgepriest is contesting. If no enemy contests it, it is consecrated; otherwise roll a dice, 3+ consecrates it. Under orders and wholly within 6\" of it: non-WAR MACHINE SIGMARITE units have Ward 5+, SIGMARITE WAR MACHINES have Ward 6+.",
+ note:"If your opponent gains control of the objective, it is no longer consecrated.",
+ full:"TIMING: Once Per Turn (Army), Your Movement Phase\nDECLARE: Pick an objective you control that this unit is contesting to be the target.\nEFFECT: If there are no enemy units contesting the target objective, it is considered by you to be consecrated. Otherwise, roll a dice. On a 3+, the target objective is considered by you to be consecrated.\nWhile they are wholly within 6\" of a consecrated objective and under orders:\n• Friendly non-WAR MACHINE SIGMARITE units have Ward (5+).\n• Friendly SIGMARITE WAR MACHINES have Ward (6+).\nIf your opponent gains control of a consecrated objective, it is no longer consecrated."},
+
+/* ---------- SHOOTING ---------- */
+{id:"takeaim",ph:"shooting",kind:"army",name:"Take Aim!",src:"Battle trait · Army",units:SHOOTERS,when:"Once per turn (army) · Your Shooting phase",
+ sum:"Pick a friendly unit that is under orders. Pick 1 of its ranged weapons: add 1 to hit rolls for shooting attacks with that weapon for the rest of the turn.",
+ note:"Units with ranged weapons in this list: Marshal, Cavalier-Marshal, Cannonade Cogfort, Grenadiers.",
+ full:"DECLARE: Pick a friendly unit that is under orders to use this ability.\nEFFECT: Pick 1 of that unit's ranged weapons. Add 1 to hit rolls for shooting attacks made with that weapon for the rest of the turn."},
+{id:"special",ph:"shooting",kind:"unit",name:"Special Ammunition",src:"Cannonade Cogfort",units:["cogfort"],when:"Once per turn (army) · Reaction: you declared a SHOOT ability for this unit",
+ sum:"If the Cogfort is under orders, roll a dice. On a 3+, pick 1 effect, all for its Godbreaker Cannon:",
+ opts:[
+  ["nullshot","Nullshot","Subtract 1 from ward rolls for damage points inflicted by the Godbreaker Cannon this phase."],
+  ["heavy","Heavy Shot","Add 1 to the Rend of the Godbreaker Cannon this phase."],
+  ["grape","Grapeshot","After the SHOOT ability resolves, if all Godbreaker Cannon attacks targeted the same enemy unit, inflict D3 mortal damage on each other enemy unit within that unit's combat range."]],
+ full:"TIMING: Once Per Turn (Army), Reaction: You declared a SHOOT ability for this unit.\nEFFECT: If this unit is under orders, roll a dice. On a 3+, pick 1 of the following effects.\nNullshot: Subtract 1 from ward rolls for damage points inflicted by attacks made with this unit's Godbreaker Cannon this phase.\nHeavy Shot: Add 1 to the Rend characteristic of this unit's Godbreaker Cannon this phase.\nGrapeshot: After that SHOOT ability has been resolved, if all of the attacks made with this unit's Godbreaker Cannon targeted the same enemy unit, inflict D3 mortal damage on each other enemy unit within that enemy unit's combat range."},
+
+/* ---------- CHARGE ---------- */
+{id:"sound",ph:"charge",kind:"army",name:"Sound the Attack!",src:"Battle trait · Army",units:ALL,when:"Once per turn (army) · Reaction: you declared a CHARGE ability for a unit under orders",
+ sum:"Used by the unit using that CHARGE ability: you can change the lowest D6 in the charge roll to match the highest D6.",
+ full:"TIMING: Once Per Turn (Army), Reaction: You declared a CHARGE ability for a unit that is under orders.\nUSED BY: The unit using that CHARGE ability.\nEFFECT: You can change the lowest D6 in the charge roll to match the highest D6."},
+{id:"rundown",ph:"charge",kind:"unit",name:"Run Down the Foe",src:"Freeguild Cavalier-Marshal",units:["cavmarshal"],when:"Once per turn (army) · Any charge phase",
+ sum:"If the Cavalier-Marshal charged this turn, pick it and up to 2 non-HERO SIGMARITE CAVALRY units that charged this turn and are wholly within 12\". For each target: make a pile-in move, then pick an enemy unit in combat with it and roll a D3; on a 2+, inflict mortal damage equal to the roll.",
+ full:"TIMING: Once Per Turn (Army), Any Charge Phase\nDECLARE: If this unit charged this turn, pick this unit and up to 2 non-HERO SIGMARITE CAVALRY units that charged this turn and are wholly within 12\" of this unit to be the targets.\nEFFECT: For each target:\n• Make a pile-in move.\n• Then, pick an enemy unit in combat with the target and roll a D3. On a 2+, inflict an amount of mortal damage on that enemy unit equal to the roll."},
+{id:"storm",ph:"charge",kind:"unit",name:"Storm of Steel",src:"Freeguild Cavaliers",units:["cavaliers"],when:"Once per turn (army) · Any charge phase",
+ sum:"If the unit is in combat and has not charged this turn, pick an enemy it is in combat with and up to 1 friendly Cavalier-Marshal within its combat range. If under orders (otherwise roll a dice, 3+): this unit and the Marshal can use Charge even out of phase and in combat, and must end in combat with the enemy target.",
+ full:"TIMING: Once Per Turn (Army), Any Charge Phase\nDECLARE: If this unit is in combat and has not charged this turn, pick an enemy unit that it is in combat with and up to 1 friendly Freeguild Cavalier-Marshal within this unit's combat range to be the targets.\nEFFECT: If this unit is under orders, apply the effect below. Otherwise, roll a dice. On a 3+, apply the effect below.\nThis unit and the friendly target can use the 'Charge' ability even if it is not your charge phase and even if those units are in combat. Both friendly units must end that move in combat with the enemy target."},
+{id:"forsigmar",ph:"charge",kind:"unit",name:"'For Sigmar, For Glory!'",src:"Freeguild Cavalier-Marshal",units:["cavmarshal"],when:"Reaction: you declared the 'Counter-charge' command for this unit",
+ sum:"Pick a visible friendly non-HERO SIGMARITE CAVALRY unit wholly within 12\" that is not in combat and has not used a RUN ability this turn. After Counter-charge resolves, if the Marshal is in combat the target can immediately use Charge as if it were your charge phase, and you can re-roll its charge rolls for the rest of the phase.",
+ full:"TIMING: Reaction: You declared the 'Counter-charge' command for this unit.\nEFFECT: Pick a visible friendly non-HERO SIGMARITE CAVALRY unit that is wholly within 12\" of this unit, is not in combat and has not used a RUN ability this turn to be the target. After the 'Counter-charge' command for this unit has been resolved, if this unit is in combat, the target can immediately use the 'Charge' ability as if it were your charge phase. In addition, you can re-roll charge rolls for the target for the rest of the phase."},
+
+/* ---------- COMBAT ---------- */
+{id:"into",ph:"combat",kind:"army",name:"Into Them, You Dogs!",src:"Battle trait · Army",units:HEROES,when:"Once per turn (army) · Any combat phase",
+ sum:"Pick a friendly HERO under orders: the field officer for the turn. Pick 2 other visible friendly non-HERO units under orders and wholly within 12\" of it. The first time the field officer uses a FIGHT ability, pick a target that hasn't fought: it is inspirited (fights right after the officer's ability), the other is emboldened (fights right after the inspirited one, if it hasn't fought yet).",
+ full:"DECLARE: Pick a friendly HERO that is under orders to use this ability. That unit is the field officer for the rest of the turn. Then, pick 2 other visible friendly non-HERO units that are under orders and wholly within 12\" of the field officer to be the targets.\nEFFECT: For the rest of the turn, the first time the field officer uses a FIGHT ability, you can pick a target that has not used a FIGHT ability this turn. That target is inspirited and the other target is emboldened. The inspirited target can be picked to use a FIGHT ability immediately after the FIGHT ability used by the field officer has been resolved. Then, if the emboldened target has not used a FIGHT ability this turn, it can be picked to use a FIGHT ability immediately after the inspirited target's FIGHT ability has been resolved."},
+{id:"hurl",ph:"combat",kind:"army",name:"Hurl Them Back!",src:"Battle trait · Army",units:ALL,when:"Once per turn (army) · Any combat phase",
+ sum:"Pick a friendly unit that is under orders and in combat with an enemy unit that charged this turn. Add 1 to the Rend of its melee weapons for the rest of the turn.",
+ full:"DECLARE: Pick a friendly unit that is under orders and in combat with an enemy unit that charged this turn to use this ability.\nEFFECT: For the rest of the turn, add 1 to the Rend characteristic of that unit's melee weapons."},
+{id:"frontline",ph:"combat",kind:"unit",name:"Front-line Commander",src:"Freeguild Marshal and Relic Envoy · Command",cost:"1 CP",units:["marshal"],when:"Once per battle (army) · Reaction: you declared a FIGHT ability for this unit",
+ sum:"If the Marshal is under orders, pick a friendly SIGMARITE INFANTRY or MONSTER unit wholly within 12\" of it (or with its Relic Envoy next to it) that hasn't used a FIGHT ability this turn. It can fight right after the Marshal and use 2 FIGHT abilities this phase, but then has Strike-last for the rest of the turn.",
+ full:"TIMING: Once Per Battle (Army), Reaction: You declared a FIGHT ability for this unit. Cost: 1 CP\nEFFECT: If this unit is under orders, pick a friendly SIGMARITE INFANTRY or MONSTER unit that is wholly within 12\" of this unit or has this unit's Relic Envoy next to it and that has not used a FIGHT ability this turn to be the target. The target can be picked to use a FIGHT ability immediately after the FIGHT ability used by this unit has been resolved. If it is picked to do so, the target can use 2 FIGHT abilities this phase. After the first is used, however, the target has Strike-last for the rest of the turn."},
+{id:"steel",ph:"combat",kind:"unit",name:"Steel of Helm and Heart",src:"Freeguild Steelhelms",units:["steelhelms"],when:"Once per turn (army) · Any combat phase",
+ sum:"If the unit has 5+ models, pick an enemy unit in combat with it. If under orders, apply the effect; otherwise roll a dice (−1 if the target is a MONSTER), 4+ applies it. For the rest of the turn, when that enemy is picked to FIGHT: the Steelhelms must be the target of its pile-in, and all its attacks from models within the Steelhelms' combat range must target them.",
+ full:"TIMING: Once Per Turn (Army), Any Combat Phase\nDECLARE: If this unit has 5 or more models, pick an enemy unit in combat with this unit to be the target.\nEFFECT: If this unit is under orders, apply the effect below. Otherwise, roll a dice. Subtract 1 from the roll if the target is a MONSTER. On a 4+, apply the effect below.\nFor the rest of the turn, if this unit is in combat with the target when the target is picked to use a FIGHT ability:\n• This unit must be picked to be the target of pile-in move made by the target.\n• All attacks made by models in the target unit within this unit's combat range must target this unit."},
+
+/* ---------- END OF TURN ---------- */
+{id:"cinders",ph:"end",kind:"unit",name:"Cinders and Ashes",src:"Freeguild Grenadiers",units:["grenadiers"],when:"Once per turn (army) · End of any turn",
+ sum:"If the unit contains a Cindergout, pick a terrain feature or objective it contests, then pick any enemy units contesting it. Roll a D3 for each: on a 2+, inflict mortal damage equal to the roll.",
+ full:"TIMING: Once Per Turn (Army), End of Any Turn\nDECLARE: If this unit contains a Cindergout, pick a terrain feature or objective contested by this unit, then pick any enemy units contesting that terrain feature or objective to be the targets.\nEFFECT: Roll a D3 for each target. On a 2+, inflict an amount of mortal damage on the target equal to the roll."},
+{id:"bellows",ph:"end",kind:"enh",name:"Emergency Bellows",src:"Ironweld Innovation · Cannonade Cogfort",units:["cogfort"],when:"End of any turn",
+ sum:"Remove 1 of the Cogfort's heat tokens.",
+ full:"TIMING: End of Any Turn\nEFFECT: Remove 1 of this unit's heat tokens."},
+{id:"tactic-siege",ph:"end",kind:"army",name:"Battle tactic: Siege of Ashes",src:"Battle tactic card",units:ALL,when:"Complete at the end of your turn",
+ sum:"Pick one of the three tactics on the card.",
+ opts:[
+  ["t-form","Affray · Form a Wall","2 or more friendly units wholly outside friendly territory, wholly within 6\" of friendly territory and within 3\" of each other."],
+  ["t-outpost","Strike · Outpost Territory","You control an objective within enemy territory, contested by at least 1 friendly unit that did not use a MOVE ability this turn and at least 1 other friendly unit that charged this turn."],
+  ["t-repel","Domination · Repel the Attackers","3 or more friendly units within 3\" of the centre of the battlefield that are not in combat."]],
+ full:"Form a Wall (Affray): You complete this battle tactic at the end of your turn if 2 or more friendly units are wholly outside friendly territory, wholly within 6\" of friendly territory and within 3\" of each other.\nOutpost Territory (Strike): You complete this battle tactic at the end of your turn if you control an objective within enemy territory and that objective is contested by:\n• At least 1 friendly unit that did not use a MOVE ability this turn\n• At least 1 other friendly unit that charged this turn.\nRepel the Attackers (Domination): You complete this battle tactic at the end of your turn if there are 3 or more friendly units within 3\" of the centre of the battlefield that are not in combat."},
+{id:"tactic-parch",ph:"end",kind:"army",name:"Battle tactic: Legend of the Parch",src:"Battle tactic card",units:ALL,when:"Complete at the end of your turn",
+ sum:"Pick one of the three tactics on the card.",
+ opts:[
+  ["t-rescue","Affray · Daring Rescue","An enemy unit that was in combat at the start of the turn was destroyed by a combat attack made by a friendly unit that charged this turn."],
+  ["t-command","Strike · Command from the Front","2 or more friendly HEROES on the battlefield, all within 9\" of a visible enemy unit, and none were slain this turn."],
+  ["t-legend","Domination · Hero of Legend","You control an objective wholly outside your territory that you did not control at the start of the turn, and a friendly HERO is contesting it."]],
+ full:"Daring Rescue (Affray): You complete this battle tactic at the end of your turn if an enemy unit that was in combat at the start of the turn was destroyed by a combat attack made by a friendly unit that charged this turn.\nCommand from the Front (Strike): You complete this battle tactic at the end of your turn if there are 2 or more friendly HEROES on the battlefield, all friendly HEROES are within 9\" of a visible enemy unit and no friendly HEROES were slain this turn.\nHero of Legend (Domination): You complete this battle tactic at the end of your turn if you control an objective wholly outside your territory that you did not control at the start of the turn and a friendly HERO is contesting that objective."},
+
+/* ---------- ALWAYS ON & SETUP ---------- */
+{id:"guarded",ph:"always",kind:"unit",name:"Guarded Hero",src:"Marshal · Cavalier-Marshal · Forgepriest · Warforger",units:["marshal","cavmarshal","forgepriest","warforger"],
+ sum:"While the Hero is within the combat range of a friendly non-HERO unit: −1 to hit for shooting attacks that target it, and if it is INFANTRY it can't be targeted by shooting from models more than 12\" away.",
+ full:"If this HERO is within the combat range of a friendly unit that is not a HERO:\n• Subtract 1 from hit rolls for shooting attacks that target this Hero.\n• If this HERO is INFANTRY, they cannot be picked as the target of shooting attacks made by models more than 12\" from them."},
+{id:"notone",ph:"always",kind:"unit",name:"Not One Step Back",src:"Freeguild Gallants",units:["gallants"],
+ sum:"If the unit has not charged this turn, add 1 to the Attacks and Damage of its melee weapons.",
+ full:"If this unit has not charged this turn, add 1 to the Attacks characteristic and Damage characteristic of this unit's melee weapons."},
+{id:"breakthem",ph:"always",kind:"unit",name:"Break Them Upon the Walls",src:"Freeguild Gallants",units:["gallants"],
+ sum:"While the Gallants are under orders, melee weapons of other visible friendly SIGMARITE units (not Gallants) wholly within 12\" have Anti-charge (+1 Rend).",
+ full:"While this unit is under orders, the melee weapons of other visible friendly SIGMARITE units, excluding Freeguild Gallants units, have Anti-charge (+1 Rend) while they are wholly within 12\" of this unit."},
+{id:"champion",ph:"always",kind:"unit",name:"Champion",src:"Gallants · Steelhelms · Cavaliers · Grenadiers",units:["gallants","steelhelms","cavaliers","grenadiers"],
+ sum:"Add 1 to the Attacks of weapons used by champions in the unit.",
+ full:"Add 1 to the Attacks characteristic of weapons used by champions in this unit. If this unit is a BEAST, this ability affects this unit's Companion weapons."},
+{id:"standard",ph:"always",kind:"unit",name:"Standard Bearer",src:"Freeguild Gallants · Freeguild Cavaliers",units:["gallants","cavaliers"],
+ sum:"While the unit contains any standard bearers, add 1 to its control score.",
+ full:"While this unit contains any standard bearers, add 1 to this unit's control score."},
+{id:"musician",ph:"always",kind:"unit",name:"Musician",src:"Freeguild Steelhelms",units:["steelhelms"],
+ sum:"While the unit contains any musicians, if it uses the 'Rally' command, you can make one additional rally roll of D6.",
+ full:"While this unit contains any musicians, if it uses the 'Rally' command, you can make one additional rally roll of D6."},
+{id:"damaged",ph:"always",kind:"unit",name:"Battle Damaged",src:"Cannonade Cogfort",units:["cogfort"],
+ sum:"While the Cogfort has 10 or more damage points: Crushing Iron Feet have Attacks 3, and its Control is 5.",
+ full:"While this unit has 10 or more damage points:\n• The Attacks characteristic of its Crushing Iron Feet is 3.\n• It has a Control characteristic of 5."},
+{id:"stentorian",ph:"always",kind:"enh",name:"Stentorian General",src:"Heroic trait · Freeguild Cavalier-Marshal",units:["cavmarshal"],
+ sum:"Subtract 1 from ward rolls for enemy units while they are in combat with any visible friendly unit wholly within 12\" of the Cavalier-Marshal that is under orders.",
+ full:"Subtract 1 from ward rolls for enemy units while they are in combat with any visible friendly units that are wholly within 12\" of this unit and under orders."},
+{id:"comet",ph:"always",kind:"enh",name:"Twin-tailed Comet of Honour",src:"Decoration for Valour · Freeguild Gallants · 10 pts",units:["gallants"],
+ sum:"While the Gallants have any champions, add 5 to their control score.",
+ full:"While this unit has any champions, add 5 to this unit's control score."},
+{id:"lastblade",ph:"always",kind:"enh",name:"The Last Blade of Embergard",src:"Artefact of Power · Freeguild Cavalier-Marshal · 10 pts",units:["cavmarshal"],when:"Deployment phase",
+ sum:"Usable while in reserve. Pick 1 of the Cavalier-Marshal's non-Companion melee weapons: add 2 to its Attacks and Rend for the rest of the battle.",
+ full:"TIMING: Deployment Phase\nEFFECT: This unit can use this ability while it is in reserve. Pick 1 of this unit's non-Companion melee weapons. Add 2 to that weapon's Attacks characteristic and Rend characteristic for the rest of the battle."}
+];
+
+/* Cross-phase reminders: ids of cards that matter in other phases */
+const REMIND = {
+  hero:["form"],
+  movement:["form","dawn","speed","fullpower","consecrate"],
+  shooting:["form","fullpower","guarded"],
+  charge:["form","speed","fullpower"],
+  combat:["form","highstar","crucible","stentorian","notone","breakthem","curse"]
+};
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId = Object.fromEntries(E.map(e=>[e.id,e]));
+const store = {
+  get(k,d){try{const v=localStorage.getItem("cos-"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("cos-"+k,JSON.stringify(v))}catch(e){}}
+};
+let state = {fp:store.get("fp",[]), ammo:store.get("ammo","none"), tsiege:store.get("tsiege",[]), tparch:store.get("tparch",[]), unit:null};
+for(const k of ["fp","tsiege","tparch"]) if(!Array.isArray(state[k])) state[k]=[];
+const isOn = k => !!k && (state.fp.includes(k) || state.tsiege.includes(k) || state.tparch.includes(k) || k===state.ammo);
+
+function cardHTML(e){
+  const opts = e.opts ? `<ul class="opts">${e.opts.map(([k,n,t])=>`<li class="${isOn(k)?"on":""}"><b>${esc(n)}</b> — ${esc(t)}</li>`).join("")}</ul>`:"";
+  return `<article class="card k-${e.kind}" id="c-${e.id}" data-id="${e.id}">
+    <div class="card-top"><h3>${esc(e.name)}</h3>${e.cost?`<span class="cost">${esc(e.cost)}</span>`:""}</div>
+    <div class="src">${esc(e.src)}</div>
+    ${e.when?`<div class="when">${esc(e.when)}</div>`:""}
+    <p class="sum">${esc(e.sum)}</p>${opts}
+    ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
+    <details><summary>Full rule</summary><p>${esc(e.full)}</p></details>
+  </article>`;
+}
+
+function matches(e){
+  return !state.unit || e.units.includes(state.unit);
+}
+
+function render(){
+  const main=document.getElementById("main");
+  main.innerHTML = PHASES.map(p=>{
+    const items=E.filter(e=>e.ph===p.id && matches(e));
+    const rem=(REMIND[p.id]||[]).map(id=>byId[id]).filter(e=>e && (!state.unit||e.units.includes(state.unit)));
+    const isMagic=e=>e.kind==="spell"||e.kind==="prayer";
+    const abil=items.filter(e=>!isMagic(e)), magic=items.filter(isMagic);
+    const col=(cls,title,list)=>`<div class="col ${cls}"><h3>${title}<span class="count">${list.length}</span></h3><div class="grid">${list.map(cardHTML).join("")}</div></div>`;
+    let body;
+    if(!items.length) body=`<p class="empty">${state.unit?"Nothing here for this unit.":"Nothing triggers only in this phase."}</p>`;
+    else if(magic.length) body=`<div class="cols">${abil.length?col("abil","Abilities",abil):""}${col("magic","Spells & prayers",magic)}</div>`;
+    else body=`<div class="grid">${abil.map(cardHTML).join("")}</div>`;
+    const remHTML = rem.length?`<div class="reminders"><span>Also in play:</span>${rem.map(e=>`<a href="#c-${e.id}" data-jump="${e.id}">${esc(e.name)}</a>`).join("")}</div>`:"";
+    const fold=COLLAPSIBLE.includes(p.id), shut=fold&&collapsed.has(p.id);
+    return `<section class="phase${shut?" collapsed":""}" id="p-${p.id}">
+      <div class="phase-head${fold?" toggle":""}"${fold?` role="button" tabindex="0" aria-expanded="${!shut}" data-fold="${p.id}"`:""}><span class="phase-num" aria-hidden="true">${p.n}</span><h2>${esc(p.name)}</h2><p>${esc(p.desc)}</p></div>
+      <div class="phase-body"${shut?" hidden":""}>${body}${remHTML}</div></section>`;
+  }).join("");
+  observe();
+}
+
+function buildRail(){
+  document.getElementById("rail").innerHTML = PHASES.map(p=>`<a href="#p-${p.id}" data-p="${p.id}"><span class="n">${p.n}</span>${esc(p.short||p.name.replace(" phase",""))}</a>`).join("");
+}
+function renderProfile(){
+  const box=document.getElementById("profile");
+  const u=state.unit && PROFILES[state.unit];
+  if(!u){box.hidden=true; box.innerHTML=""; return;}
+  const cnt=c=>c>1?`<span class="cnt">${c}×</span>`:"";
+  const stats=`<div class="tbl-wrap"><table class="stats"><thead><tr><th>Move</th><th>Health</th><th>Save</th><th>Control</th></tr></thead><tbody><tr>${u.st.map(v=>`<td>${esc(v)}</td>`).join("")}</tr></tbody></table></div>`;
+  const wtable=(list,melee)=>list.length?`<div class="tbl-wrap"><table><thead><tr><th>Weapon</th>${melee?"":"<th>Rng</th>"}<th>Atk</th><th>Hit</th><th>Wnd</th><th>Rnd</th><th>Dmg</th></tr></thead><tbody>${
+    list.map(w=>`<tr><td class="w">${cnt(w.c)}${esc(w.n)}${w.k?`<span class="kw">${esc(w.k)}</span>`:""}</td>${melee?"":`<td>${esc(w.r)}</td>`}<td>${esc(w.a)}</td><td>${esc(w.h)}</td><td>${esc(w.w)}</td><td>${esc(w.rd)}</td><td>${esc(w.d)}</td></tr>`).join("")}</tbody></table></div>`:`<p class="empty">None</p>`;
+  const note=[u.models>1?`${u.models} models`:"", u.copies>1?`${u.copies} units in the roster · profile per unit`:""].filter(Boolean).join(" · ");
+  box.innerHTML=`<div class="prof-box">
+    <div class="prof-head"><h2>${esc(UNITS[state.unit])}</h2>${note?`<span>${esc(note)}</span>`:""}</div>
+    ${u.tags&&u.tags.length?`<div class="prof-tags" aria-label="Keywords">${u.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
+    <div class="prof-grid">
+      <div>${stats}</div>
+      ${u.ranged.length?`<div><h3>Ranged weapons</h3>${wtable(u.ranged,false)}</div>`:""}
+      <div><h3>Melee weapons</h3>${wtable(u.melee,true)}</div>
+    </div></div>`;
+  box.hidden=false;
+}
+function buildChips(){
+  const wrap=document.getElementById("chips");
+  const chip=(k)=>`<button class="chip" data-u="${k}" aria-pressed="${state.unit===k}">${esc(UNITS[k])}</button>`;
+  wrap.innerHTML=`<button class="chip" data-u="" aria-pressed="${!state.unit}">All</button>`+
+    `<div class="chip-cols">`+Object.entries(UNIT_GROUPS).map(([g,keys])=>
+      `<div class="chip-col"><h4>${esc(g)}</h4>${[...keys].sort((a,b)=>UNITS[a].localeCompare(UNITS[b])).map(chip).join("")}</div>`).join("")+`</div>`;
+}
+
+let io, activePhase=null;
+function setActive(id){
+  if(id===activePhase) return;            // nothing changed: no DOM work at all
+  activePhase=id;
+  const rail=document.getElementById("rail");
+  let target=null;
+  rail.querySelectorAll("a").forEach(l=>{const on=l.dataset.p===id; l.classList.toggle("active",on); if(on) target=l;});
+  if(!target) return;
+  // Scroll only the rail, horizontally, and only if the tab is out of view.
+  // (scrollIntoView would also scroll the page and break momentum scrolling.)
+  const left=target.offsetLeft, right=left+target.offsetWidth;
+  if(left<rail.scrollLeft || right>rail.scrollLeft+rail.clientWidth){
+    rail.scrollTo({left:Math.max(0,left-24)});
+  }
+}
+function observe(){
+  if(io) io.disconnect();
+  io=new IntersectionObserver(ents=>{
+    for(const en of ents){ if(en.isIntersecting){ setActive(en.target.id.slice(2)); } }
+  },{rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll(".phase").forEach(s=>io.observe(s));
+}
+
+/* events */
+document.querySelectorAll(".pick[data-track]").forEach(group=>{
+  const key=group.dataset.track, multi=group.hasAttribute("data-multi");
+  const sync=()=>group.querySelectorAll("button").forEach(b=>{
+    const v=b.dataset.v;
+    b.setAttribute("aria-pressed", multi ? (v==="none" ? !state[key].length : state[key].includes(v)) : v===state[key]);
+  });
+  sync();
+  group.addEventListener("click",ev=>{
+    const b=ev.target.closest("button"); if(!b) return;
+    const v=b.dataset.v;
+    if(multi) state[key]= v==="none" ? [] : (state[key].includes(v) ? state[key].filter(x=>x!==v) : [...state[key],v]);
+    else state[key]=v;
+    store.set(key,state[key]); sync(); render();
+  });
+});
+document.getElementById("toTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+document.getElementById("chips").addEventListener("click",ev=>{
+  const b=ev.target.closest(".chip"); if(!b) return;
+  state.unit=b.dataset.u||null; buildChips(); renderProfile(); render();
+});
+function setFold(sec,open){
+  const head=sec.querySelector("[data-fold]"); if(!head) return;
+  if(open) collapsed.delete(head.dataset.fold); else collapsed.add(head.dataset.fold);
+  sec.classList.toggle("collapsed",!open);
+  sec.querySelector(".phase-body").hidden=!open;
+  head.setAttribute("aria-expanded",open);
+}
+document.addEventListener("click",ev=>{
+  const h=ev.target.closest("[data-fold]");
+  if(h) setFold(h.closest(".phase"),h.getAttribute("aria-expanded")!=="true");
+});
+document.addEventListener("keydown",ev=>{
+  const h=ev.target.closest&&ev.target.closest("[data-fold]");
+  if(h&&(ev.key==="Enter"||ev.key===" ")){ev.preventDefault(); setFold(h.closest(".phase"),h.getAttribute("aria-expanded")!=="true");}
+});
+document.addEventListener("click",ev=>{
+  const a=ev.target.closest("[data-jump]"); if(!a) return;
+  const c=document.getElementById("c-"+a.dataset.jump);
+  if(c){const sec=c.closest(".phase"); if(sec&&sec.classList.contains("collapsed")) setFold(sec,true);ev.preventDefault(); c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
+    c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash");}
+});
+
+buildRail(); buildChips(); render();
+</script>
+</body>
+</html>
