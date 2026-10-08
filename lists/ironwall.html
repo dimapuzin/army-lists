@@ -72,7 +72,14 @@ button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .fc-val{min-width:3em;text-align:center;font-weight:700}
 .fc-val.has{color:var(--red)}
 @media (min-width:1000px){.fc-rows{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.fc-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){
+  .fc-grid{grid-template-columns:minmax(0,1fr)}
+  .fc-head{position:relative;cursor:pointer;padding-right:18px}
+  .fc-head::before{content:"";position:absolute;inset:-3px -6px}
+  .fc-head::after{content:"▾";position:absolute;right:2px;top:2px;color:var(--muted);transition:transform .15s}
+  .fc-f.shut .fc-head::after{transform:rotate(-90deg)}
+  .fc-f.shut .fc-rows{display:none}
+}
 
 /* Formations and unit cards */
 main{max-width:1080px;margin:0 auto;padding:4px 16px 40px}
@@ -400,18 +407,28 @@ document.getElementById("main").addEventListener("click",ev=>{
   const on=b.getAttribute("aria-pressed")!=="true";
   b.setAttribute("aria-pressed",on); if(p) p.hidden=!on;
 });
+const phoneMQ=matchMedia("(max-width:640px)");
+const fcShut=new Set(phoneMQ.matches?FORMATIONS.map(f=>f.id):[]);  // on phones each formation box starts folded
 function renderFC(){
   document.getElementById("fc").innerHTML=FORMATIONS.map(f=>{
     const sum=f.units.filter(e=>!isSentry(e)).reduce((a,e)=>a+lost[e.id],0);
     const broken=sum>=f.bp;
-    return `<div class="fc-f${broken?" broken":""}">
-      <div class="fc-head"><span>${esc(f.short||f.name)}</span><span class="st">Strength <b>${f.strength-sum}</b>/${f.strength} · Break point <b>${f.bp}</b></span>${broken?`<span class="bk">BROKEN</span>`:""}<span class="sum${broken?" over":""}">Lost ${sum}/${f.bp}</span></div>
+    return `<div class="fc-f${broken?" broken":""}${fcShut.has(f.id)?" shut":""}">
+      <div class="fc-head" role="button" tabindex="0" aria-expanded="${!fcShut.has(f.id)}" data-f="${f.id}"><span>${esc(f.short||f.name)}</span><span class="st">Strength <b>${f.strength-sum}</b>/${f.strength} · Break point <b>${f.bp}</b></span>${broken?`<span class="bk">BROKEN</span>`:""}<span class="sum${broken?" over":""}">Lost ${sum}/${f.bp}</span></div>
       <div class="fc-rows">${f.units.map(e=>`<div class="fc-row"><span class="nm">${esc(e.name.replace(/^(Auxilia|Legion) /,"").replace(/( (Squadron|Battery|Patrol|Section|Detachment|Maniple))+$/,""))}${e.n>1?` ×${e.n}`:""}${isSentry(e)?` <i>(not counted)</i>`:""}</span>
         <span class="fc-ctl"><button type="button" class="fc-step" data-e="${e.id}" data-d="-1" aria-label="One model fewer lost">−</button><span class="fc-val${lost[e.id]?" has":""}">${lost[e.id]}/${maxOf(e)}</span><button type="button" class="fc-step" data-e="${e.id}" data-d="1" aria-label="One more model lost">+</button></span></div>`).join("")}</div>
     </div>`;
   }).join("");
 }
+function toggleFC(h){
+  if(!phoneMQ.matches) return;
+  const id=h.dataset.f; fcShut.has(id)?fcShut.delete(id):fcShut.add(id); renderFC();
+}
+document.getElementById("fc").addEventListener("keydown",ev=>{
+  const h=ev.target.closest(".fc-head"); if(h&&(ev.key==="Enter"||ev.key===" ")){ev.preventDefault();toggleFC(h);}
+});
 document.getElementById("fc").addEventListener("click",ev=>{
+  const h=ev.target.closest(".fc-head"); if(h){toggleFC(h);return;}
   const b=ev.target.closest(".fc-step"); if(!b) return;
   const e=FORMATIONS.flatMap(f=>f.units).find(u=>u.id===b.dataset.e);
   lost[e.id]=Math.min(maxOf(e),Math.max(0,lost[e.id]+(+b.dataset.d)));
