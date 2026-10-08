@@ -12,7 +12,7 @@
 :root{
   --bg:#eeeeec; --surface:#fafaf9; --ink:#24130f; --muted:#6d5d52;
   --brass:#8a6a1f; --red:#8e1f17; --line:#d3d3cf;
-  --ms-bg:#f5f2ef; --ms-line:#d8cfc4; --cos-bg:#ebe3c8; --cos-line:#cfc39a; --kt-bg:#efe9e6; --kt-line:#d9ccc8; --li-bg:#e9e8df; --li-line:#d2cfbf;
+  --ms-bg:#f5f2ef; --ms-line:#d8cfc4; --cos-bg:#ebe3c8; --cos-line:#cfc39a; --kt-bg:#efe9e6; --kt-line:#d9ccc8; --li-bg:#e9e8df; --li-line:#d2cfbf; --dg-bg:#e4e8de; --dg-line:#c5cdb9;
   --head:"Saira Condensed","Arial Narrow",Arial,sans-serif;
   --body:"Source Serif 4",Georgia,"Times New Roman",serif;
 }
@@ -20,13 +20,13 @@
   :root:not([data-theme="light"]){
     --bg:#1b1b1b; --surface:#262626; --ink:#ece3d6; --muted:#ab9b8d;
     --brass:#d1aa52; --red:#c9473c; --line:#3c3c3c;
-    --ms-bg:#20110f; --ms-line:#553732; --cos-bg:#24200f; --cos-line:#5c5230; --kt-bg:#1e1a1c; --kt-line:#4f4146; --li-bg:#1c1e18; --li-line:#474b3c;
+    --ms-bg:#20110f; --ms-line:#553732; --cos-bg:#24200f; --cos-line:#5c5230; --kt-bg:#1e1a1c; --kt-line:#4f4146; --li-bg:#1c1e18; --li-line:#474b3c; --dg-bg:#1b2018; --dg-line:#444d3a;
   }
 }
 :root[data-theme="dark"]{
   --bg:#1b1b1b; --surface:#262626; --ink:#ece3d6; --muted:#ab9b8d;
   --brass:#d1aa52; --red:#c9473c; --line:#3c3c3c;
-  --ms-bg:#20110f; --ms-line:#553732; --cos-bg:#24200f; --cos-line:#5c5230; --kt-bg:#1e1a1c; --kt-line:#4f4146; --li-bg:#1c1e18; --li-line:#474b3c;
+  --ms-bg:#20110f; --ms-line:#553732; --cos-bg:#24200f; --cos-line:#5c5230; --kt-bg:#1e1a1c; --kt-line:#4f4146; --li-bg:#1c1e18; --li-line:#474b3c; --dg-bg:#1b2018; --dg-line:#444d3a;
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
@@ -41,6 +41,7 @@ h2{font-family:var(--head);font-weight:700;font-size:1.1rem;color:var(--muted);m
 .card.cos{background:var(--cos-bg);border-top-color:var(--cos-line);border-right-color:var(--cos-line);border-bottom-color:var(--cos-line)}
 .card.kt{background:var(--kt-bg);border-top-color:var(--kt-line);border-right-color:var(--kt-line);border-bottom-color:var(--kt-line)}
 .card.li{background:var(--li-bg);border-top-color:var(--li-line);border-right-color:var(--li-line);border-bottom-color:var(--li-line)}
+.card.dg{background:var(--dg-bg);border-top-color:var(--dg-line);border-right-color:var(--dg-line);border-bottom-color:var(--dg-line)}
 .card:hover{border-top-color:var(--red);border-right-color:var(--red);border-bottom-color:var(--red);transform:translateY(-2px)}
 .card .faction{font-family:var(--head);font-weight:600;color:var(--brass);font-size:1rem}
 .card h3{font-family:var(--head);font-weight:700;font-size:1.45rem;line-height:1.15;margin:2px 0 6px}
@@ -96,8 +97,21 @@ footer{margin-top:40px;color:var(--muted);font-size:.9rem}
         <span class="faction">Legions Imperialis · Solar Auxilia</span>
         <h3>Ranger Brigade</h3>
         <dl>
-          <dt>Formations:</dt> <dd>Sub-Cohort (364 pts) · Pioneer Company (380 pts)</dd>
-          <dt>Total:</dt> <dd>744 pts</dd>
+          <dt>Formations:</dt> <dd>Sub-Cohort (370 pts) · Pioneer Company (380 pts)</dd>
+          <dt>Total:</dt> <dd>750 pts</dd>
+        </dl>
+        <span class="go">Open list →</span>
+      </a>
+    </div>
+
+    <h2>Friendly Lists</h2>
+    <div class="grid">
+      <a class="card dg" href="lists/ironwall.html">
+        <span class="faction">Legions Imperialis · Loyalist Legiones Astartes</span>
+        <h3>BG-XIV «Ironwall»</h3>
+        <dl>
+          <dt>Formations:</dt> <dd>Death Guard Legion Demi-company (440 pts) · Death Guard Brethren of Iron (310 pts)</dd>
+          <dt>Total:</dt> <dd>750 pts</dd>
         </dl>
         <span class="go">Open list →</span>
       </a>

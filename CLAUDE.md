@@ -46,8 +46,11 @@ Kill Team 3rd edition, Sanctifiers. Source: Wahapedia page (no roster file). Det
 - Two tabs only: Strategic Gambit (collapsible, collapsed by default via `COLLAPSIBLE` / `collapsed`) and Action. Strategic Gambit holds Ministorum Sermon and Ecclesiarchy Texts; Action holds operative abilities and equipment (left; Blaze and Cherub Fly are not cards, Blaze only appears in the weapon-rule glossary) and strategy plus firefight ploys (right).
 
 ## Ranger Brigade list (`lists/legions-imperialis.html`)
-Legions Imperialis, Solar Auxilia: Sub-Cohort 364 pts + Pioneer Company 380 pts. Source: pasted roster text plus Epic Heresy pages. Details in `context/legions-imperialis.md`.
+Legions Imperialis, Solar Auxilia: Sub-Cohort 370 pts + Pioneer Company 380 pts. Source: pasted roster text plus Epic Heresy pages. Details in `context/legions-imperialis.md`.
 - Same CSS tokens/fonts, but no phases, trackers or rail: only Show unit chips, then per formation one unit card each (models, weapons used, upgrades taken, full special rules and weapon traits always visible).
+
+## Ironwall list (`lists/ironwall.html`)
+Friendly list (another player's roster), listed under "Friendly Lists" on `index.html`. Legions Imperialis, Loyalist Legiones Astartes, Death Guard Demi-company + Brethren of Iron, 750 pts. Same page code as the Ranger Brigade list; details in `context/legions-imperialis.md`. Each list page needs its own `localStorage` key.
 
 ## Workflow
 - Test locally with `python3 -m http.server 8000`.
