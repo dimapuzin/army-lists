@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BG-XIV Ironwall · Legions Imperialis Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#e9e8df; --surface:#f7f6f0; --surface-2:#eeede4; --ink:#22201a; --muted:#645f50;
+  --brass:#7f6418; --red:#8e1f17; --teal:#2f6f64; --line:#d2cfbf; --chip:#e1dfd1;
+  --head:"Saira Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1e18; --surface:#282b22; --surface-2:#32362b; --ink:#ebe6d6; --muted:#aaa592;
+    --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --line:#474b3c; --chip:#383c2f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1c1e18; --surface:#282b22; --surface-2:#32362b; --ink:#ebe6d6; --muted:#aaa592;
+  --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --line:#474b3c; --chip:#383c2f;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.chip{position:relative}
+.chip::after{content:"";position:absolute;inset:-4px -2px}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+/* Hero */
+.hero{max-width:1080px;margin:0 auto;padding:6px 16px 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px}
+.hero .back{flex-basis:100%;font-family:var(--head);font-weight:600;font-size:1rem;color:var(--muted);text-decoration:none}
+.hero .back:hover{color:var(--red)}
+.hero h1{font-family:var(--head);font-weight:700;font-size:clamp(1.35rem,3.2vw,1.75rem);line-height:1.1;margin:0}
+.hero .meta{display:flex;flex-wrap:wrap;gap:2px 18px;font-family:var(--head);font-size:1rem;color:var(--muted)}
+.hero .meta b{color:var(--ink);font-weight:700}
+
+/* Tool panel: Show unit bar, then Formation control. Compact so both fit above one unit card on an iPad Air 3 */
+.controls{max-width:1080px;margin:0 auto;padding:0 16px 6px;display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.ctrl-col{min-width:0}
+.ctrl-label{display:block;font-family:var(--head);font-weight:600;color:var(--muted);font-size:.95rem;line-height:1.2;margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:4px 5px;align-items:center}
+.grp{display:flex;flex-wrap:wrap;gap:4px 5px;align-items:center;margin-right:8px}
+.grp h4{margin:0;font-family:var(--head);font-weight:700;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.chip{position:relative;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 10px;font-family:var(--head);font-weight:600;font-size:.8rem;line-height:1.2;white-space:nowrap;cursor:pointer}
+.chip::after{content:"";position:absolute;inset:-4px -2px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fc-reset{position:relative;margin-left:8px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:0 8px;font-family:var(--head);font-weight:600;font-size:.8rem;cursor:pointer}
+.fc-reset::after,.fc-step::after{content:"";position:absolute;inset:-4px -2px}
+.fc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;align-items:start}
+.fc-f{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:3px 8px 4px;min-width:0}
+.fc-f.broken{background:var(--surface-2)}
+.fc-head{display:flex;align-items:baseline;gap:0 8px;font-family:var(--head);font-weight:700;font-size:1.05rem;line-height:1.25;padding-bottom:1px}
+.fc-head .st{font-weight:600;font-size:.82rem;color:var(--muted);white-space:nowrap}
+.fc-head .st b{color:var(--ink)}
+.fc-head .bk{font-size:.75rem;color:#fff;background:var(--red);border-radius:3px;padding:0 5px;letter-spacing:.04em}
+.fc-head .sum{margin-left:auto;font-size:1.1rem;white-space:nowrap}
+.fc-head .sum.over{color:var(--red)}
+.fc-rows{display:grid;grid-template-columns:minmax(0,1fr);column-gap:12px}
+.fc-row{display:flex;align-items:center;justify-content:space-between;gap:6px;border-top:1px solid var(--line);padding:1px 0;font-family:var(--head);font-weight:600;font-size:.9rem;line-height:1.15}
+.fc-row .nm{min-width:0}
+.fc-row .nm i{font-style:normal;color:var(--muted);font-size:.78rem}
+.fc-ctl{display:flex;align-items:center;gap:3px;white-space:nowrap}
+.fc-step{position:relative;width:30px;height:25px;border:1px solid var(--line);background:var(--chip);border-radius:6px;font-family:var(--head);font-weight:700;font-size:1.1rem;line-height:1;cursor:pointer}
+.fc-val{min-width:3em;text-align:center;font-weight:700}
+.fc-val.has{color:var(--red)}
+@media (min-width:1000px){.fc-rows{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.fc-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Formations and unit cards */
+main{max-width:1080px;margin:0 auto;padding:4px 16px 40px}
+.formation{padding-top:8px}
+.f-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:8px}
+.f-head h2{font-family:var(--head);font-weight:700;font-size:1.6rem;line-height:1;margin:0}
+.f-head .f-meta{font-family:var(--head);font-weight:600;font-size:1.05rem;color:var(--muted)}
+.f-head .f-meta b{color:var(--red);font-weight:700}
+.f-note{margin:0 0 8px;color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:start}
+.body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:0 18px}
+.bcol{min-width:0}
+.bcol{padding-top:6px}
+@media (max-width:700px){.body{grid-template-columns:minmax(0,1fr)}}
+.empty{color:var(--muted);font-style:italic;margin:0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:8px 12px 8px;min-width:0}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card h3{font-family:var(--head);font-weight:700;font-size:1.4rem;line-height:1.1;margin:0}
+.card h3 .cnt{color:var(--red);margin-left:6px}
+.cost{font-family:var(--head);font-weight:700;color:var(--brass);white-space:nowrap;font-size:1.1rem}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin:3px 0 2px}
+.tags span{font-family:var(--head);font-weight:600;font-size:.88rem;line-height:1.2;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.card h4{font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);margin:8px 0 2px}
+.tbl-wrap{overflow-x:auto}
+.card table{border-collapse:collapse;width:100%;font-size:.92rem}
+.card th{font-family:var(--head);font-weight:600;color:var(--muted);text-align:center;padding:2px 5px;border-bottom:1px solid var(--line);white-space:nowrap}
+.card td{text-align:center;padding:3px 5px;border-bottom:1px solid var(--line);font-family:var(--head);font-weight:600;font-size:1rem;white-space:nowrap}
+.card th:first-child,.card td:first-child{text-align:left}
+.card tr:last-child td{border-bottom:0}
+.card td.w{white-space:normal;min-width:8em}
+.card td.tr{white-space:normal;min-width:9em;text-align:left;font-weight:600;line-height:1.25}
+.card td .on{display:block;font-family:var(--body);font-weight:400;font-size:.82rem;color:var(--muted);line-height:1.3}
+.card td .n{color:var(--brass);margin-right:4px}
+.card td .trm{display:none}
+@media (max-width:560px){.card th.tr,.card td.tr{display:none}.card td .trm{display:block}}
+.opts{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:3px}
+.opts li{background:var(--surface-2);border-radius:3px;padding:3px 8px;font-size:.95rem;display:flex;justify-content:space-between;gap:10px}
+.opts li.pick{outline:2px solid var(--red)}
+.opts b{font-family:var(--head);font-size:1.02rem;color:var(--brass);white-space:nowrap}
+.note{font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:3px;margin-top:6px}
+.rule-names{display:flex;flex-wrap:wrap;gap:4px}
+.rn{position:relative;border:1px solid var(--line);background:var(--chip);border-radius:999px;padding:1px 10px;font-family:var(--head);font-weight:600;font-size:.9rem;line-height:1.3;cursor:pointer}
+.rn::after{content:"";position:absolute;inset:-4px -2px}
+.rn.army{border-left:4px solid var(--ink)}
+.rn.sp{border-left:4px solid var(--red)}
+.rn.wt{border-left:4px solid var(--brass)}
+.rn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.rule-text{margin:4px 0 0;font-size:.92rem;background:var(--surface-2);border-radius:3px;padding:4px 8px}
+.rule-text[hidden]{display:none}
+.rule-text.army b{color:var(--ink)}
+.rule-text b{font-family:var(--head);font-size:1.02rem}
+.rule-text.sp b{color:var(--red)}
+.rule-text.wt b{color:var(--brass)}
+details.fold{margin:6px 0 8px}
+.formation>details.fold>summary{font-size:1.05rem}
+details.fold>summary{position:relative;cursor:pointer;font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);padding:2px 0}
+details.fold>summary::after{content:"";position:absolute;inset:-4px -2px}
+details.fold>summary .ct{color:var(--brass);margin-left:4px}
+details.fold[open]>summary{margin-bottom:2px}
+.rules p{margin:3px 0 0;font-size:.92rem}
+.rules p b{font-family:var(--head);font-size:1.02rem}
+.rules.army p b{color:var(--ink)}
+.rules.sp p b{color:var(--red)}
+.rules.wt p b{color:var(--brass)}
+
+footer{max-width:1080px;margin:0 auto;padding:0 16px 24px;color:var(--muted);font-size:.9rem}
+footer a{color:inherit}
+@media (max-width:560px){
+  body{font-size:16px}
+  .hero,.controls,main,footer{padding-left:10px;padding-right:10px}
+  .card{padding:7px 10px 7px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .f-head h2{font-size:1.6rem}
+}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="../index.html">← All army lists</a>
+  <h1>BG-XIV «Ironwall»</h1>
+  <div class="meta">
+    <span>Legions Imperialis · <b>Loyalist Legiones Astartes</b></span>
+    <span>Total: <b>750 pts</b></span>
+    <span>Death Guard: <b>Legion Demi-company</b> · <b>Brethren of Iron</b></span>
+  </div>
+</header>
+
+<section class="controls" aria-label="Table tools">
+  <div class="ctrl-col">
+    <span class="ctrl-label">Show unit</span>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="ctrl-col fc" aria-label="Formation control">
+    <span class="ctrl-label">Formation control · models lost <button type="button" class="fc-reset" id="fcReset">Reset</button></span>
+    <div id="fc" class="fc-grid"></div>
+  </div>
+</section>
+
+<main id="main"></main>
+
+<footer>Stats, weapon profiles, special rules and weapon traits come from the Epic Heresy Legions Imperialis pages (<a href="https://epicheresy.ru/li2023/factions/legiones_astartes/detachments/">Legiones Astartes detachments</a>, <a href="https://epicheresy.ru/li2023/factions/mechanicum_taghmata/detachments/">Mechanicum Taghmata detachments</a>, <a href="https://epicheresy.ru/li2023/legions_imperialis_rules/weapon_traits/">weapon traits</a>, <a href="https://epicheresy.ru/li2023/legions_imperialis_rules/special_rules/">special rules</a>). The roster was supplied as text. Roster by another player.</footer>
+
+<script>
+const UNITS = {
+  command:"Legion Command Squad", tactical:"Legion Tactical Detachment", thallax:"Thallax Cohort", rapier:"Legion Rapier Battery",
+  rhino:"Legion Rhino Detachment", glaive:"Glaive Squadron", xiphon:"Xiphon Interceptor",
+  thanatar:"Thanatar Maniple", vultarax:"Vultarax Squadron"
+};
+const UNIT_GROUPS = {
+  "Infantry":["command","tactical","thallax","rapier"],
+  "Vehicles & air":["rhino","glaive","xiphon"],
+  "Automata":["thanatar","vultarax"]
+};
+const FACTION_RULES = ["Cybernetica Cortex","Cortex Controller"];
+
+/* Models: Move, Save, CAF, Morale, Wounds */
+const MODELS = {
+  cmd:{n:"Command Squad",mv:`5"`,sv:"4+",caf:"+4",mor:"2+",w:1},
+  tact:{n:"Tactical Legionaries",mv:`5"`,sv:"5+",caf:"+2",mor:"3+",w:1},
+  plas:{n:"Support Legionaries (plasma guns)",mv:`5"`,sv:"5+",caf:"+2",mor:"3+",w:1},
+  miss:{n:"Heavy Support Legionaries (missile launchers)",mv:`5"`,sv:"5+",caf:"+1",mor:"3+",w:1},
+  rap:{n:"Legion Rapier",mv:`4"`,sv:"5+",caf:"+1",mor:"3+",w:1},
+  rhino:{n:"Rhino",mv:`9"`,sv:"4+",caf:"+0",mor:"3+",w:1},
+  xip:{n:"Xiphon Interceptor",mv:`30"`,sv:"3+",caf:"+0",mor:"–",w:1},
+  gla:{n:"Glaive",mv:`8"`,sv:"2+",caf:"+4",mor:"3+",w:3},
+  thal:{n:"Thallax",mv:`7"`,sv:"5+",caf:"+1",mor:"3+",w:1},
+  thn:{n:"Thanatar",mv:`4"`,sv:"4+",caf:"+4",mor:"–",w:2},
+  vul:{n:"Vultarax",mv:`9"`,sv:"4+",caf:"+2",mor:"–",w:2}
+};
+
+/* Weapons: r = range, d = dice, h = to hit, ap, tr = traits */
+const WEAPONS = {
+  combi:{n:"Legion combi-bolters",r:`8"`,d:"1",h:"5+",ap:"0",tr:["Accurate","Assault","Light"]},
+  volk:{n:"Volkite chargers",r:`8"`,d:"1",h:"5+",ap:"0",tr:["Deflagrate","Light"]},
+  laser:{n:"Laser destroyer array",r:`15"`,d:"2",h:"4+",ap:"-2",tr:["Anti-tank"]},
+  bolter:{n:"Legion bolters",r:`8"`,d:"1",h:"5+",ap:"0",tr:["Assault","Light"]},
+  plasma:{n:"Plasma guns",r:`8"`,d:"1",h:"4+",ap:"-1",tr:["Assault","Light AT"]},
+  msl1:{n:"Missile launchers (profile 1)",r:`20"`,d:"2",h:"5+",ap:"0",tr:["Ignores Cover"]},
+  msl2:{n:"Missile launchers (profile 2)",r:`20"`,d:"1",h:"4+",ap:"-1",tr:["Anti-tank"]},
+  tlb:{n:"Pintle Mounted twin-linked bolter",r:`8"`,d:"1",h:"5+",ap:"0",tr:["Assault","Light","Point Defence"]},
+  havoc:{n:"Pintle Mounted havoc launcher",r:`15"`,d:"1",h:"4+",ap:"0",tr:["Light AT","Point Defence"]},
+  xlas:{n:"Xiphon lascannon array",r:`22"`,d:"2",h:"4+",ap:"-1",tr:["Arc (Front)","Accurate","Anti-tank","Skyfire"]},
+  xrot:{n:"Xiphon rotary missile launcher",r:`24"`,d:"2",h:"4+",ap:"-1",tr:["Arc (Front)","Skyfire","Tracking"]},
+  carr:{n:"Volkite carronade",r:`18"`,d:"3",h:"4+",ap:"-2",tr:["Beam","Light AT","Deflagrate"]},
+  hhb:{n:"Hull Mounted heavy bolters",r:`12"`,d:"2",h:"5+",ap:"0",tr:["Arc (Front)","Light","Point Defence"]},
+  sld:{n:"Sponson Mounted laser destroyers",r:`15"`,d:"2",h:"4+",ap:"-2",tr:["Arc (Front)","Accurate","Anti-tank"]},
+  lgun:{n:"Lightning guns",r:`8"`,d:"2",h:"5+",ap:"-1",tr:["Light AT"]},
+  mmelta:{n:"Multi-melta",r:`6"`,d:"1",h:"4+",ap:"-3",tr:["Anti-tank"]},
+  pmortar:{n:"Plasma mortar",r:`18"`,d:"1",h:"3+",ap:"-3",tr:["Barrage","Demolisher","Ignores Cover"]},
+  mauler:{n:"Mauler bolt cannon",r:`8"`,d:"3",h:"5+",ap:"-1",tr:["Light AT"]},
+  arc:{n:"Arc blasters",r:`10"`,d:"2",h:"4+",ap:"0",tr:["Neutron-flux"]},
+  vhav:{n:"Vultarax havoc launcher",r:`15"`,d:"2",h:"4+",ap:"0",tr:["Light AT"]}
+};
+
+/* Entry fields: u = unit key for Show unit, m = merge key (only when entries of one unit differ), n = how many in this formation, pts = points each, size = detachment size as taken */
+const FORMATIONS = [
+{id:"demi",name:"Death Guard · Legion Demi-company",short:"Legion Demi-company",pts:440,strength:23,bp:12,
+ rules:[
+  {n:"Sons of Barbarus",t:`Death Guard Detachments do not suffer Hits for moving through Dangerous terrain.\nIn addition, at the start of the battle, before any Detachments are deployed, a player may pick up to two areas of terrain if their Army contains at least one Death Guard Formation. For the remainder of the battle, these areas count as Dangerous terrain, in addition to any other rules that apply.\nTwo Structures can be selected in place of a single area of terrain. Each time a model Garrisons or leaves a Structure designated as Dangerous terrain, it counts as having moved 1" through it.`},
+  {n:"Dedicated Transports",t:`Any Legiones Astartes Detachment within the Formation that contains only Infantry models may be upgraded with Legion Rhinos as Dedicated Transports.`},
+  {n:"Heart of the Legion",t:`Compulsory Core Detachment slots in this Formation must be filled with Legion Tactical Detachments. All non-Infantry models within this Formation increase their Tactical Strength by 1 when contesting an Objective marker that an Infantry model within this Formation is also contesting.`}],
+ units:[
+ {id:"dc-cmd",u:"command",n:1,name:"Legion Command Squad",slot:"HQ",type:"Infantry (1)",pts:25,size:1,
+  models:[["cmd",1]],weapons:[["combi",""],["volk",""]],taken:[],
+  rules:[`Commander`,`Inspire (8")`,`Invulnerable Save (6+)`,`Master Tactician`,`Medicae`]},
+ {id:"dc-rap",u:"rapier",n:1,name:"Legion Rapier Battery Detachment",slot:"Support",type:"Infantry (1)",pts:40,size:2,
+  models:[["rap",2]],weapons:[["laser","Main weapon ×2"]],
+  taken:[{t:"Main: Laser destroyer array (instead of quad launcher)",p:0}],
+  rules:[`Bulky`]},
+ {id:"dc-tac",u:"tactical",m:"tac-plasma",n:2,name:"Legion Tactical Detachment",slot:"Core",type:"Infantry (1)",pts:50,size:6,
+  models:[["tact",4],["plas",2]],weapons:[["bolter","Tactical Legionaries ×4"],["plasma","Support Legionaries ×2"]],
+  taken:[{t:"2 additional Plasma Gun Support Legionaries (the upgrade adds 2 models)",p:15}],
+  note:"Base 35 pts + 15 pts upgrade, so 50 pts each. Both detachments are taken the same way.",
+  rules:[]},
+ {id:"dc-rhino",u:"rhino",n:2,name:"Legion Rhino Detachment",slot:"Transport",type:"Vehicle (2)",pts:35,size:3,
+  models:[["rhino",3]],weapons:[["tlb","Rhinos ×2"],["havoc","Rhino ×1 (pintle)"]],
+  taken:[{t:"2 additional Rhinos",p:20},{t:"1 Pintle Mounted havoc launcher (instead of twin-linked bolter)",p:5},{t:"Hull: none (no hunter-killer missile)",p:0}],
+  note:"Base 10 pts + 20 pts + 5 pts, so 35 pts each. Both detachments are taken the same way.",
+  rules:[`Transport (2)`]},
+ {id:"dc-xip",u:"xiphon",n:1,name:"Legion Xiphon Interceptor Squadron",slot:"Air Support",type:"Vehicle (2)",pts:95,size:1,
+  models:[["xip",1]],weapons:[["xlas",""],["xrot",""]],taken:[],
+  rules:[`Flyer`,`Interceptor`,`Jink (5+)`]},
+ {id:"dc-gla",u:"glaive",n:1,name:"Legion Glaive Squadron",slot:"Heavy Armour",type:"Super-heavy Vehicle (3)",pts:110,size:1,
+  models:[["gla",1]],weapons:[["carr",""],["hhb",""],["sld","Sponsons"]],
+  taken:[{t:"Sponsons: Laser destroyers (instead of quad lascannon or quad heavy bolters)",p:0}],
+  rules:[]}
+]},
+{id:"brethren",name:"Death Guard · Brethren of Iron",short:"Brethren of Iron",pts:310,strength:15,bp:8,
+ rules:[
+  {n:"Sons of Barbarus",t:`Death Guard Detachments do not suffer Hits for moving through Dangerous terrain.\nIn addition, at the start of the battle, before any Detachments are deployed, a player may pick up to two areas of terrain if their Army contains at least one Death Guard Formation. For the remainder of the battle, these areas count as Dangerous terrain, in addition to any other rules that apply.\nTwo Structures can be selected in place of a single area of terrain. Each time a model Garrisons or leaves a Structure designated as Dangerous terrain, it counts as having moved 1" through it.`},
+  {n:"Brethren of Iron (Support Formation)",t:`Forge Lord: HQ Detachment slots in this Support Formation must be filled by HQ Detachments chosen from the Legiones Astartes Army List.\nSupport, Vanguard and Bastion Detachment slots in this Support Formation must be filled with Detachments from the Mechanicum Taghmata Army List. Detachments taken from the Mechanicum Taghmata Army List in this way must have the Cybernetica Cortex (X) special rule.\nCore Detachment slots in this Support Formation may be filled by Core Detachments chosen from the Legiones Astartes Army List or with Thallax Cohort Detachments chosen from the Mechanicum Taghmata Army List. HQ and Core Detachments chosen from the Legiones Astartes Army List in this Support Formation gain the Cortex Controller special rule.\nDetachments from the Mechanicum Taghmata Army List in this Support Formation do not gain the Legiones Astartes special rule selected for this Support Formation, but instead gain the Line special rule while that Detachment is within 8" of a Legiones Astartes Detachment from the same Support Formation.`}],
+ units:[
+ {id:"bi-cmd",u:"command",n:1,name:"Legion Command Squad",slot:"HQ",type:"Infantry (1)",pts:25,size:1,
+  models:[["cmd",1]],weapons:[["combi",""],["volk",""]],taken:[],
+  rules:[`Commander`,`Inspire (8")`,`Invulnerable Save (6+)`,`Master Tactician`,`Medicae`,`Cortex Controller`]},
+ {id:"bi-thal",u:"thallax",n:2,name:"Thallax Cohort",slot:"Core",type:"Infantry (1)",pts:25,size:2,
+  models:[["thal",2]],weapons:[["lgun","Thallax"],["mmelta","Thallax"]],taken:[],
+  rules:[`Jump Packs`]},
+ {id:"bi-tac",u:"tactical",m:"tac-missile",n:1,name:"Legion Tactical Detachment",slot:"Core",type:"Infantry (1)",pts:55,size:6,
+  models:[["tact",4],["miss",2]],weapons:[["bolter","Tactical Legionaries ×4"],["msl1","Heavy Support ×2"],["msl2","Heavy Support ×2"]],
+  taken:[{t:"2 additional Missile Launcher Support Legionaries (the upgrade adds 2 models)",p:20}],
+  note:"Base 35 pts + 20 pts upgrade, so 55 pts.",
+  rules:[`Cortex Controller`]},
+ {id:"bi-thn",u:"thanatar",n:1,name:"Thanatar Siege-automata Maniple",slot:"Bastion",type:"Walker (1)",pts:110,size:2,
+  models:[["thn",2]],weapons:[["pmortar","Thanatar ×2"],["mauler","Thanatar ×2"]],
+  taken:[{t:"Weapons: Plasma mortar and Mauler bolt cannon (standard loadout, not the Sollex heavy-las kit)",p:0}],
+  rules:[`Armoured`,`Cybernetica Cortex (Advance, First Fire)`,`Invulnerable Save (6+)`]},
+ {id:"bi-vul",u:"vultarax",n:2,name:"Vultarax Stratos-automata Squadron",slot:"Vanguard",type:"Cavalry (1)",pts:35,size:1,
+  models:[["vul",1]],weapons:[["arc",""],["vhav",""]],taken:[],
+  rules:[`Armoured`,`Cybernetica Cortex (Advance, March)`,`Invulnerable Save (6+)`,`Outflank`,`Skimmer`]}
+]}
+];
+const TRAITS = {"Accurate": "When firing a weapon with the Accurate trait, the controlling player may re-roll any failed Hit rolls.", "Assault": "When firing a weapon with the Assault trait, a model doubles its Dice value if it is within a number of inches equal to half the weapon's Range of at least one model from the target Detachment.", "Light": "Hits scored by a weapon with the Light trait against a Vehicle, Super-heavy Vehicle, Knight or Titan model are automatically discarded, before any Save rolls are made. In other words, a weapon with this Trait cannot damage models from the listed Detachment types.\nIn addition, Hits scored by a weapon with this Trait cannot be allocated to Void Shields, regardless of the weapon's AP, and thus are automatically discarded if a target has active Void Shields (see page 97 for more details).", "Deflagrate": "Each unsaved Wound caused by a weapon with the Deflagrate trait generates an additional Hit against the same Detachment. A To Hit roll is made for each additional Hit generated; resolve these Hits after removing any destroyed models.\nThese additional Hits can only be allocated to models within the target Detachment that are within range and line of sight of at least one firing model. Any Wounds caused by these additional Hits cannot generate more Hits themselves.", "Light AT": "Hits scored by a weapon with the Light AT trait against a Vehicle, Super-heavy Vehicle, Knight or Titan model treat their AP as 0, regardless of the weapon's base AP value. This can prevent Hits from a weapon with the Light AT trait from being allocated to Void Shields.", "Anti-tank": "Hits scored by a weapon with the Anti-tank trait against an Infantry or Cavalry model treat their AP as 0, regardless of the weapon's base AP value.", "Barrage": "When firing a weapon with the Barrage trait, a model may target Detachments that it does not have line of sight to, so long as the target Detachment is in range and meets all other criteria for a valid target. Models firing against targets they cannot draw line of sight to suffer a -1 penalty to all Hit rolls.\nHits caused by a Barrage weapon fired in this way can be allocated to any model in the target Detachment that is within range of the firing model. If some models from a Detachment are visible and some are not, the controlling player can choose to only target the visible models - if they do so, they do not suffer a -1 penalty but any Hits scored cannot be allocated to models outside of the firing model's line of sight.\nIf a Barrage weapon targets a Detachment that is Garrisoned within a Structure then all Detachments Garrisoned within it are targeted. Make Hit rolls against each Detachment Garrisoned within the Structure, equal to half the Dice value of the weapon (rounded up) - this reduction in Dice happens even if only one Detachment is Garrisoned within.\nBarrage weapons cannot be fired as part of an Overwatch.", "Demolisher": "A weapon with the Demolisher trait can damage Structures.", "Ignores Cover": "When firing a weapon with the Ignores Cover trait, a model suffers no penalties to its Hit rolls for targeting a Detachment within an area of terrain. In addition, Hits scored bypass Cover Saves.", "Beam": "When firing with a weapon with the Beam trait, the controlling player draws an imaginary straight line 1mm wide from the weapon, or the firing model if the weapon is not physically represented, up to its maximum range; if the weapon has an Arc, the end of the line must be within the specified Arc of the firing model. Make Hit rolls for each Detachment (friend or foe) that has at least one model under that line equal to the Dice value of the weapon - models with the Flyer special rule are ignored and not hit. Any model from each Detachment you make Hit rolls for that is within range of the firing model and within the correct Arc (if applicable) can be allocated scored Hits.\nIf the line would pass over an area of Impassable terrain or a Structure then the line 'stops' as soon as it hits them - any Detachment further out does not suffer Hits, though Detachments Garrisoned in the Structure do.\nBeam weapons cannot be fired as part of an Overwatch. As a weapon with the Beam trait does not choose a dedicated target, the Detachment may pick any eligible target to fire on, including a target that is not hit by the Beam.", "Arc (Front/Rear)": "A weapon with the Arc (Front/Rear) trait may only target Detachments that are within the specified Arc, shown in brackets, of the firing model.", "Point Defence": "A weapon with the Point Defence trait represents a weapon system tailored towards defensive fire, be that heavy bolter sponsons on a Vehicle or the Ardex weapons of some Titans.\nModels with at least one weapon with the Point Defence trait may choose to fire on its Detachment's target or a Secondary Target; a Secondary Target is an eligible target (i.e., within range and line of sight of the firing model) different from the first chosen target. All Point Defence weapons in a Detachment must fire at the same target, unless another rule overrides this.\nA Detachment which contains one or more models with weapons with the Point Defence trait may fire those weapons during the Movement phase, if issued with an Advance or March Order, or the Combat phase. During the Movement phase, a Detachment may fire its Point Defence weapons immediately after it is activated or at the end of its activation; all Point Defence weapons must fire at the same target unless otherwise specified; if fired at the start of its activation, the firing is resolved and then the Detachment completes its activation as normal. A Detachment can only fire its Point Defence weapons once per round - if it fires one or more of its Point Defence weapons in the Movement phase, it cannot fire any Point Defence weapons in the Combat phase.\nIf fired during the Combat phase, a weapon with the Point Defence trait is fired like any other weapon. Models with Point Defence weapons may fire them at a different target from the Detachment's main target.\nPoint Defence weapons can be fired as part of an Overwatch attack. When fired as part of an Overwatch attack, Point Defence weapons ignore the -2 penalty to Hit rolls and instead fire as normal (i.e., use the To Hit value of the weapon then apply any positive or negative modifiers).", "Neutron-flux": "Any Hits scored by a weapon with the Neutron-flux\ntrait against a model with the Cybernetica Cortex special rule count\nas having the Armourbane and Shred traits.", "Skyfire": "A weapon with the Skyfire trait can target Flyers as normal instead of requiring a natural 6 to hit. In addition, when a model fires a weapon with the Skyfire trait as part of an Overwatch, subtract 1 from the result of the Hit rolls rather than 2.\nModels with at least one weapon with the Skyfire trait may choose to fire on its Detachment's target or a Secondary Target; a Secondary Target is an eligible target (i.e., within range and line of sight of the firing model) different from the first chosen target. The Secondary Target must be a model with the Flyer special rule. All firing Skyfire weapons must target the same Flyer Detachment, unless another rule overrides this. All Skyfire weapons in a Detachment firing at a Secondary Target must target the same Detachment, unless another rule overrides this.", "Tracking": "A model firing a weapon with the Tracking trait at a Flyer can re-roll failed Hit rolls."};
+const RULES = {"Armoured": "Hits scored by a weapon with the Light trait against a model with the Armoured special rule count their AP as 0. In addition, a model with the Armoured special rule may re-roll failed Save rolls made against Hits scored by a weapon with the Light trait.", "Bulky": "Models with the Bulky special rule cannot Embark on a Transport unless the specific Transport type allows it (see the Transport (X) rule on page 96 for more details). In addition, models with the Bulky special rule count as two models for the purposes of determining how many models a Transport can carry.", "Commander": "Detachments with the Commander special rule are the commanders of your Army.\nWhen deploying a Formation that includes any models with this special rule during deployment, a player must assign all models with this special rule to a Detachment in that Formation, so long as the two are of the same Detachment type. For the remainder of the battle, the model counts as a part of the Detachment it is attached to and cannot leave it for any reason.\nA Detachment can only ever have one model with the Commander special rule attached to it at any given time.\nIf, for whatever reason, a model with the Commander special rule cannot be assigned to a friendly Detachment during deployment (e.g., due to there being no Detachment of the same type in the same Formation) then it acts as its own Detachment on the battlefield.", "Flyer": "Models with the Flyer special rule operate differently to other Detachments on the battlefield and are subject to the unique set of rules described below.\nUnless instructed otherwise, Flyers are not deployed on the battlefield at the start of the battle and are instead placed in Reserve. Unless instructed otherwise, a model with the Flyer special rule that is in Reserve can only be issued with an Advance Order or a March Order. Any weapons with the Point Defence trait that the Flyer has count as having the Skyfire trait when firing upon an enemy model with the Flyer special rule.\nWhen activated during the Movement phase, the controlling player places the Flyer so the rear of its base is touching a point on the controlling player's board edge or touching any board edge at a point within 8\" of the controlling player's board edge. The Flyer then moves and can only move in a straight line. A Flyer can make a single turn of up to 90° during its movement. Flyers can move over any model or area of terrain during their movement. A Flyer can end its movement overlapping Impassable terrain. Models with the Flyer special rule cannot call Overwatch during the Movement phase.\nFlyers fire as normal during the Combat phase. Due to their altitude, a Flyer is considered to have line of sight to all models on the battlefield, unless instructed otherwise. Similarly, all Detachments are considered to have line of sight to a Flyer. A Flyer suffers no penalties to Hit rolls for targeting obscured models, though they do suffer penalties for firing upon Detachments within an area of terrain as normal.\nIn the Remove Flyers stage of the End phase, all Flyers on the battlefield are removed and placed back in Reserve - they do not count as being destroyed and may return to the battlefield in the following round. Any Wounds a Flyer has suffered remain; for example, if it leaves the battlefield having suffered 2 Wounds, when it next returns it still has suffered 2 Wounds.\nDue to the altitude a Flyer operates at, Flyers are ignored for the purposes of calculating who controls an Objective. Flyers do not have an Engagement Zone, cannot be Engaged and/or Pinned and do not block line of sight. As Flyers do not have an Engagement Zone, other models, friendly or enemy, can move through a Flyer's base and finish their move in base contact with it - while a model can end its move overlapping a Flyer's base, it is best to avoid this where possible.\nUnless otherwise instructed, any model firing at a model with the Flyer special rule can only Hit on a natural roll of a 6, regardless of modifiers. If a weapon uses a template, such as the Flame template or the Blast template, a model with the Flyer special rule is ignored when calculating Hits unless the weapon also has the Skyfire trait.", "Inspire": "Friendly Detachments within a number of inches equal to the value shown in brackets of a Detachment with this special rule may use this Detachment's Morale value in place of their own when making Morale checks.", "Interceptor": "After a model with the Interceptor rule has finished moving, it may immediately fire a single weapon of the controlling player's choice that does not have the Point Defence trait. A model firing in this way may only target Flyer models and suffers a -2 to all Hit rolls made when doing so. An Interceptor model that fires in this way may still fire as normal during the Combat phase, including with the weapon it fired as part of the Interceptor special rule, but may not also fire as part of an Overwatch.", "Invulnerable Save": "A model with the Invulnerable Save (X) special rule gains an additional Save characteristic equal to the number shown in brackets, referred to as an Invulnerable Save. Invulnerable Saves are not modified by a weapon's AP characteristic.", "Jink": "Models with the Jink special rule gain an additional Save characteristic equal to the number shown in brackets, referred to as a Jink Save. Jink Saves are not modified by a weapon's AP characteristic, and cannot be taken if the target model has been issued a First Fire Order.", "Jump Packs": "Models with the Jump Packs special rule can move over all other models and areas of terrain, suffering no movement penalties for doing so, such as due to Difficult terrain or moving over an Obstacle. Models with the Jump Packs special rule cannot end their movement overlapping other models, nor can they end their movement within an enemy model's Engagement Zone unless they are issued with a Charge Order. They can move over Impassable terrain but cannot end their movement overlapping it - any model that ends their movement overlapping an area of Impassable terrain is destroyed.\nInfantry models with the Jump Packs special rule can only end their movement on top of a Structure if they intend to Garrison it - if the Detachment does not Garrison the Structure, then any models overlapping with the Structure are destroyed.\nA model with the Jump Packs special rule adds 1 to the result of all Fight rolls it makes against models Garrisoned within a Structure while issued with a Charge Order, in addition to any other modifiers.\nModels with the Jump Packs special rule count as having the Bulky special rule for the purposes of Embarking on Transports. In addition, they can Disembark from a Transport with the Flyer special rule even if it does not have the Hover special rule, and a Transport with the Hover special rule does not have to Hover for them to do so (see Embarking and Disembarking on page 97 for more details).", "Line": "Models with the Line special rule count their Tactical Strength as two greater than it already is (e.g., an Infantry model with the Line special rule will have a Tactical Strength of 7 instead of 5). This is cumulative with other modifiers to Tactical Strength (see page 103 for more detail).", "Master Tactician": "A Detachment that contains one or more models with this special rule may issue commands when it is activated. Any different friendly Detachment that has yet to be activated this round, and is within 6\" of an activated model with this special rule, may discard their Order token and replace it with a different Order they are eligible to be issued. A Detachment that contains one or more models with this special rule may issue a command when it is activated. If the controlling player chooses to do so, they may select one other friendly Detachment that has yet to be activated this round, and is within 6\" of one or more models with this special rule that are being activated. The selected Detachment's Order token is discarded and replaced with a different Order they were eligible to be issued during the Orders phase of this round. A Detachment issued with a Fall Back Order cannot discard its Order via this rule, however a Broken Detachment can, and thus can be issued an Order other than Advance or Charge.", "Medicae": "Infantry models gain the Feel No Pain special rule while within 4\" of a friendly model with the Medicae special rule.", "Outflank": "Instead of being deployed on the battlefield as normal, if all models in a Detachment have the Outflank special rule, the Detachment may be placed in Reserve. While in Reserve, Detachments with the Outflank special rule can only be issued the Advance Order or March Order.\nWhen a Detachment with the Outflank special rule that is in Reserve is activated in any Movement phase other than the first, the controlling player may choose to leave it in Reserve or Flank the enemy. When a Detachment Flanks the enemy, the controlling player places the models in that Detachment in base contact with any battlefield edge, although no model can be deployed within 8\" of the enemy's battlefield edge. Once deployed in this way, the Detachment may complete its activation as normal (i.e., it may move during the Movement phase and/or fire during the Combat phase, etc.).", "Skimmer": "Models with the Skimmer special rule can move over all other models and areas of terrain, suffering no movement penalties for doing so, such as due to Difficult terrain or moving over an Obstacle. Models with the Skimmer special rule cannot end their movement overlapping other models, nor can they end their movement within an enemy model's Engagement Zone unless they are Engaged with it. They can move over Impassable terrain but cannot end their movement overlapping it - any model that ends its movement overlapping an area of Impassable terrain is destroyed.\nDuring the First Fire stage of the Combat phase, a Detachment with the Skimmer special rule that is issued with a First Fire Order may make a 'Pop-up attack'. To make a Pop-up attack, the controlling player declares that the Detachment is doing so when it is activated. The Detachment then fires as normal. However, when making a Pop-up attack, Skimmer models trace their line of sight from a position 10\" directly above the current position of the model; to determine line of sight, hold the model up in the air and take a model's eye view.\nWhen a Skimmer Detachment makes a Pop-up attack, they remain at their elevated position until the end of the First Fire stage, meaning enemy models can draw line of sight to the Skimmer models as if they were 10\" above their starting positions on the battlefield. At the end of the First Fire stage, the Skimmer models descend and line of sight must be drawn to and from them as normal.", "Transport": "Models with the Transport (X) special rule can carry Detachments into battle - these models are referred to as Transports. Each model with this special rule may transport a maximum number of Infantry models equal to the value shown in brackets. When a model is within a Transport, place it to the side of the battlefield. Models can only Embark onto Transport Models from the same Army List\nModels may start the battle deployed within a Transport. When deploying a Detachment which contains one or more models with the Transport (X) special rule, the controlling player may declare that it is transporting models - they state which models are Embarked on the Transport and place those models to one side. All models Embarked within a Transport must be declared when it is deployed and all models within the same Detachment must be deployed in Transports if one model is, and all the chosen Transports must be part of the same Detachment.\nWhen being issued an Order during the Order phase, a Detachment with the Transport (X) special rule is issued an Order as normal. A Detachment that has one or more models within a Transport is issued an Order separately but can only be issued certain Orders depending on the type of Transport - unless otherwise instructed, that Detachment can only be issued an Advance Order or March Order.\nIf part of a Detachment is Embarked upon a Transport and another part of it is not (e.g., due to the latter part's Transport being destroyed), then the non-Embarked models must maintain Coherency with the Transports.\nFor example, if a Legion Tactical Detachment has six models but only four are Embarked upon Legion Rhinos (for example, because one of the Tactical Detachment's Rhinos was destroyed), then any model from the Tactical Detachment must maintain Coherency with the Rhinos and vice versa.\nIf a Transport is destroyed while transporting Detachments, make a Save roll for each model within it, using a Save characteristic of 4+, or the model's own Save characteristic if it is better. This Save roll is not modified by the AP of the weapon that destroyed the Transport. If the Save is failed, that model suffers a Wound. The models are then placed on the battlefield within 2\" of the destroyed Transport's location - if a model cannot be placed (due to enemy models' Engagement Zones, Impassable terrain or not enough space, etc.), that model is destroyed. The models cannot be placed in Combat.\nThere are several special kinds of Transport as follows:", "Cybernetica Cortex": "Detachments with the Cybernetica Cortex (X) special rule can only be issued an Order shown in brackets unless instructed otherwise. If a Detachment is not eligible to be issued any of the Orders listed - for example, if it is within a Transport and cannot be issued with anything other than the Advance Order - then this rule is temporarily ignored.\nNote: Cybernetica Cortex (X) is sometimes referred to as Cybernetica Cortex, such as within the Neutron-flux trait - this is the same rule.", "Cortex Controller": "If a Detachment with the Cybernetica Cortex (X) special rule has at least one model wholly within 8\" of a friendly model with the Cortex Controller special rule, the former Detachment can be issued with any Order it would be eligible to be issued, instead of just those listed in brackets.\nNote: The Detachment with the Cortex Controller special rule does not need to be part of the same Formation, merely the same Army."};
+
+const FSTATE_KEY="ironwall-lost";
+let lost={};
+try{lost=JSON.parse(localStorage.getItem(FSTATE_KEY))||{}}catch(e){lost={}}
+const saveLost=()=>{try{localStorage.setItem(FSTATE_KEY,JSON.stringify(lost))}catch(e){}};
+const maxOf=e=>e.size*e.n;
+const isSentry=e=>e.rules.includes("Automated Sentry");  // ignored for the Break Point
+for(const f of FORMATIONS) for(const e of f.units) lost[e.id]=Math.min(maxOf(e),Math.max(0,+lost[e.id]||0));
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let unit = null;
+
+const traitKey = t => /^Arc\b/.test(t) ? "Arc (Front/Rear)" : t.replace(/\s*\(.*\)\s*$/,"");
+const ruleKey = r => r.replace(/\s*\(.*\)\s*$/,"");
+
+function modelsTable(e){
+  const rows = e.models.map(([id,c])=>{const m=MODELS[id];
+    return `<tr><td><span class="n">${c}×</span>${esc(m.n)}</td><td>${esc(m.mv)}</td><td>${esc(m.sv)}</td><td>${esc(m.caf)}</td><td>${esc(m.mor)}</td><td>${esc(m.w)}</td></tr>`}).join("");
+  return `<div class="tbl-wrap"><table><thead><tr><th>Model</th><th>Move</th><th>Sv</th><th>CAF</th><th>Morale</th><th>W</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function weaponsTable(e){
+  const rows = e.weapons.map(([id,on])=>{const w=WEAPONS[id];
+    return `<tr><td class="w">${esc(w.n)}${on?`<span class="on">${esc(on)}</span>`:""}<span class="on trm">${esc(w.tr.join(", "))}</span></td><td>${esc(w.r)}</td><td>${esc(w.d)}</td><td>${esc(w.h)}</td><td>${esc(w.ap)}</td><td class="tr">${esc(w.tr.join(", ")||"–")}</td></tr>`}).join("");
+  return `<div class="tbl-wrap"><table><thead><tr><th>Weapon</th><th>Range</th><th>Dice</th><th>Hit</th><th>AP</th><th class="tr">Traits</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function glossary(e){
+  const army=[], sp=[];
+  for(const r of e.rules){
+    const k=ruleKey(r);
+    (FACTION_RULES.includes(k)?army:sp).push([r,RULES[k]||""]);
+  }
+  const keys=[];
+  for(const [id] of e.weapons) for(const t of WEAPONS[id].tr){
+    const k=traitKey(t); if(!keys.includes(k)) keys.push(k);
+    if(k==="Heavy Barrage" && !keys.includes("Barrage")) keys.push("Barrage");
+  }
+  keys.sort();
+  const wt=keys.map(k=>[k,TRAITS[k]||""]);
+  const all=[...army.map(x=>[...x,"army"]),...sp.map(x=>[...x,"sp"]),...wt.map(x=>[...x,"wt"])];
+  if(!all.length) return "";
+  return `<h4>Rules &amp; traits</h4><div class="rule-names">${all.map(([n,,c])=>`<button type="button" class="rn ${c}" aria-pressed="false">${esc(n)}</button>`).join("")}</div>`+
+    all.map(([n,t,c])=>`<p class="rule-text ${c}" hidden><b>${esc(n)}:</b> ${esc(t).replace(/\n/g,"<br>")}</p>`).join("");
+}
+function cardHTML(e){
+  const total=e.pts*e.n;
+  return `<article class="card" id="c-${e.id}">
+    <div class="card-top"><h3>${esc(e.name)}${e.n>1?`<span class="cnt">×${e.n}</span>`:""}</h3><span class="cost">${e.pts} pts${e.n>1?` each (${total})`:""}</span></div>
+    <div class="tags"><span>${esc(e.slot)}</span><span>${esc(e.type)}</span><span>Detachment size ${e.size}</span>${e.in?`<span>In: ${esc(e.in.join(" + "))}</span>`:""}</div>
+    <div class="body">
+    <div class="bcol">${modelsTable(e)}
+    ${e.taken.length?`<details class="fold"><summary>Upgrades &amp; choices taken <span class="ct">${e.taken.length}</span></summary><ul class="opts">${e.taken.map(t=>`<li class="pick"><span>${esc(t.t)}</span><b>${t.p?`+${t.p} pts`:"free"}</b></li>`).join("")}</ul>${e.note?`<div class="note">${esc(e.note)}</div>`:""}</details>`:(e.note?`<div class="note">${esc(e.note)}</div>`:"")}</div>
+    <div class="bcol">${weaponsTable(e)}
+    ${glossary(e)}</div>
+    </div>
+  </article>`;
+}
+
+/* A unit that is in several formations gets one card, shown in the first formation, with the counts added up */
+function mergedEntries(){
+  const first={};
+  for(const f of FORMATIONS) for(const e of f.units){
+    const k=e.m||e.u, m=first[k];
+    if(!m) first[k]={...e,in:[f.short||f.name],home:f.id};
+    else{ m.n+=e.n; m.in.push(f.short||f.name); m.rules=[...new Set([...m.rules,...e.rules])]; }
+  }
+  for(const m of Object.values(first)) if(m.in.length<2) m.in=null;
+  return first;
+}
+/* Formation rules show only while a unit of that formation is picked, folded away by default */
+function formationRules(f,u){
+  if(!u||!f.rules) return "";
+  const first=f.units.find(e=>e.u===u);
+  const grants=f.rules.some(r=>r.grant)&&first
+    ? (first.type.startsWith("Infantry")&&!first.rules.includes("Bulky")?"Infiltrate":"Forward Deployment") : "";
+  return `<details class="fold"><summary>Formation rules <span class="ct">${f.rules.map(r=>esc(r.n)).join(", ")}</span></summary>
+    ${f.rules.map(r=>`<p class="rule-text sp"><b>${esc(r.n)}:</b> ${esc(r.t).replace(/\n/g,"<br>")}</p>`).join("")}
+    ${grants?`<p class="rule-text army"><b>This unit gets ${esc(grants)}:</b> ${esc(RULES[grants])}</p>`:""}</details>`;
+}
+function render(){
+  const cards=mergedEntries();
+  document.getElementById("main").innerHTML = FORMATIONS.map(f=>{
+    const items=Object.values(cards).filter(e=>e.home===f.id&&(!unit||e.u===unit));
+    const has=unit&&f.units.some(e=>e.u===unit);
+    if(!items.length&&!has) return "";
+    return `<section class="formation" id="f-${f.id}">
+      <div class="f-head"><h2>${esc(f.name)}</h2></div>
+      ${f.note?`<p class="f-note">${esc(f.note)}</p>`:""}
+      ${formationRules(f,unit)}
+      ${items.length?`<div class="grid">${items.map(cardHTML).join("")}</div>`:""}</section>`;
+  }).join("") || `<p class="empty">This unit is not in the list.</p>`;
+}
+
+function buildChips(){
+  const wrap=document.getElementById("chips");
+  const chip=k=>`<button class="chip" data-u="${k}" aria-pressed="${unit===k}">${esc(UNITS[k])}</button>`;
+  wrap.innerHTML=`<button class="chip" data-u="" aria-pressed="${!unit}">All</button>`+
+    Object.entries(UNIT_GROUPS).map(([g,keys])=>
+      `<span class="grp"><h4>${esc(g)}</h4>${[...keys].sort((a,b)=>UNITS[a].localeCompare(UNITS[b])).map(chip).join("")}</span>`).join("");
+}
+document.getElementById("chips").addEventListener("click",ev=>{
+  const b=ev.target.closest(".chip"); if(!b) return;
+  unit=b.dataset.u||null; buildChips(); render();
+});
+document.getElementById("main").addEventListener("click",ev=>{
+  const b=ev.target.closest(".rn"); if(!b) return;
+  const names=b.parentElement, i=[...names.children].indexOf(b);
+  let p=names.nextElementSibling; for(let j=0;j<i&&p;j++) p=p.nextElementSibling;
+  const on=b.getAttribute("aria-pressed")!=="true";
+  b.setAttribute("aria-pressed",on); if(p) p.hidden=!on;
+});
+function renderFC(){
+  document.getElementById("fc").innerHTML=FORMATIONS.map(f=>{
+    const sum=f.units.filter(e=>!isSentry(e)).reduce((a,e)=>a+lost[e.id],0);
+    const broken=sum>=f.bp;
+    return `<div class="fc-f${broken?" broken":""}">
+      <div class="fc-head"><span>${esc(f.short||f.name)}</span><span class="st">Strength <b>${f.strength-sum}</b>/${f.strength} · Break point <b>${f.bp}</b></span>${broken?`<span class="bk">BROKEN</span>`:""}<span class="sum${broken?" over":""}">Lost ${sum}/${f.bp}</span></div>
+      <div class="fc-rows">${f.units.map(e=>`<div class="fc-row"><span class="nm">${esc(e.name.replace(/^(Auxilia|Legion) /,"").replace(/( (Squadron|Battery|Patrol|Section|Detachment|Maniple))+$/,""))}${e.n>1?` ×${e.n}`:""}${isSentry(e)?` <i>(not counted)</i>`:""}</span>
+        <span class="fc-ctl"><button type="button" class="fc-step" data-e="${e.id}" data-d="-1" aria-label="One model fewer lost">−</button><span class="fc-val${lost[e.id]?" has":""}">${lost[e.id]}/${maxOf(e)}</span><button type="button" class="fc-step" data-e="${e.id}" data-d="1" aria-label="One more model lost">+</button></span></div>`).join("")}</div>
+    </div>`;
+  }).join("");
+}
+document.getElementById("fc").addEventListener("click",ev=>{
+  const b=ev.target.closest(".fc-step"); if(!b) return;
+  const e=FORMATIONS.flatMap(f=>f.units).find(u=>u.id===b.dataset.e);
+  lost[e.id]=Math.min(maxOf(e),Math.max(0,lost[e.id]+(+b.dataset.d)));
+  saveLost(); renderFC();
+});
+document.getElementById("fcReset").addEventListener("click",()=>{
+  if(!Object.values(lost).some(v=>v)||!confirm("Reset all casualties?")) return;
+  for(const k in lost) lost[k]=0; saveLost(); renderFC();
+});
+buildChips(); render(); renderFC();
+</script>
+</body>
+</html>
