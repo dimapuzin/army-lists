@@ -11,15 +11,18 @@ index.html              Main page: cards linking to each army list ("Lists" and 
 jsons/
   mechs-list.json       BattleScribe-style roster export (source for unit stats and tags)
 lists/
-  machine-spirit.html   Adeptus Mechanicus – The Inevitable Force of Machine Spirit
-  cities-of-sigmar.html Age of Sigmar – Cities of Sigmar
-  sanctifiers.html      Kill Team – Sanctifiers
-  legions-imperialis.html  Legions Imperialis – Ranger Brigade (Solar Auxilia)
-  ironwall.html         Legions Imperialis – BG-XIV «Ironwall» (friendly list, Death Guard)
+  mine/                 My own lists, one HTML page each
+    machine-spirit.html   Adeptus Mechanicus – The Inevitable Force of Machine Spirit
+    cities-of-sigmar.html Age of Sigmar – Cities of Sigmar
+    sanctifiers.html      Kill Team – Sanctifiers
+    legions-imperialis.html  Legions Imperialis – Ranger Brigade (Solar Auxilia)
+  friendly/             Other players' lists
+    ironwall.html         Legions Imperialis – BG-XIV «Ironwall» (Death Guard)
+js/                     One <list>-rules.js per list: rule texts loaded after the first render
 context/                Per-game notes (sources, data layout, conventions, pitfalls)
 ```
 
-Each list page is self-contained (inline CSS and JS) and links back to `../index.html`.
+Each list page has inline CSS and JS, loads its rule texts from `js/<name>-rules.js` (`../../js/` from the page), and links back to `../../index.html`.
 
 ## Machine Spirit list
 
@@ -38,7 +41,7 @@ then visit <http://localhost:8000>.
 ## Add a new list
 
 1. Read `context/README.md` and the file for the game.
-2. Create `lists/<name>.html` (copy a list of the same game as a starting point, keep the "← All army lists" back link, and give it its own `localStorage` key).
+2. Create `lists/mine/<name>.html` (or `lists/friendly/<name>.html`) and `js/<name>-rules.js` (copy a list of the same game as a starting point, keep the "← All army lists" back link, and give it its own `localStorage` key).
 3. Add a `.card` link to it in `index.html` ("Lists" for my own, "Friendly Lists" for other players') and a row in `context/README.md`.
 4. Commit and push to `main`.
 

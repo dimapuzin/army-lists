@@ -1,6 +1,6 @@
 # Kill Team
 
-Kill Team 3rd edition. First list: `lists/sanctifiers.html` (Sanctifiers, Adeptus Ministorum).
+Kill Team 3rd edition. First list: `lists/mine/sanctifiers.html` (Sanctifiers, Adeptus Ministorum).
 
 ## Source data
 - No roster JSON exists. Data came from the Wahapedia kill team page (`https://wahapedia.ru/kill-team3/kill-teams/sanctifiers/`, February 2026 version). WebFetch refuses to return the rules verbatim; download with `curl -sL -A "Mozilla/5.0"` and strip tags to text instead.
@@ -22,3 +22,10 @@ Kill Team 3rd edition. First list: `lists/sanctifiers.html` (Sanctifiers, Adeptu
 ## Pitfalls
 - Grid tracks inside `.ctrl-col` need `grid-template-columns:minmax(0,1fr)`, otherwise long ploy labels widen the column and overlap Show operative. The pick rows wrap here (`.pick{flex-wrap:wrap}`) because labels are long.
 - JS strings containing a `"` inch mark must use backticks, not double quotes.
+
+## Page weight (Sanctifiers page)
+- Goal (user): HTML small enough for one TCP round trip (see `context/legions-imperialis.md` > Page weight). `gzip -9c lists/mine/sanctifiers.html | wc -c` is now 12.3 KB (was 15.2 KB).
+- No web fonts: `--head` = Avenir Next Condensed, Arial Narrow, DIN Condensed; `--body` = Charter, Iowan Old Style, Georgia (iPadOS system fonts).
+- Two kinds of text live in `js/sanctifiers-rules.js` as `window.KTS_RULES = {f:{card id: full rule}, w:{weapon rule key: text}}` (one per line): the "Full rule" of each card in `E` (32 cards) and the weapon-rule glossary (`RULES`, 17 entries, shown under "Weapon rules used here" in the operative profile). `cardHTML()` and `renderProfile()` write empty slots `<p data-k="f:id">` / `<span data-k="w:key">`; `fill()` (end of `render()`, end of `renderProfile()` and on the script's `onload`) fills them. A weapon rule key with no entry in `w` has its line removed (the old code filtered such keys out up front), and the whole fold goes if no line is left. The script is added at the end of the page script, so it is requested after the first render. New card: add it to `E` without `full`, and add its id and text under `f`.
+- Check after editing: load the page with `--allow-file-access-from-files --virtual-time-budget=5000`, wait about 800 ms, and `document.querySelectorAll('[data-k]:empty')` must be empty for every Show operative chip.
+- Headless Chrome on Linux has none of the system fonts; for layout screenshots use a temp copy with `Liberation Sans Narrow` / `Liberation Serif` as stand-ins.

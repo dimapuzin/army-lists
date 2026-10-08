@@ -31,3 +31,10 @@ Full Power! (multi-select), Special Ammunition (single), one multi-select row pe
 - Units appearing twice in the roster (Steelhelms, Cavaliers) get one filter chip labelled "×2".
 - Some ability keyword text is ambiguous (for example `non-Hero Cities of Sigmar Infantry`); keep the roster wording on the card and note the interpretation.
 - Full spec of the Cities page: `CLAUDE.md`.
+
+## Page weight (Cities of Sigmar page)
+- Goal (user): HTML small enough for one TCP round trip (see `context/legions-imperialis.md` > Page weight). `gzip -9c lists/mine/cities-of-sigmar.html | wc -c` is now 13.4 KB (was 15.5 KB).
+- No web fonts: `--head` = Avenir Next Condensed, Arial Narrow, DIN Condensed; `--body` = Charter, Iowan Old Style, Georgia (iPadOS system fonts).
+- The "Full rule" texts (the folded `<details>` on each card, 37 cards, about 15 KB raw) are not in `E`. They live in `js/cities-of-sigmar-rules.js` as `window.COS_FULL = {card id: text}`, one per line. `cardHTML()` writes an empty `<p data-k="card id">`, `fill()` (end of `render()` and on the script's `onload`) fills it. The script is added at the end of the page script, so it is requested after the first render. New card: add it to `E` without `full`, and add its id and text to the rules file.
+- Check after editing: load the page with `--allow-file-access-from-files --virtual-time-budget=5000`, wait about 800 ms, and `document.querySelectorAll('[data-k]:empty')` must be empty for every Show unit chip.
+- Headless Chrome on Linux has none of the system fonts; for layout screenshots use a temp copy with `Liberation Sans Narrow` / `Liberation Serif`. With them the Show unit chips overlap the Special Ammunition and battle tactic rows at 834 px, the same as with the old web fonts' stand-ins, so check that area on the iPad.

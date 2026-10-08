@@ -4,16 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sanctifiers · Kill Team Reference</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
 <style>
 
 :root{
   --bg:#efe9e6; --surface:#faf6f4; --surface-2:#f3ecea; --ink:#24130f; --muted:#6d5d52;
   --brass:#8a6a1f; --red:#8e1f17; --teal:#2f6f64; --blue:#2f5f9a; --line:#d9ccc8; --chip:#e8dfdb;
-  --head:"Saira Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --head:"Avenir Next Condensed","Arial Narrow","DIN Condensed",sans-serif;
+  --body:Charter,"Iowan Old Style",Georgia,serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -46,7 +43,7 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 .hero .meta b{color:var(--ink);font-weight:700}
 
 /* Controls */
-.controls{max-width:1080px;margin:0 auto;padding:0 16px 10px;display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:8px 22px;align-items:start}
+.controls{max-width:1080px;margin:0 auto;padding:0 16px 10px;display:grid;grid-template-columns:minmax(0,13fr) minmax(0,7fr);gap:8px 22px;align-items:start}
 .ctrl-col{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-content:start;min-width:0}
 .ctrl-col + .ctrl-col{justify-self:end}
 .ctrl-col + .ctrl-col .ctrl-row,.ctrl-col + .ctrl-col .chips{justify-content:flex-end;justify-items:end}
@@ -61,7 +58,7 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 .pick button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
 .track-label{flex-basis:100%;margin-bottom:-3px}
 .chips{display:grid;gap:6px}
-.chip-cols{display:grid;grid-template-columns:repeat(3,max-content);justify-content:start;gap:4px 28px;align-items:start}
+.chip-cols{display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;gap:4px 8px;align-items:start}
 .chip-col{display:grid;gap:4px;align-content:start}
 .chip-col h4{margin:0;font-family:var(--head);font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .chip-col .chip{white-space:nowrap;text-align:left;border-radius:12px;line-height:1.15;padding:3.5px 11px}
@@ -175,7 +172,7 @@ footer a{color:inherit}
 <body>
 
 <header class="hero">
-  <a class="back" href="../index.html">← All army lists</a>
+  <a class="back" href="../../index.html">← All army lists</a>
   <h1>Sanctifiers</h1>
   <div class="meta">
     <span>Kill Team 3rd edition · <b>Sanctifiers</b></span>
@@ -201,8 +198,7 @@ footer a{color:inherit}
   </div>
   <div class="ctrl-col">
     <div class="ctrl-row">
-      <span class="ctrl-label track-label">Show operative</span>
-      <div class="chips" id="chips"></div>
+      <div class="chips" id="chips" role="group" aria-label="Show operative"></div>
     </div>
   </div>
 </section>
@@ -276,25 +272,6 @@ const PROFILES = {
 };
 
 /* Weapon rule text, as printed on the Wahapedia page and datacards */
-const RULES = {
- range:`Only operatives within x of the active operative can be valid targets, e.g. Range 9".`,
- blast:`The target you select is the primary target. After shooting the primary target, shoot with this weapon against each secondary target in an order of your choice (roll each sequence separately). Secondary targets are other operatives visible to and within x of the primary target (they are all valid targets, regardless of a Conceal order). Secondary targets are in cover and obscured if the primary target was.`,
- saturate:`The defender cannot retain cover saves.`,
- piercing:`The defender collects x less defence dice. If the rule is Piercing Crits x, this only comes into effect if you retain any critical successes.`,
- devastating:`Each retained critical success immediately inflicts x damage on the operative this weapon is being used against. If the rule starts with a distance, inflict x damage on that operative and each other operative visible to and within that distance of it. The success isn't discarded after doing so.`,
- lethal:`Your successes equal to or greater than x are critical successes.`,
- torrent:`Select a valid target as normal as the primary target, then select any number of other valid targets within x of the first valid target, but not within control range of friendly operatives, as secondary targets. Shoot with this weapon against all of them in an order of your choice (roll each sequence separately).`,
- "twin torrent":`Select up to two different valid targets that aren't within control range of friendly operatives. Shoot with this weapon against both of them in an order of your choice (roll each sequence separately). Torrent 0" means you cannot select secondary targets, but this weapon still has the Torrent weapon rule for all other rules purposes.`,
- seek:`When selecting a valid target, operatives cannot use terrain for cover. (Seek Light: cannot use Light terrain for cover.) This doesn't remove their cover save, if any.`,
- brutal:`Your opponent can only block with critical successes.`,
- shock:`The first time you strike with a critical success in each sequence, also discard one of your opponent's unresolved normal successes (or a critical success if there are none).`,
- silent:`An operative can perform the Shoot action with this weapon while it has a Conceal order.`,
- limited:`After an operative uses this weapon a number of times in the battle equal to x, they no longer have it. If it's used multiple times in one action (e.g. Blast), treat this as one use.`,
- hot:`After an operative uses this weapon, roll one D6. If the result is less than the weapon's Hit stat, inflict damage on that operative equal to the result multiplied by two. If it's used multiple times in one action, still only roll one D6.`,
- severe:`If you don't retain any critical successes, you can change one of your normal successes to a critical success. The Devastating and Piercing Crits weapon rules still take effect, but Punishing and Rending don't.`,
- blaze:`If you inflict damage with any critical successes, the operative this weapon is being used against gains one of your Blaze tokens (if it doesn't already have one). Whenever an operative that has one of your Blaze tokens is activated, inflict D3 damage on it. Then that operative's controlling player selects one of: roll one D6, on a 3+ remove that token; or subtract 1 from the operative's APL stat until the end of that activation to remove that token.`,
- wreathed:`This operative can perform the Shoot action with this weapon while within control range of an enemy operative. Don't select a valid target. Instead, this operative is always the primary target, but only shoot against secondary targets and they cannot be in cover or obscured (determine Blast from this operative, but this operative isn't affected).`
-};
 
 const PHASES = [
   {id:"gambit", n:"1", name:"Strategic Gambit", short:"Strategic Gambit", desc:"Strategy phase: Ready step, then the gambit.", colA:"Gambit & equipment", colB:"Ploys"},
@@ -306,118 +283,86 @@ const E = [
 /* ---------- STRATEGIC GAMBIT ---------- */
 {id:"texts",hint:"gain CP from Orator",ph:"gambit",kind:"enh",name:"Ecclesiarchy Texts",src:"Faction equipment",units:ALL,when:"Ready step of each Strategy phase, before the Gambit step",
  sum:`Roll 3D6: if the result is less than the remaining wounds of a friendly ORATOR operative, you gain 1CP.`,
- note:`No valid ORATOR means no roll, so it can't be used in the first turning point.`,
- full:`In the Ready step of each Strategy phase, roll 3D6: if the result is less than the remaining wounds of a friendly ORATOR operative, you gain 1CP. Note that this is done before the Gambit step, so if there isn't a valid ORATOR operative, you cannot use this rule during that turning point (e.g. during the first turning point).`},
+ note:`No valid ORATOR means no roll, so it can't be used in the first turning point.`},
 {id:"sermon",ph:"gambit",kind:"army",name:"Ministorum Sermon",src:"Faction rule · Strategic gambit",units:ALL,when:"Strategic gambit",
  sum:`Select one friendly SANCTIFIER operative (you must pick the Confessor if it isn't incapacitated). It has ORATOR until you use this gambit again. SANCTIFIERS within 3" of an ORATOR (6" if it is the Confessor) benefit from the SERMON: Normal and Critical Dmg of 4 or more inflicts 1 less damage.`,
- note:`Also benefitting until the end of an activation if the operative was activated within range, even if it then moves away.`,
- full:`STRATEGIC GAMBIT. Select one friendly SANCTIFIER operative. If a friendly CONFESSOR operative hasn't been incapacitated, you must select it. Until you use this STRATEGIC GAMBIT again during the battle, that operative has the ORATOR keyword.\nWhenever a friendly SANCTIFIER operative is within 3" of a friendly ORATOR operative (or 6" if the ORATOR is a CONFESSOR), that friendly SANCTIFIER operative is benefitting from the SERMON.\nWhenever a friendly SANCTIFIER operative is activated within 3" of a friendly ORATOR operative (or 6" if the ORATOR is a CONFESSOR), that friendly SANCTIFIER operative is benefitting from the SERMON until the end of that activation (i.e. even if it then moves more than the distance requirement from the ORATOR operative).\nWhenever a friendly SANCTIFIER operative is benefitting from the SERMON, Normal and Critical Dmg of 4 or more inflicts 1 less damage on it.`},
+ note:`Also benefitting until the end of an activation if the operative was activated within range, even if it then moves away.`},
 {id:"emperor",ph:"action",kind:"sploy",name:"The Emperor Protects",hint:"re-roll defence dice",src:"Strategy ploy",units:ALL,
- sum:`Whenever an operative is shooting a friendly SANCTIFIER operative benefitting from the SERMON, you can re-roll any of your defence dice results of one result (e.g. results of 2).`,
- full:`Whenever an operative is shooting a friendly SANCTIFIER operative that's benefitting from the SERMON, you can re-roll any of your defence dice results of one result (e.g. results of 2).`},
+ sum:`Whenever an operative is shooting a friendly SANCTIFIER operative benefitting from the SERMON, you can re-roll any of your defence dice results of one result (e.g. results of 2).`},
 {id:"fervent",ph:"action",kind:"sploy",name:"Fervent Brawl",hint:"Ceaseless in melee",src:"Strategy ploy",units:ALL,
- sum:`Whenever a friendly SANCTIFIER operative benefitting from the SERMON is fighting or retaliating, its melee weapons have Ceaseless (re-roll attack dice results of one result).`,
- full:`Whenever a friendly SANCTIFIER operative that's benefitting from the SERMON is fighting or retaliating, its melee weapons have the Ceaseless weapon rule.\nCeaseless: You can re-roll any of your attack dice results of one result (e.g. results of 2).`},
+ sum:`Whenever a friendly SANCTIFIER operative benefitting from the SERMON is fighting or retaliating, its melee weapons have Ceaseless (re-roll attack dice results of one result).`},
 {id:"zealous",ph:"action",kind:"sploy",name:"Zealous Persecution",hint:"Lethal 5+ after Charge",src:"Strategy ploy",units:ALL,
- sum:`Whenever a friendly SANCTIFIER operative is fighting during an activation in which it performed the Charge action, its melee weapons have Lethal 5+.`,
- full:`Whenever a friendly SANCTIFIER operative is fighting during an activation in which it performed the Charge action, its melee weapons have the Lethal 5+ weapon rule.`},
+ sum:`Whenever a friendly SANCTIFIER operative is fighting during an activation in which it performed the Charge action, its melee weapons have Lethal 5+.`},
 {id:"rally",ph:"action",kind:"sploy",name:"Rally the Flock",hint:"free Dash / Fall Back",src:"Strategy ploy",units:ALL,
- sum:`Each friendly SANCTIFIER (not ORATOR) benefitting from the SERMON can immediately perform a free Dash or Fall Back (max 3") in any order. Each must end closer and visible to (or vice versa) a friendly ORATOR. Not in the first turning point.`,
- full:`Each friendly SANCTIFIER operative (excluding ORATOR) that's benefitting from the SERMON can immediately perform a free Dash or Fall Back action in an order of your choice (choose separately for each and, for the latter, it cannot move more than 3"). Each that does so must end that move closer and visible to (or vice versa) to a friendly ORATOR operative. You cannot use this ploy during the first turning point.`},
+ sum:`Each friendly SANCTIFIER (not ORATOR) benefitting from the SERMON can immediately perform a free Dash or Fall Back (max 3") in any order. Each must end closer and visible to (or vice versa) a friendly ORATOR. Not in the first turning point.`},
 
 /* Strategy ploys (cards above, marked ph:"action") are shown in the Action tab */
 /* ---------- ACTION: faction rule and equipment ---------- */
 {id:"orb",hint:"Doused tokens",ph:"action",kind:"enh",name:"Sanctification Orb",src:"Faction equipment · unique action",cost:"1AP",units:["confessor","conflagrator","abbot","persecutor","missionary","preacher","reliquant","salvationist"],when:"Once per turning point (team). Not Cherub, Death Cult Assassin or Miraculist",
  sum:`Select an enemy operative visible to and within 6". It and each other enemy operative within 1" of it takes a doused test: roll a D6, on a 3+ it gains a Doused token. Blaze weapons shooting a Doused operative also have Seek; the token is removed after a Blaze weapon is used against it.`,
- note:`Cannot be performed within control range of an enemy operative. The Conflagrator's Sanctification Rack gives it its own use that doesn't count towards the limit.`,
- full:`Once per turning point, one friendly SANCTIFIER operative (excluding CHERUB, DEATH CULT ASSASSIN and MIRACULIST) can perform the following unique action:\nSANCTIFICATION ORB 1AP: Select one enemy operative visible to and within 6" of this operative. That operative and each other enemy operative within 1" of it takes a doused test. For an operative to take a doused test, roll one D6: on a 3+, it gains one of your Doused tokens.\nWhenever a friendly SANCTIFIER operative is shooting an operative that has one of your Doused tokens with a weapon that has the Blaze weapon rule, that weapon also has the Seek weapon rule.\nAfter a friendly SANCTIFIER operative uses a weapon that has the Blaze weapon rule against an enemy operative that has one of your Doused tokens, remove that token (even if the Seek weapon rule wasn't used).\nThis operative cannot perform this action while within control range of an enemy operative.`},
+ note:`Cannot be performed within control range of an enemy operative. The Conflagrator's Sanctification Rack gives it its own use that doesn't count towards the limit.`},
 {id:"seals",hint:"turn a fail into a success",ph:"action",kind:"enh",name:"Purity Seals",src:"Faction equipment",units:ALL,when:"Once per turning point · shooting or fighting",
- sum:`When a friendly SANCTIFIER is shooting or fighting and you roll two or more fails, discard one of them to retain another as a normal success instead.`,
- full:`Once per turning point, when a friendly SANCTIFIER operative is shooting or fighting, if you roll two or more fails, you can discard one of them to retain another as a normal success instead.`},
+ sum:`When a friendly SANCTIFIER is shooting or fighting and you roll two or more fails, discard one of them to retain another as a normal success instead.`},
 {id:"symbols",hint:"cut a critical when shot",ph:"action",kind:"enh",name:"Imperial Cult Symbols",src:"Faction equipment",units:ALL,when:"Once per turning point · when shot while benefitting from the SERMON",
  sum:`When an operative shoots a friendly SANCTIFIER benefitting from the SERMON, as you collect your defence dice, change one of the attacker's retained critical successes to a normal success.`,
- note:`Weapon rules already resolved (e.g. Piercing Crits) aren't affected.`,
- full:`Once per turning point, when an operative is shooting a friendly SANCTIFIER operative that's benefitting from the SERMON, when you collect your defence dice, you can use this rule. If you do, change one of the attacker's retained critical successes to a normal success (any weapon rules they've already resolved aren't affected, e.g. Piercing Crits).`},
+ note:`Weapon rules already resolved (e.g. Piercing Crits) aren't affected.`},
 
 /* ---------- ACTION: operative abilities ---------- */
 {id:"lead",ph:"action",kind:"unit",name:"Lead the Procession",src:"Confessor",units:["confessor"],when:"After the first turning point · Charge, Fall Back or Reposition as an ORATOR",
  sum:`Use before moving. Each other friendly SANCTIFIER benefitting from the SERMON and visible to the Confessor (or vice versa) can then perform a free Charge, Fall Back or Reposition (max 3", any order), ending where it still benefits from the SERMON.`,
- note:`If the Confessor is incapacitated mid-rule (e.g. by Guard), don't remove it until the rule is resolved.`,
- full:`In each turning point after the first, whenever this operative is an ORATOR and performs the Charge, Fall Back or Reposition action during its activation, you can use this rule before it moves. If you do, determine each other friendly SANCTIFIER operative that's benefitting from the SERMON and is visible to this operative (or vice versa). After this operative ends that action, each of those friendly SANCTIFIER operatives can immediately perform a free Charge, Fall Back or Reposition action in an order of your choice (choose separately for each), but each cannot move more than or be removed and set up more than 3" and must end that move in a location where they are still benefitting from the SERMON. If this operative is incapacitated before this rule is fully resolved, e.g. from the Guard action's interruption (see close quarters rules, Kill Team Core Book), don't remove it from the killzone until this rule has been resolved.`},
+ note:`If the Confessor is incapacitated mid-rule (e.g. by Guard), don't remove it until the rule is resolved.`},
 {id:"declaim",ph:"action",kind:"unit",name:"Commanding Declamation",src:"Confessor",units:["confessor"],when:`Once per battle · an enemy within 6" would perform an action`,
  sum:`When a visible enemy within 6" would perform an action, roll a D6: if higher than its APL, it cannot perform that action (AP not refunded; a counteraction ends).`,
- note:`FAQ: a cancelled action required by an enemy rule doesn't cancel its activation, and CP isn't refunded. Against an operative on guard, the opponent can choose the other of Fight or Shoot.`,
- full:`Whenever an enemy operative would perform an action during an activation or counteraction while visible to and within 6" of this operative, you can use this rule. If you do, roll one D6: if the result is higher than that enemy operative's APL stat:\n• It cannot perform that action during that activation/counteraction (the AP spent on it isn't refunded). If it's a counteraction, that counteraction ends.\n• You cannot use this rule again during the battle.`},
+ note:`FAQ: a cancelled action required by an enemy rule doesn't cancel its activation, and CP isn't refunded. Against an operative on guard, the opponent can choose the other of Fight or Shoot.`},
 {id:"cherub",ph:"action",kind:"unit",name:"Cherub",src:"Cherub",units:["cherub"],
- sum:`Counts as 1 lower APL when determining control of an objective marker. With a Conceal order and in cover it cannot be a valid target (except within 2"). Can only use its datacard weapons and the Incentivise action.`,
- full:`Whenever determining control of an objective marker, treat this operative's APL stat as 1 lower. Note this isn't a change to its APL stat, so any changes are cumulative with this.\nWhenever this operative has a Conceal order and is in cover, it cannot be selected as a valid target, taking precedence over all other rules (e.g. Seek, Vantage terrain) except being within 2".\nThis operative cannot use any weapons that aren't on its datacard, or perform unique actions other than Incentivise.`},
+ sum:`Counts as 1 lower APL when determining control of an objective marker. With a Conceal order and in cover it cannot be a valid target (except within 2"). Can only use its datacard weapons and the Incentivise action.`},
 {id:"incentivise",ph:"action",kind:"unit",name:"Incentivise",src:"Cherub · unique action",cost:"1AP",units:["cherub"],
  sum:`SUPPORT. Select another friendly SANCTIFIER (not Confessor, Death Cult Assassin, Miraculist or ORATOR) visible and within 2". Until the end of its next activation, add 1 to its APL.`,
- note:`Cannot be performed within control range of an enemy operative.`,
- full:`INCENTIVISE 1AP\nSUPPORT. Select one other friendly SANCTIFIER operative (excluding CONFESSOR, DEATH CULT ASSASSIN, MIRACULIST and ORATOR) visible to and within 2" of this operative. Until the end of that operative's next activation, add 1 to its APL stat.\nThis operative cannot perform this action while within control range of an enemy operative.`},
+ note:`Cannot be performed within control range of an enemy operative.`},
 {id:"rack",ph:"action",kind:"unit",name:"Sanctification Rack",src:"Conflagrator",units:["conflagrator"],cost:"1AP",
- sum:`This operative can perform the Sanctification Orb action. Doing so doesn't count towards the once per turning point limit.`,
- full:`This operative can perform the Sanctification Orb action (see faction equipment). Doing so in this manner doesn't count towards the once per turning point limit (i.e. if you also select that equipment for other operatives).`},
+ sum:`This operative can perform the Sanctification Orb action. Doing so doesn't count towards the once per turning point limit.`},
 {id:"bladed",ph:"action",kind:"unit",name:"Bladed Stance",src:"Death Cult Assassin",units:["assassin"],when:"Fighting or retaliating",
- sum:`You can resolve one of your successes before the normal order. That success must be used to block.`,
- full:`Whenever this operative is fighting or retaliating, you can resolve one of your successes before the normal order. If you do, that success must be used to block.`},
+ sum:`You can resolve one of your successes before the normal order. That success must be used to block.`},
 {id:"trained",ph:"action",kind:"unit",name:"Trained Assassin",src:"Death Cult Assassin · unique action",cost:"1AP",units:["assassin"],
  sum:`Change this operative's order.`,
- note:`Cannot be performed within control range of an enemy operative.`,
- full:`TRAINED ASSASSIN 1AP\nChange this operative's order.\nThis operative cannot perform this action while within control range of an enemy operative.`},
+ note:`Cannot be performed within control range of an enemy operative.`},
 {id:"discipl",ph:"action",kind:"unit",name:"Schola Progenium Disciplinarian",src:"Drill Abbot",units:["abbot"],
- sum:`Friendly SANCTIFIERS within 6" of the Drill Abbot ignore changes to their stats from being injured (including weapon stats).`,
- full:`Whenever a friendly SANCTIFIER operative is within 6" of this operative, you can ignore any changes to that operative's stats from being injured (including its weapons' stats).`},
+ sum:`Friendly SANCTIFIERS within 6" of the Drill Abbot ignore changes to their stats from being injured (including weapon stats).`},
 {id:"nullskull",ph:"action",kind:"unit",name:"Null Skull",src:"Drill Abbot",units:["abbot"],
  sum:`Enemy operatives within 4" cannot have their APL added to (remove all positive APL changes).`,
- note:`If an enemy more than 4" away spends its final AP to move within 4", it may have spent more AP than its APL; this is permitted.`,
- full:`Whenever an enemy operative is within 4" of this operative, that enemy operative's APL stat cannot be added to (remove all positive APL stat changes it has). If an enemy operative that's more than 4" from this operative has a positive APL stat change and your opponent spends its final AP to move that operative within 4" of this operative, this can cause your opponent to have spent more AP than its APL stat – this is permitted in this situation.`},
+ note:`If an enemy more than 4" away spends its final AP to move within 4", it may have spent more AP than its APL; this is permitted.`},
 {id:"castigation",ph:"action",kind:"unit",name:"Merciless Castigation",src:"Persecutor",units:["persecutor"],when:"First Fight action in each activation",
- sum:`If neither it nor the enemy in that sequence is incapacitated, it can immediately perform a free Fight action against the same enemy (if still valid). Takes precedence over action restrictions.`,
- full:`The first time this operative performs the Fight action during each of its activations, if neither it nor the enemy operative in that sequence is incapacitated, this operative can immediately perform a free Fight action afterwards, but you cannot select any other enemy operative to fight against during that action (and only if it's still valid to fight against). This takes precedence over action restrictions.`},
+ sum:`If neither it nor the enemy in that sequence is incapacitated, it can immediately perform a free Fight action against the same enemy (if still valid). Takes precedence over action restrictions.`},
 {id:"retribution",ph:"action",kind:"unit",name:"Fanatical Retribution",src:"Persecutor",units:["persecutor"],when:"Incapacitated during the Fight action",
- sum:`You can strike the enemy operative in that sequence with one of your unresolved successes before this operative is removed.`,
- full:`If this operative is incapacitated during the Fight action, you can strike the enemy operative in that sequence with one of your unresolved successes before this operative is removed from the killzone.`},
+ sum:`You can strike the enemy operative in that sequence with one of your unresolved successes before this operative is removed.`},
 {id:"miracle",ph:"action",kind:"unit",name:"Miracle",src:"Miraculist",units:["miraculist"],when:"First time it would be incapacitated this battle",
- sum:`It isn't incapacitated: 1 wound remaining and cannot be incapacitated for the rest of the action. Remaining attack dice are discarded (yours too if fighting or retaliating), then it performs a free Dash or Fall Back (max 3"), even if an action prevents it.`,
- full:`The first time this operative would be incapacitated during the battle, it's not incapacitated, has 1 wound remaining and cannot be incapacitated for the remainder of the action. All remaining attack dice are discarded (including yours if this operative is fighting or retaliating), then this operative can immediately perform a free Dash or Fall Back action (for the latter, it cannot move more than 3"), even if it's performed an action that prevents it from performing those actions.`},
+ sum:`It isn't incapacitated: 1 wound remaining and cannot be incapacitated for the rest of the action. Remaining attack dice are discarded (yours too if fighting or retaliating), then it performs a free Dash or Fall Back (max 3"), even if an action prevents it.`},
 {id:"relic",ph:"action",kind:"unit",name:"Holy Relic",src:"Missionary",units:["missionary"],
- sum:`If this operative has a holy relic, it's always benefitting from the SERMON.`,
- full:`If this operative has a holy relic, it's always benefitting from the SERMON.`},
+ sum:`If this operative has a holy relic, it's always benefitting from the SERMON.`},
 {id:"spread",ph:"action",kind:"unit",name:"Spread the Word of the God-Emperor",src:"Missionary",units:["missionary"],
- sum:`While more than 6" from other friendly operatives, its weapons have Severe.`,
- full:`Whenever this operative is more than 6" from other friendly operatives, its weapons have the Severe weapon rule.`},
+ sum:`While more than 6" from other friendly operatives, its weapons have Severe.`},
 {id:"defend",ph:"action",kind:"unit",name:"Defend the Faith",src:"Preacher",units:["preacher"],
- sum:`While it controls an objective marker, it's benefitting from the SERMON.`,
- full:`Whenever this operative controls an objective marker, it's benefitting from the SERMON.`},
+ sum:`While it controls an objective marker, it's benefitting from the SERMON.`},
 {id:"cult",ph:"action",kind:"unit",name:"Cult Icon",src:"Reliquant",units:["reliquant"],
- sum:`Controlling a marker within 4" of the Reliquant: treat the total APL of friendly SANCTIFIERS contesting it as 1 higher if at least one contests it.`,
- full:`Whenever determining control of a marker within 4" of this operative, treat the total APL stat of friendly SANCTIFIER operatives that contest it as 1 higher if at least one friendly SANCTIFIER operative contests that marker. Note this isn't a change to the APL stat, so any changes are cumulative with this.`},
+ sum:`Controlling a marker within 4" of the Reliquant: treat the total APL of friendly SANCTIFIERS contesting it as 1 higher if at least one contests it.`},
 {id:"devotion",ph:"action",kind:"unit",name:"Imperial Cult Devotion",src:"Reliquant",units:["reliquant"],when:"Once per turning point · a friendly operative is incapacitated",
- sum:`When a ready friendly SANCTIFIER visible to and within 6" is incapacitated, before it's removed it can perform one free action (not Fight), and you can change its order to do so.`,
- full:`Once per turning point, when a ready friendly SANCTIFIER operative is incapacitated while visible to and within 6" of this operative, you can use this rule. If you do, before that operative is removed from the killzone, it can perform one free action (excluding Fight), and you can change its order to do so. It's then removed from the killzone as normal.`},
+ sum:`When a ready friendly SANCTIFIER visible to and within 6" is incapacitated, before it's removed it can perform one free action (not Fight), and you can change its order to do so.`},
 {id:"conversion",ph:"action",kind:"unit",name:"Conversion Field",src:"Salvationist",units:["salvationist"],when:`Being shot from more than 6" away`,
- sum:`When an operative more than 6" from the Salvationist shoots a friendly SANCTIFIER within 6" of it, improve that friendly operative's Save by 1.`,
- full:`Whenever an operative more than 6" from this operative is shooting a friendly SANCTIFIER operative within 6" of this operative, improve that friendly operative's Save stat by 1.`},
+ sum:`When an operative more than 6" from the Salvationist shoots a friendly SANCTIFIER within 6" of it, improve that friendly operative's Save by 1.`},
 {id:"medikit",ph:"action",kind:"unit",name:"Medikit",src:"Salvationist · unique action",cost:"1AP",units:["salvationist"],
  sum:`Select a friendly SANCTIFIER within control range to regain up to 2D3 lost wounds.`,
- note:`Cannot be performed within control range of an enemy operative.`,
- full:`MEDIKIT 1AP\nSelect one friendly SANCTIFIER operative within this operative's control range to regain up to 2D3 lost wounds.\nThis operative cannot perform this action while within control range of an enemy operative.`},
+ note:`Cannot be performed within control range of an enemy operative.`},
 
 /* ---------- ACTION: firefight ploys ---------- */
 {id:"rosarius",ph:"action",kind:"fploy",name:"Rosarius",hint:"ignore Normal Dmg",src:"Firefight ploy",units:ALL,when:"An attack dice inflicts Normal Dmg on a friendly SANCTIFIER",
- sum:`Ignore that inflicted damage.`,
- full:`Use this firefight ploy when an attack dice inflicts Normal Dmg on a friendly SANCTIFIER operative. Ignore that inflicted damage.`},
+ sum:`Ignore that inflicted damage.`},
 {id:"ardent",ph:"action",kind:"fploy",name:"Ardent Eradication",hint:"re-roll attack dice near Orator",src:"Firefight ploy",units:ALL,when:"After rolling attack dice for a friendly SANCTIFIER",
- sum:`If it is shooting or fighting an enemy within 3" of a friendly ORATOR (6" if the ORATOR is the Confessor), you can re-roll any of your attack dice.`,
- full:`Use this firefight ploy after rolling your attack dice for a friendly SANCTIFIER operative, if it's shooting against or fighting against an enemy operative that's within 3" of a friendly ORATOR operative (or 6" if the ORATOR is a CONFESSOR). You can re-roll any of your attack dice.`},
+ sum:`If it is shooting or fighting an enemy within 3" of a friendly ORATOR (6" if the ORATOR is the Confessor), you can re-roll any of your attack dice.`},
 {id:"redeemed",ph:"action",kind:"fploy",name:"Redeemed Through Fire",hint:"Blaze tokens on death",src:"Firefight ploy",units:BLAZERS,when:"A friendly SANCTIFIER with a Blaze weapon is incapacitated, before removal",
- sum:`Each enemy operative visible to and within 2" of it gains one of your Blaze tokens (if it doesn't already have one).`,
- full:`Use this firefight ploy when a friendly SANCTIFIER operative that has a weapon with the Blaze weapon rule is incapacitated, before it's removed from the killzone. Each enemy operative visible to and within 2" of it gains one of your Blaze tokens (if it doesn't already have one).`},
+ sum:`Each enemy operative visible to and within 2" of it gains one of your Blaze tokens (if it doesn't already have one).`},
 {id:"unwavering",ph:"action",kind:"fploy",name:"Unwavering Devotion",hint:"redirect Shoot / Fight",src:"Firefight ploy",units:ALL,when:"A friendly ORATOR or MIRACULIST is the valid target of a Shoot or fought against",
  sum:`Select another friendly SANCTIFIER (not Confessor, Miraculist or ORATOR) visible to and within 3" of it to become the valid target / be fought against instead, even if it wouldn't normally be valid.`,
- note:`No effect on a Shoot action with Blast or Torrent. On Fight, treat that operative as within the fighter's control range. On Shoot, it is only in cover or obscured if the original target was.`,
- full:`Use this firefight ploy when a friendly SANCTIFIER ORATOR or SANCTIFIER MIRACULIST operative is selected as the valid target of a Shoot action or to fight against during the Fight action. Select one other friendly SANCTIFIER operative (excluding CONFESSOR, MIRACULIST and ORATOR) visible to and within 3" of that first friendly operative to become the valid target or to be fought against (as appropriate) instead (even if it wouldn't normally be valid for this). If it's the Fight action, treat that other operative as being within the fighting operative's control range for the duration of that action. If it's the Shoot action, that other operative is only in cover or obscured if the original target was.\nThis ploy has no effect if it's the Shoot action and the ranged weapon has the Blast or Torrent weapon rule.`}
+ note:`No effect on a Shoot action with Blast or Torrent. On Fight, treat that operative as within the fighter's control range. On Shoot, it is only in cover or obscured if the original target was.`}
 ];
 
 /* Cross-phase reminders: ids of cards that matter in the other phase */
@@ -446,7 +391,7 @@ function cardHTML(e){
     ${e.when?`<div class="when">${esc(e.when)}</div>`:""}
     <p class="sum">${esc(e.sum)}</p>
     ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
-    <details><summary>Full rule</summary><p>${esc(e.full)}</p></details>
+    <details><summary>Full rule</summary><p data-k="f:${e.id}"></p></details>
   </article>`;
 }
 
@@ -472,6 +417,7 @@ function render(){
       <div class="phase-head${fold?" toggle":""}"${fold?` role="button" tabindex="0" aria-expanded="${!shut}" data-fold="${p.id}"`:""}><span class="phase-num" aria-hidden="true">${p.n}</span><h2>${esc(p.name)}</h2><p>${esc(p.desc)}</p></div>
       <div class="phase-body"${shut?" hidden":""}>${body}${remHTML}</div></section>`;
   }).join("");
+  fill();
   observe();
 }
 
@@ -493,8 +439,8 @@ function renderProfile(){
   const wtable=list=>list.length?`<div class="tbl-wrap"><table><thead><tr><th>Weapon</th><th>Atk</th><th>Hit</th><th>Dmg</th></tr></thead><tbody>${
     list.map(w=>`<tr><td class="w">${esc(w.n)}${w.wr.length?`<span class="kw">${esc(w.wr.join(", "))}</span>`:""}</td><td>${esc(w.a)}</td><td>${esc(w.h)}</td><td>${esc(w.d)}</td></tr>`).join("")}</tbody></table></div>`:"";
   const ranged=u.weapons.filter(w=>w.t==="r"), melee=u.weapons.filter(w=>w.t==="m");
-  const keys=[...new Set(u.weapons.flatMap(w=>w.wr.map(ruleKey)))].filter(k=>RULES[k]).sort();
-  const glossary=keys.length?`<details class="rules"><summary>Weapon rules used here</summary>${keys.map(k=>`<p><b>${esc(k.replace(/\b\w/g,c=>c.toUpperCase()))}:</b> ${esc(RULES[k])}</p>`).join("")}</details>`:"";
+  const keys=[...new Set(u.weapons.flatMap(w=>w.wr.map(ruleKey)))].sort();
+  const glossary=keys.length?`<details class="rules"><summary>Weapon rules used here</summary>${keys.map(k=>`<p><b>${esc(k.replace(/\b\w/g,c=>c.toUpperCase()))}:</b> <span data-k="w:${esc(k)}"></span></p>`).join("")}</details>`:"";
   box.innerHTML=`<div class="prof-box">
     <div class="prof-head"><h2>${esc(UNITS[state.unit])}</h2><span>⌀${esc(u.base)} base</span></div>
     <div class="prof-tags" aria-label="Keywords">${u.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>
@@ -506,6 +452,16 @@ function renderProfile(){
     ${u.note?`<div class="note">${esc(u.note)}</div>`:""}
     ${glossary}</div>`;
   box.hidden=false;
+  fill();
+}
+/* Full rules and weapon rules live in sanctifiers-rules.js, fetched after the first render and filled into the cards */
+function fill(){
+  const T=window.KTS_RULES; if(!T) return;
+  document.querySelectorAll("[data-k]:empty").forEach(el=>{
+    const k=el.dataset.k, t=T[k[0]][k.slice(2)];
+    if(t) el.textContent=t;
+    else if(k[0]==="w"){const d=el.closest("details"); el.parentElement.remove(); if(d&&!d.querySelector("p")) d.remove();}
+  });
 }
 function buildChips(){
   const wrap=document.getElementById("chips");
@@ -580,6 +536,7 @@ document.addEventListener("click",ev=>{
 });
 
 buildRail(); buildChips(); render();
+const rs=document.createElement("script");rs.src="../../js/sanctifiers-rules.js";rs.onload=fill;document.head.append(rs);
 </script>
 </body>
 </html>
