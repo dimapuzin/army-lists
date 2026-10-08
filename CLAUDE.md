@@ -6,7 +6,7 @@ Static website of army-list table references, hosted on GitHub Pages. See `READM
 - Per-game notes (roster JSON layout, phase tabs, card kinds, rule conventions) live in `context/`. Read `context/README.md` first, then the file for the game before building or editing a list.
 
 ## Layout
-- `index.html` — main page; one `.card` per army list.
+- `index.html` — main page; one `.card` per army list, in two sections: "Lists" (my own) and "Friendly Lists" (other players' rosters).
 - `lists/*.html` — one self-contained page per list (inline `<style>` and `<script>`).
 
 ## Conventions
@@ -14,7 +14,7 @@ Static website of army-list table references, hosted on GitHub Pages. See `READM
 - Use **relative links only** (site is served from `/<repo-name>/` on GitHub Pages). Never use root-absolute paths like `/lists/x.html`.
 - Keep the shared look: CSS variables on `:root`, dark mode via `prefers-color-scheme` plus `data-theme`, fonts Saira Condensed (headings, weights 600/700 only) and Source Serif 4 (body, weight 400 only, no opsz axis) to keep the Google Fonts download small. Pages must work at phone width (tables are used at the game table, often on a phone).
 - Every list page keeps a "← All army lists" link to `../index.html`.
-- Adding a list: create `lists/<name>.html`, add a card in `index.html`.
+- Adding a list: create `lists/<name>.html`, add a card in `index.html` (right section), add a row to `context/README.md`. Each page needs its own `localStorage` key prefix/key, since all pages share one origin.
 - Rules text comes from the user's supplied roster and rules; do not invent rules or stats.
 
 ## Machine Spirit list (`lists/machine-spirit.html`)
@@ -45,12 +45,11 @@ Kill Team 3rd edition, Sanctifiers. Source: Wahapedia page (no roster file). Det
 - Same skeleton and CSS as the other pages. Tool panel: three multi-select pick rows (Strategy ploys, Firefight ploys, Faction equipment; `localStorage` prefix `kts-`) where only the picked cards are shown, and Show operative (All + Command & support / Fire / Melee) with a profile and weapon-rule glossary.
 - Two tabs only: Strategic Gambit (collapsible, collapsed by default via `COLLAPSIBLE` / `collapsed`) and Action. Strategic Gambit holds Ministorum Sermon and Ecclesiarchy Texts; Action holds operative abilities and equipment (left; Blaze and Cherub Fly are not cards, Blaze only appears in the weapon-rule glossary) and strategy plus firefight ploys (right).
 
-## Ranger Brigade list (`lists/legions-imperialis.html`)
-Legions Imperialis, Solar Auxilia: Sub-Cohort 370 pts + Pioneer Company 380 pts. Source: pasted roster text plus Epic Heresy pages. Details in `context/legions-imperialis.md`.
-- Same CSS tokens/fonts, but no phases, trackers or rail: only Show unit chips, then per formation one unit card each (models, weapons used, upgrades taken, full special rules and weapon traits always visible).
-
-## Ironwall list (`lists/ironwall.html`)
-Friendly list (another player's roster), listed under "Friendly Lists" on `index.html`. Legions Imperialis, Loyalist Legiones Astartes, Death Guard Demi-company + Brethren of Iron, 750 pts. Same page code as the Ranger Brigade list; details in `context/legions-imperialis.md`. Each list page needs its own `localStorage` key.
+## Legions Imperialis lists (`lists/legions-imperialis.html`, `lists/ironwall.html`)
+- Ranger Brigade (mine, Solar Auxilia, 750 pts: Sub-Cohort 370 + Pioneer Company 380) and BG-XIV «Ironwall» (friendly list, Loyalist Legiones Astartes / Death Guard, 750 pts: Demi-company 440 + Brethren of Iron 310). Source: pasted roster text plus Epic Heresy pages (Legion Builder cannot be read).
+- Layout differs from the other games: no phases, rail or trackers. Show unit chips, Formation control (models-lost counters per formation, Break Point, BROKEN badge, folded per formation on phones, saved in `localStorage`), then per formation one full-width unit card (models, weapons, collapsed upgrades, one "Rules & traits" row of tap-to-open names). Formation rules appear when a unit is picked. A unit in several formations gets one card.
+- Target: Show unit + Formation control + one unit card on one iPad Air 3 screen, both orientations. Do not add padding or enlarge the tool panel casually.
+- `context/legions-imperialis.md` has the recipe for adding a list, the data schema, source URLs and how to extract them, roster reading rules and pitfalls. Read it before touching these pages.
 
 ## Workflow
 - Test locally with `python3 -m http.server 8000`.

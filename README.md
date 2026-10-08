@@ -1,17 +1,22 @@
 # Army Lists
 
-A small static website of phase-by-phase table references for tabletop army lists (Warhammer 40,000). The main page lists every army; each army opens its own reference page.
+A small static website of table references for tabletop army lists (Warhammer 40,000, Age of Sigmar, Kill Team, Legions Imperialis). The main page lists every army; each army opens its own reference page.
 
 Hosted on GitHub Pages — plain HTML/CSS/JS, no build step.
 
 ## Structure
 
 ```
-index.html              Main page: cards linking to each army list
+index.html              Main page: cards linking to each army list ("Lists" and "Friendly Lists")
 jsons/
   mechs-list.json       BattleScribe-style roster export (source for unit stats and tags)
 lists/
   machine-spirit.html   Adeptus Mechanicus – The Inevitable Force of Machine Spirit
+  cities-of-sigmar.html Age of Sigmar – Cities of Sigmar
+  sanctifiers.html      Kill Team – Sanctifiers
+  legions-imperialis.html  Legions Imperialis – Ranger Brigade (Solar Auxilia)
+  ironwall.html         Legions Imperialis – BG-XIV «Ironwall» (friendly list, Death Guard)
+context/                Per-game notes (sources, data layout, conventions, pitfalls)
 ```
 
 Each list page is self-contained (inline CSS and JS) and links back to `../index.html`.
@@ -32,9 +37,10 @@ then visit <http://localhost:8000>.
 
 ## Add a new list
 
-1. Create `lists/<name>.html` (copy an existing list as a starting point and keep the "← All army lists" back link).
-2. Add a `.card` link to it in `index.html`.
-3. Commit and push to `main`.
+1. Read `context/README.md` and the file for the game.
+2. Create `lists/<name>.html` (copy a list of the same game as a starting point, keep the "← All army lists" back link, and give it its own `localStorage` key).
+3. Add a `.card` link to it in `index.html` ("Lists" for my own, "Friendly Lists" for other players') and a row in `context/README.md`.
+4. Commit and push to `main`.
 
 ## Deployment
 
