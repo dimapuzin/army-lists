@@ -45,11 +45,7 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 /* Controls */
 .controls{max-width:1080px;margin:0 auto;padding:0 16px 10px;display:grid;grid-template-columns:minmax(0,13fr) minmax(0,7fr);gap:8px 22px;align-items:start}
 .ctrl-col{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-content:start;min-width:0}
-.ctrl-col + .ctrl-col{justify-self:end}
-.ctrl-col + .ctrl-col .ctrl-row,.ctrl-col + .ctrl-col .chips{justify-content:flex-end;justify-items:end}
-.ctrl-col + .ctrl-col .chip-cols{justify-content:end}
-.ctrl-col + .ctrl-col .track-label{text-align:right}
-@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr)}.ctrl-col + .ctrl-col{justify-self:stretch;border-top:1px solid var(--line);padding-top:8px}.ctrl-col + .ctrl-col .ctrl-row,.ctrl-col + .ctrl-col .chips{justify-content:flex-start;justify-items:start}.ctrl-col + .ctrl-col .chip-cols{justify-content:start}.ctrl-col + .ctrl-col .track-label{text-align:left}}
+@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr)}.ctrl-col + .ctrl-col{border-top:1px solid var(--line);padding-top:8px}}
 .ctrl-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
 .ctrl-label{font-family:var(--head);font-weight:600;color:var(--muted);font-size:1rem;margin-right:4px}
 .pick{display:flex;flex-wrap:nowrap;gap:4px;max-width:100%;overflow-x:auto;scrollbar-width:none}
@@ -58,14 +54,8 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 .pick button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
 .track-label{flex-basis:100%;margin-bottom:-3px}
 .chips{display:grid;gap:6px}
-.chip-cols{display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;gap:4px 8px;align-items:start}
-.chip-col{display:grid;gap:4px;align-content:start}
-.chip-col h4{margin:0;font-family:var(--head);font-weight:700;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.chip-col .chip{white-space:nowrap;text-align:left;border-radius:12px;line-height:1.15;padding:3.5px 11px}
-.chips>.chip{justify-self:start}
-.ctrl-col + .ctrl-col .chips>.chip{justify-self:end}
-@media (max-width:760px){.ctrl-col + .ctrl-col .chips>.chip{justify-self:start}}
-@media (max-width:480px){.chip-cols{grid-template-columns:1fr}}
+.chip-cols{display:flex;flex-wrap:wrap;gap:4px 6px}
+.chip-cols .chip{flex:1 1 auto;white-space:nowrap;text-align:center;border-radius:12px;line-height:1.15;padding:3.5px 11px}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 11px;font-family:var(--head);font-weight:600;font-size:.8rem;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 
@@ -74,12 +64,14 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 .profile[hidden]{display:none}
 .prof-box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:8px 12px 10px}
 .prof-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin-bottom:4px}
-.prof-head h2{font-family:var(--head);font-weight:700;font-size:1.4rem;line-height:1.1;margin:0}
-.prof-tags{display:flex;flex-wrap:wrap;gap:3px;margin:0 0 4px}
+.prof-head h2{font-family:var(--head);font-weight:700;font-size:.84rem;line-height:1.1;margin:0}
+.prof-tags{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0 0}
 .prof-tags span{font-family:var(--head);font-weight:600;font-size:.88rem;line-height:1.2;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:0 8px}
 .prof-head span{font-family:var(--head);font-weight:600;color:var(--muted)}
-.prof-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 18px}
+.prof-grid{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:6px 18px;align-items:start}
+@media (max-width:760px){.prof-grid{grid-template-columns:minmax(0,1fr)}}
 .tbl-wrap{overflow-x:auto}
+.prof-box .card h3{color:var(--ink);margin:0}
 .prof-box h3{font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);margin:6px 0 2px}
 .prof-box table{border-collapse:collapse;width:100%;font-size:.92rem}
 .prof-box th{font-family:var(--head);font-weight:600;color:var(--muted);text-align:center;padding:2px 5px;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -89,7 +81,7 @@ button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transpare
 .prof-box td.w .kw{display:block;font-family:var(--body);font-weight:400;font-size:.82rem;color:var(--muted);line-height:1.3}
 .prof-box td .cnt{color:var(--brass);margin-right:4px}
 .prof-box tr:last-child td{border-bottom:0}
-.prof-box table.stats{width:auto;min-width:min(100%,360px)}
+.prof-box table.stats{width:auto}
 .prof-box table.stats th,.prof-box table.stats td{width:4.2em}
 
 /* Phase rail */
@@ -134,6 +126,9 @@ main{max-width:1080px;margin:0 auto;padding:4px 16px 40px}
 .src{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted);line-height:1.25}
 .when{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--red)}
 .sum{margin:1px 0 0}
+.oabil .sum{font-size:1.05em}
+.oabil .card h3{font-size:.65rem}
+.opick .card h3{font-size:.91rem}
 .opts{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:3px}
 .opts li{background:var(--surface-2);border-radius:3px;padding:3px 8px;font-size:.95rem}
 .opts b{font-family:var(--head);font-size:1.02rem}
@@ -177,7 +172,6 @@ footer a{color:inherit}
   <div class="meta">
     <span>Kill Team 3rd edition · <b>Sanctifiers</b></span>
     <span>Archetype: <b>Seek &amp; Destroy / Security</b></span>
-    <span>Faction rules: <b>Blaze</b> · <b>Ministorum Sermon</b></span>
   </div>
 </header>
 
@@ -209,23 +203,18 @@ footer a{color:inherit}
 
 <main id="main"></main>
 
-<footer>Built from the Wahapedia Sanctifiers page (<a href="https://wahapedia.ru/kill-team3/kill-teams/sanctifiers/">Kill Team 3rd edition, February 2026</a>). No roster file was supplied, so every operative of the team is listed. Tap “Full rule” on any card for the original wording.</footer>
+<footer>Built from the Wahapedia Sanctifiers page (<a href="https://wahapedia.ru/kill-team3/kill-teams/sanctifiers/">Kill Team 3rd edition, February 2026</a>). Operatives shown: the roster as supplied. Operative abilities and actions are on the operative card. Tap “Full rule” on any card for the original wording.</footer>
 
 <script>
 const UNITS = {
-  confessor:"Confessor", cherub:"Cherub", conflagrator:"Conflagrator", assassin:"Death Cult Assassin",
-  abbot:"Drill Abbot", miraculist:"Miraculist", missionary:"Missionary", persecutor:"Persecutor",
+  confessor:"Confessor", cherub:"Cherub", assassin:"Death Cult Assassin",
+  abbot:"Drill Abbot", miraculist:"Miraculist", missionaryM:"Missionary (meltagun)", missionaryF:"Missionary (flamer)", persecutor:"Persecutor",
   preacher:"Preacher", reliquant:"Reliquant", salvationist:"Salvationist"
-};
-const UNIT_GROUPS = {
-  "Command & support":["confessor","cherub","abbot","reliquant","salvationist"],
-  "Fire":["conflagrator","missionary","miraculist","preacher"],
-  "Melee":["assassin","persecutor"]
 };
 const COLLAPSIBLE = ["gambit"];      // phases with a fold-away body
 const collapsed = new Set(COLLAPSIBLE); // collapsed by default
 const ALL = Object.keys(UNITS);
-const BLAZERS = ["conflagrator","persecutor","miraculist","missionary","preacher","reliquant"];
+const BLAZERS = ["persecutor","miraculist","missionaryF","preacher","reliquant"];
 const STD = ["SANCTIFIER","IMPERIUM","ADEPTUS MINISTORUM"];
 /* t: r = ranged, m = melee. wr = weapon rules. d = attack/hit/damage */
 const PROFILES = {
@@ -233,10 +222,6 @@ const PROFILES = {
   {n:"Mace of Censure",t:"m",a:"4",h:"3+",d:"5/5",wr:["Brutal","Shock"]}]},
  cherub:{apl:2,mv:"7\"",sv:"5+",w:5,base:"25mm",tags:[...STD,"CHERUB"],weapons:[
   {n:"Incentiviser",t:"m",a:"3",h:"5+",d:"1/3",wr:["Shock"]}]},
- conflagrator:{apl:2,mv:"6\"",sv:"5+",w:7,base:"25mm",tags:[...STD,"CONFLAGRATOR"],weapons:[
-  {n:"Twin hand flamers (focused)",t:"r",a:"4",h:"2+",d:"3/3",wr:["Range 6\"","Saturate","Torrent 2\"","Blaze *"]},
-  {n:"Twin hand flamers (twin torrent)",t:"r",a:"4",h:"2+",d:"3/3",wr:["Range 6\"","Saturate","Torrent 0\"","Twin Torrent 1","Blaze *"]},
-  {n:"Gun butts",t:"m",a:"4",h:"4+",d:"2/3",wr:[]}]},
  assassin:{apl:3,mv:"6\"",sv:"5+",w:8,base:"25mm",tags:[...STD,"DEATH CULT ASSASSIN"],weapons:[
   {n:"Throwing knives",t:"r",a:"4",h:"3+",d:"2/5",wr:["Range 6\"","Silent"]},
   {n:"Ritual blades",t:"m",a:"4",h:"2+",d:"4/6",wr:[]}]},
@@ -250,17 +235,13 @@ const PROFILES = {
   {n:"Wreathe in fire",t:"r",a:"4",h:"2+",d:"4/4",wr:["Blast 1\"","Limited 1","Wreathed 1","Blaze *"]},
   {n:"Burning hands",t:"m",a:"1",h:"2+",d:"7/8",wr:["Brutal","Limited 1","Blaze *"]},
   {n:"Fists",t:"m",a:"2",h:"5+",d:"1/2",wr:[]}]},
- missionary:{apl:2,mv:"6\"",sv:"5+",w:8,base:"25mm",tags:[...STD,"MISSIONARY"],
-  note:"Loadouts: Ministorum flamer + brazier of holy fire, or Ministorum flamer + gun butt + holy relic; Meltagun + chainsword + holy relic, or Plasma gun + chainsword + brazier of holy fire. Braziers only once per battle.",
-  weapons:[
-  {n:"Brazier of holy fire",t:"r",a:"4",h:"2+",d:"4/4",wr:["Range 4\"","Saturate","Torrent 1\"","Blaze *"]},
+ missionaryM:{apl:2,mv:"6\"",sv:"5+",w:8,base:"25mm",tags:[...STD,"MISSIONARY"],weapons:[
   {n:"Meltagun",t:"r",a:"4",h:"4+",d:"6/3",wr:["Range 6\"","Devastating 4","Piercing 2"]},
+  {n:"Chainsword",t:"m",a:"4",h:"4+",d:"4/5",wr:[]}]},
+ missionaryF:{apl:2,mv:"6\"",sv:"5+",w:8,base:"25mm",tags:[...STD,"MISSIONARY"],note:"Brazier of holy fire: once per battle.",weapons:[
   {n:"Ministorum flamer",t:"r",a:"4",h:"2+",d:"4/4",wr:["Range 8\"","Saturate","Torrent 2\"","Blaze *"]},
-  {n:"Plasma gun (standard)",t:"r",a:"4",h:"4+",d:"4/6",wr:["Piercing 1"]},
-  {n:"Plasma gun (supercharge)",t:"r",a:"4",h:"4+",d:"5/6",wr:["Hot","Lethal 5+","Piercing 1"]},
-  {n:"Brazier of holy fire",t:"m",a:"4",h:"4+",d:"4/4",wr:["Shock","Blaze *"]},
-  {n:"Chainsword",t:"m",a:"4",h:"4+",d:"4/5",wr:[]},
-  {n:"Gun butt",t:"m",a:"3",h:"4+",d:"2/3",wr:[]}]},
+  {n:"Brazier of holy fire",t:"r",a:"4",h:"2+",d:"4/4",wr:["Range 4\"","Saturate","Torrent 1\"","Blaze *"]},
+  {n:"Brazier of holy fire",t:"m",a:"4",h:"4+",d:"4/4",wr:["Shock","Blaze *"]}]},
  preacher:{apl:2,mv:"6\"",sv:"5+",w:7,base:"25mm",tags:[...STD,"PREACHER"],note:"Up to four Preachers in the team.",weapons:[
   {n:"Hand flamer",t:"r",a:"4",h:"2+",d:"3/3",wr:["Range 6\"","Saturate","Torrent 1\"","Blaze *"]},
   {n:"Chainsword",t:"m",a:"4",h:"4+",d:"4/5",wr:[]}]},
@@ -275,93 +256,91 @@ const PROFILES = {
 
 const PHASES = [
   {id:"gambit", n:"1", name:"Strategic Gambit", short:"Strategic Gambit", desc:"Strategy phase: Ready step, then the gambit.", colA:"Gambit & equipment", colB:"Ploys"},
-  {id:"action", n:"2", name:"Action", short:"Action", desc:"Activations and counteractions: operative abilities, unique actions, strategy and firefight ploys.", colA:"Operative abilities & equipment", colB:"Strategy & firefight ploys"}
+  {id:"action", n:"2", name:"Action", short:"Action", desc:"Activations and counteractions: equipment, strategy and firefight ploys. Operative abilities and actions are on the operative card (Show operative).", colA:"Equipment", colB:"Strategy & firefight ploys"}
 ];
 
 /* kind: army = faction rule (ink), unit = operative ability (grey), enh = equipment (teal), sploy = strategy ploy (brass), fploy = firefight ploy (red) */
 const E = [
 /* ---------- STRATEGIC GAMBIT ---------- */
 {id:"texts",hint:"gain CP from Orator",ph:"gambit",kind:"enh",name:"Ecclesiarchy Texts",src:"Faction equipment",units:ALL,when:"Ready step of each Strategy phase, before the Gambit step",
- sum:`Roll 3D6: if the result is less than the remaining wounds of a friendly ORATOR operative, you gain 1CP.`,
+ sum:`Roll 3D6 in Ready step: under a friendly ORATOR's remaining wounds, gain 1CP.`,
  note:`No valid ORATOR means no roll, so it can't be used in the first turning point.`},
 {id:"sermon",ph:"gambit",kind:"army",name:"Ministorum Sermon",src:"Faction rule · Strategic gambit",units:ALL,when:"Strategic gambit",
  sum:`Select one friendly SANCTIFIER operative (you must pick the Confessor if it isn't incapacitated). It has ORATOR until you use this gambit again. SANCTIFIERS within 3" of an ORATOR (6" if it is the Confessor) benefit from the SERMON: Normal and Critical Dmg of 4 or more inflicts 1 less damage.`,
  note:`Also benefitting until the end of an activation if the operative was activated within range, even if it then moves away.`},
 {id:"emperor",ph:"action",kind:"sploy",name:"The Emperor Protects",hint:"re-roll defence dice",src:"Strategy ploy",units:ALL,
- sum:`Whenever an operative is shooting a friendly SANCTIFIER operative benefitting from the SERMON, you can re-roll any of your defence dice results of one result (e.g. results of 2).`},
+ sum:`Re-roll defence dice of one result when shot while benefitting from the SERMON.`},
 {id:"fervent",ph:"action",kind:"sploy",name:"Fervent Brawl",hint:"Ceaseless in melee",src:"Strategy ploy",units:ALL,
- sum:`Whenever a friendly SANCTIFIER operative benefitting from the SERMON is fighting or retaliating, its melee weapons have Ceaseless (re-roll attack dice results of one result).`},
+ sum:`SERMON-benefitting SANCTIFIERS fighting or retaliating get Ceaseless on melee weapons.`},
 {id:"zealous",ph:"action",kind:"sploy",name:"Zealous Persecution",hint:"Lethal 5+ after Charge",src:"Strategy ploy",units:ALL,
- sum:`Whenever a friendly SANCTIFIER operative is fighting during an activation in which it performed the Charge action, its melee weapons have Lethal 5+.`},
+ sum:`SANCTIFIER fighting after a Charge gets Lethal 5+ on melee weapons.`},
 {id:"rally",ph:"action",kind:"sploy",name:"Rally the Flock",hint:"free Dash / Fall Back",src:"Strategy ploy",units:ALL,
- sum:`Each friendly SANCTIFIER (not ORATOR) benefitting from the SERMON can immediately perform a free Dash or Fall Back (max 3") in any order. Each must end closer and visible to (or vice versa) a friendly ORATOR. Not in the first turning point.`},
+ sum:`SERMON-benefitting non-ORATOR SANCTIFIERS free Dash or Fall Back (max 3"), ending near an ORATOR.`},
 
 /* Strategy ploys (cards above, marked ph:"action") are shown in the Action tab */
 /* ---------- ACTION: faction rule and equipment ---------- */
-{id:"orb",hint:"Doused tokens",ph:"action",kind:"enh",name:"Sanctification Orb",src:"Faction equipment · unique action",cost:"1AP",units:["confessor","conflagrator","abbot","persecutor","missionary","preacher","reliquant","salvationist"],when:"Once per turning point (team). Not Cherub, Death Cult Assassin or Miraculist",
- sum:`Select an enemy operative visible to and within 6". It and each other enemy operative within 1" of it takes a doused test: roll a D6, on a 3+ it gains a Doused token. Blaze weapons shooting a Doused operative also have Seek; the token is removed after a Blaze weapon is used against it.`,
- note:`Cannot be performed within control range of an enemy operative. The Conflagrator's Sanctification Rack gives it its own use that doesn't count towards the limit.`},
+{id:"orb",hint:"Doused tokens",ph:"action",kind:"enh",name:"Sanctification Orb",src:"Faction equipment · unique action",cost:"1AP",units:["confessor","abbot","persecutor","missionaryF","missionaryM","preacher","reliquant","salvationist"],when:"Once per turning point (team). Not Cherub, Death Cult Assassin or Miraculist",
+ sum:`Visible enemy within 6" and those within 1": D6, 3+ gains Doused (Blaze shots Seek).`,
+ note:`Cannot be performed within control range of an enemy operative.`},
 {id:"seals",hint:"turn a fail into a success",ph:"action",kind:"enh",name:"Purity Seals",src:"Faction equipment",units:ALL,when:"Once per turning point · shooting or fighting",
- sum:`When a friendly SANCTIFIER is shooting or fighting and you roll two or more fails, discard one of them to retain another as a normal success instead.`},
+ sum:`With two or more fails, discard one to turn another into a normal success.`},
 {id:"symbols",hint:"cut a critical when shot",ph:"action",kind:"enh",name:"Imperial Cult Symbols",src:"Faction equipment",units:ALL,when:"Once per turning point · when shot while benefitting from the SERMON",
- sum:`When an operative shoots a friendly SANCTIFIER benefitting from the SERMON, as you collect your defence dice, change one of the attacker's retained critical successes to a normal success.`,
+ sum:`When shot while under the SERMON, change one attacker's critical success to normal.`,
  note:`Weapon rules already resolved (e.g. Piercing Crits) aren't affected.`},
 
-/* ---------- ACTION: operative abilities ---------- */
+/* ---------- operative abilities and actions: shown on the operative card (kind unit) ---------- */
 {id:"lead",ph:"action",kind:"unit",name:"Lead the Procession",src:"Confessor",units:["confessor"],when:"After the first turning point · Charge, Fall Back or Reposition as an ORATOR",
- sum:`Use before moving. Each other friendly SANCTIFIER benefitting from the SERMON and visible to the Confessor (or vice versa) can then perform a free Charge, Fall Back or Reposition (max 3", any order), ending where it still benefits from the SERMON.`,
+ sum:`Free Charge, Fall Back or Reposition (max 3") for SERMON-benefitting SANCTIFIERS visible to the Confessor.`,
  note:`If the Confessor is incapacitated mid-rule (e.g. by Guard), don't remove it until the rule is resolved.`},
 {id:"declaim",ph:"action",kind:"unit",name:"Commanding Declamation",src:"Confessor",units:["confessor"],when:`Once per battle · an enemy within 6" would perform an action`,
- sum:`When a visible enemy within 6" would perform an action, roll a D6: if higher than its APL, it cannot perform that action (AP not refunded; a counteraction ends).`,
+ sum:`Enemy within 6" rolls D6; above its APL, it can't perform the action.`,
  note:`FAQ: a cancelled action required by an enemy rule doesn't cancel its activation, and CP isn't refunded. Against an operative on guard, the opponent can choose the other of Fight or Shoot.`},
 {id:"cherub",ph:"action",kind:"unit",name:"Cherub",src:"Cherub",units:["cherub"],
- sum:`Counts as 1 lower APL when determining control of an objective marker. With a Conceal order and in cover it cannot be a valid target (except within 2"). Can only use its datacard weapons and the Incentivise action.`},
+ sum:`Counts 1 lower APL for objectives; Conceal and cover makes it untargetable beyond 2".`},
 {id:"incentivise",ph:"action",kind:"unit",name:"Incentivise",src:"Cherub · unique action",cost:"1AP",units:["cherub"],
- sum:`SUPPORT. Select another friendly SANCTIFIER (not Confessor, Death Cult Assassin, Miraculist or ORATOR) visible and within 2". Until the end of its next activation, add 1 to its APL.`,
+ sum:`SUPPORT: a visible SANCTIFIER within 2" gets +1 APL until its next activation ends.`,
  note:`Cannot be performed within control range of an enemy operative.`},
-{id:"rack",ph:"action",kind:"unit",name:"Sanctification Rack",src:"Conflagrator",units:["conflagrator"],cost:"1AP",
- sum:`This operative can perform the Sanctification Orb action. Doing so doesn't count towards the once per turning point limit.`},
 {id:"bladed",ph:"action",kind:"unit",name:"Bladed Stance",src:"Death Cult Assassin",units:["assassin"],when:"Fighting or retaliating",
- sum:`You can resolve one of your successes before the normal order. That success must be used to block.`},
+ sum:`Resolve one success before the normal order, used to block.`},
 {id:"trained",ph:"action",kind:"unit",name:"Trained Assassin",src:"Death Cult Assassin · unique action",cost:"1AP",units:["assassin"],
  sum:`Change this operative's order.`,
  note:`Cannot be performed within control range of an enemy operative.`},
 {id:"discipl",ph:"action",kind:"unit",name:"Schola Progenium Disciplinarian",src:"Drill Abbot",units:["abbot"],
- sum:`Friendly SANCTIFIERS within 6" of the Drill Abbot ignore changes to their stats from being injured (including weapon stats).`},
+ sum:`SANCTIFIERS within 6" ignore stat changes from injury.`},
 {id:"nullskull",ph:"action",kind:"unit",name:"Null Skull",src:"Drill Abbot",units:["abbot"],
- sum:`Enemy operatives within 4" cannot have their APL added to (remove all positive APL changes).`,
+ sum:`Enemies within 4" can't gain APL (positive APL changes removed).`,
  note:`If an enemy more than 4" away spends its final AP to move within 4", it may have spent more AP than its APL; this is permitted.`},
 {id:"castigation",ph:"action",kind:"unit",name:"Merciless Castigation",src:"Persecutor",units:["persecutor"],when:"First Fight action in each activation",
- sum:`If neither it nor the enemy in that sequence is incapacitated, it can immediately perform a free Fight action against the same enemy (if still valid). Takes precedence over action restrictions.`},
+ sum:`After its first Fight, if both survive, free Fight against the same enemy.`},
 {id:"retribution",ph:"action",kind:"unit",name:"Fanatical Retribution",src:"Persecutor",units:["persecutor"],when:"Incapacitated during the Fight action",
- sum:`You can strike the enemy operative in that sequence with one of your unresolved successes before this operative is removed.`},
+ sum:`If incapacitated while fighting, strike the enemy with one unresolved success first.`},
 {id:"miracle",ph:"action",kind:"unit",name:"Miracle",src:"Miraculist",units:["miraculist"],when:"First time it would be incapacitated this battle",
- sum:`It isn't incapacitated: 1 wound remaining and cannot be incapacitated for the rest of the action. Remaining attack dice are discarded (yours too if fighting or retaliating), then it performs a free Dash or Fall Back (max 3"), even if an action prevents it.`},
-{id:"relic",ph:"action",kind:"unit",name:"Holy Relic",src:"Missionary",units:["missionary"],
- sum:`If this operative has a holy relic, it's always benefitting from the SERMON.`},
-{id:"spread",ph:"action",kind:"unit",name:"Spread the Word of the God-Emperor",src:"Missionary",units:["missionary"],
- sum:`While more than 6" from other friendly operatives, its weapons have Severe.`},
+ sum:`First time it'd be incapacitated: survives on 1 wound, then free Dash or Fall Back.`},
+{id:"relic",ph:"action",kind:"unit",name:"Holy Relic",src:"Missionary",units:["missionaryM"],
+ sum:`With a holy relic, always benefits from the SERMON.`},
+{id:"spread",ph:"action",kind:"unit",name:"Spread the Word of the God-Emperor",src:"Missionary",units:["missionaryM","missionaryF"],
+ sum:`More than 6" from friendly operatives: weapons have Severe.`},
 {id:"defend",ph:"action",kind:"unit",name:"Defend the Faith",src:"Preacher",units:["preacher"],
- sum:`While it controls an objective marker, it's benefitting from the SERMON.`},
+ sum:`While controlling an objective marker, benefits from the SERMON.`},
 {id:"cult",ph:"action",kind:"unit",name:"Cult Icon",src:"Reliquant",units:["reliquant"],
- sum:`Controlling a marker within 4" of the Reliquant: treat the total APL of friendly SANCTIFIERS contesting it as 1 higher if at least one contests it.`},
+ sum:`Friendly SANCTIFIERS contesting a marker within 4" count as 1 APL higher.`},
 {id:"devotion",ph:"action",kind:"unit",name:"Imperial Cult Devotion",src:"Reliquant",units:["reliquant"],when:"Once per turning point · a friendly operative is incapacitated",
- sum:`When a ready friendly SANCTIFIER visible to and within 6" is incapacitated, before it's removed it can perform one free action (not Fight), and you can change its order to do so.`},
+ sum:`Once per turning point, an incapacitated SANCTIFIER within 6" gets one free action first.`},
 {id:"conversion",ph:"action",kind:"unit",name:"Conversion Field",src:"Salvationist",units:["salvationist"],when:`Being shot from more than 6" away`,
- sum:`When an operative more than 6" from the Salvationist shoots a friendly SANCTIFIER within 6" of it, improve that friendly operative's Save by 1.`},
+ sum:`Shot from over 6" away: friendly SANCTIFIERS within 6" of it improve Save by 1.`},
 {id:"medikit",ph:"action",kind:"unit",name:"Medikit",src:"Salvationist · unique action",cost:"1AP",units:["salvationist"],
- sum:`Select a friendly SANCTIFIER within control range to regain up to 2D3 lost wounds.`,
+ sum:`A SANCTIFIER in control range regains up to 2D3 wounds.`,
  note:`Cannot be performed within control range of an enemy operative.`},
 
 /* ---------- ACTION: firefight ploys ---------- */
 {id:"rosarius",ph:"action",kind:"fploy",name:"Rosarius",hint:"ignore Normal Dmg",src:"Firefight ploy",units:ALL,when:"An attack dice inflicts Normal Dmg on a friendly SANCTIFIER",
  sum:`Ignore that inflicted damage.`},
 {id:"ardent",ph:"action",kind:"fploy",name:"Ardent Eradication",hint:"re-roll attack dice near Orator",src:"Firefight ploy",units:ALL,when:"After rolling attack dice for a friendly SANCTIFIER",
- sum:`If it is shooting or fighting an enemy within 3" of a friendly ORATOR (6" if the ORATOR is the Confessor), you can re-roll any of your attack dice.`},
+ sum:`Re-roll attack dice vs an enemy within 3" of an ORATOR (6" Confessor).`},
 {id:"redeemed",ph:"action",kind:"fploy",name:"Redeemed Through Fire",hint:"Blaze tokens on death",src:"Firefight ploy",units:BLAZERS,when:"A friendly SANCTIFIER with a Blaze weapon is incapacitated, before removal",
- sum:`Each enemy operative visible to and within 2" of it gains one of your Blaze tokens (if it doesn't already have one).`},
+ sum:`Each enemy visible within 2" of it gains one Blaze token.`},
 {id:"unwavering",ph:"action",kind:"fploy",name:"Unwavering Devotion",hint:"redirect Shoot / Fight",src:"Firefight ploy",units:ALL,when:"A friendly ORATOR or MIRACULIST is the valid target of a Shoot or fought against",
- sum:`Select another friendly SANCTIFIER (not Confessor, Miraculist or ORATOR) visible to and within 3" of it to become the valid target / be fought against instead, even if it wouldn't normally be valid.`,
+ sum:`Another SANCTIFIER within 3" becomes the valid target or is fought instead.`,
  note:`No effect on a Shoot action with Blast or Torrent. On Fight, treat that operative as within the fighter's control range. On Shoot, it is only in cover or obscured if the original target was.`}
 ];
 
@@ -384,10 +363,11 @@ for(const k of Object.keys(TRACKS)){
   state[k]=Array.isArray(state[k])?state[k].filter(v=>valid.includes(v)):[];
 }
 
-function cardHTML(e){
-  return `<article class="card k-${e.kind}" id="c-${e.id}" data-id="${e.id}">
+function cardHTML(e,pre="c"){
+  const src=pre==="u"&&e.kind==="unit"?e.src.split(" · ").slice(1).join(" · "):e.src;  // operative name is on its card
+  return `<article class="card k-${e.kind}" id="${pre}-${e.id}" data-id="${e.id}">
     <div class="card-top"><h3>${esc(e.name)}</h3>${e.cost?`<span class="cost">${esc(e.cost)}</span>`:""}</div>
-    <div class="src">${esc(e.src)}</div>
+    ${src?`<div class="src">${esc(src)}</div>`:""}
     ${e.when?`<div class="when">${esc(e.when)}</div>`:""}
     <p class="sum">${esc(e.sum)}</p>
     ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
@@ -403,7 +383,7 @@ function matches(e){
 function render(){
   const main=document.getElementById("main");
   main.innerHTML = PHASES.map(p=>{
-    const items=E.filter(e=>e.ph===p.id && matches(e));
+    const items=E.filter(e=>e.ph===p.id && e.kind!=="unit" && matches(e));
     const rem=(REMIND[p.id]||[]).map(id=>byId[id]).filter(e=>e && matches(e));
     const isPloy=e=>e.kind==="sploy"||e.kind==="fploy";
     const a=items.filter(e=>!isPloy(e)), b=items.filter(isPloy);
@@ -426,8 +406,7 @@ function buildRail(){
 }
 function buildPicks(){
   for(const [k,kind] of Object.entries(TRACKS)){
-    document.getElementById("pick-"+k).innerHTML = `<button data-v="none">None</button>`+
-      E.filter(e=>e.kind===kind).map(e=>`<button data-v="${e.id}">${esc(e.name)} · ${esc(e.hint)}</button>`).join("");
+    document.getElementById("pick-"+k).innerHTML = E.filter(e=>e.kind===kind).map(e=>`<button data-v="${e.id}">${esc(e.hint)}</button>`).join("");
   }
 }
 function ruleKey(wr){ return (wr.match(/^[A-Za-z ]+/)||[""])[0].trim().toLowerCase(); }
@@ -436,21 +415,25 @@ function renderProfile(){
   const u=state.unit && PROFILES[state.unit];
   if(!u){box.hidden=true; box.innerHTML=""; return;}
   const stats=`<div class="tbl-wrap"><table class="stats"><thead><tr><th>APL</th><th>Move</th><th>Save</th><th>Wounds</th></tr></thead><tbody><tr><td>${esc(u.apl)}</td><td>${esc(u.mv)}</td><td>${esc(u.sv)}</td><td>${esc(u.w)}</td></tr></tbody></table></div>`;
-  const wtable=list=>list.length?`<div class="tbl-wrap"><table><thead><tr><th>Weapon</th><th>Atk</th><th>Hit</th><th>Dmg</th></tr></thead><tbody>${
+  const wtable=(list,type)=>list.length?`<div class="tbl-wrap"><table><thead><tr><th>${type}</th><th>Atk</th><th>Hit</th><th>Dmg</th></tr></thead><tbody>${
     list.map(w=>`<tr><td class="w">${esc(w.n)}${w.wr.length?`<span class="kw">${esc(w.wr.join(", "))}</span>`:""}</td><td>${esc(w.a)}</td><td>${esc(w.h)}</td><td>${esc(w.d)}</td></tr>`).join("")}</tbody></table></div>`:"";
   const ranged=u.weapons.filter(w=>w.t==="r"), melee=u.weapons.filter(w=>w.t==="m");
   const keys=[...new Set(u.weapons.flatMap(w=>w.wr.map(ruleKey)))].sort();
+  const abil=E.filter(e=>e.kind==="unit" && e.units.includes(state.unit));
+  const picked=E.filter(e=>PICKED_KINDS[e.kind] && matches(e));
   const glossary=keys.length?`<details class="rules"><summary>Weapon rules used here</summary>${keys.map(k=>`<p><b>${esc(k.replace(/\b\w/g,c=>c.toUpperCase()))}:</b> <span data-k="w:${esc(k)}"></span></p>`).join("")}</details>`:"";
   box.innerHTML=`<div class="prof-box">
     <div class="prof-head"><h2>${esc(UNITS[state.unit])}</h2><span>⌀${esc(u.base)} base</span></div>
-    <div class="prof-tags" aria-label="Keywords">${u.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>
     <div class="prof-grid">
       <div>${stats}</div>
-      ${ranged.length?`<div><h3>Ranged weapons</h3>${wtable(ranged)}</div>`:""}
-      ${melee.length?`<div><h3>Melee weapons</h3>${wtable(melee)}</div>`:""}
+      ${ranged.length?`<div>${wtable(ranged,"Ranged weapon")}</div>`:""}
+      ${melee.length?`<div>${wtable(melee,"Melee weapon")}</div>`:""}
     </div>
     ${u.note?`<div class="note">${esc(u.note)}</div>`:""}
-    ${glossary}</div>`;
+    ${abil.length?`<h3>Abilities &amp; actions</h3><div class="grid oabil">${abil.map(e=>cardHTML(e,"u")).join("")}</div>`:""}
+    ${picked.length?`<h3>Picked ploys &amp; equipment</h3><div class="grid opick">${picked.map(e=>cardHTML(e,"u")).join("")}</div>`:""}
+    ${glossary}
+    <div class="prof-tags" aria-label="Keywords">${u.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div>`;
   box.hidden=false;
   fill();
 }
@@ -466,9 +449,7 @@ function fill(){
 function buildChips(){
   const wrap=document.getElementById("chips");
   const chip=(k)=>`<button class="chip" data-u="${k}" aria-pressed="${state.unit===k}">${esc(UNITS[k])}</button>`;
-  wrap.innerHTML=`<button class="chip" data-u="" aria-pressed="${!state.unit}">All</button>`+
-    `<div class="chip-cols">`+Object.entries(UNIT_GROUPS).map(([g,keys])=>
-      `<div class="chip-col"><h4>${esc(g)}</h4>${[...keys].sort((a,b)=>UNITS[a].localeCompare(UNITS[b])).map(chip).join("")}</div>`).join("")+`</div>`;
+  wrap.innerHTML=`<div class="chip-cols">`+Object.keys(UNITS).sort((a,b)=>UNITS[a].localeCompare(UNITS[b])).map(chip).join("")+`</div>`;
 }
 
 let io, activePhase=null;
@@ -498,20 +479,20 @@ document.querySelectorAll(".pick[data-track]").forEach(group=>{
   const key=group.dataset.track;
   const sync=()=>group.querySelectorAll("button").forEach(b=>{
     const v=b.dataset.v;
-    b.setAttribute("aria-pressed", v==="none" ? !state[key].length : state[key].includes(v));
+    b.setAttribute("aria-pressed", state[key].includes(v));
   });
   sync();
   group.addEventListener("click",ev=>{
     const b=ev.target.closest("button"); if(!b) return;
     const v=b.dataset.v;
-    state[key]= v==="none" ? [] : (state[key].includes(v) ? state[key].filter(x=>x!==v) : [...state[key],v]);
-    store.set(key,state[key]); sync(); render();
+    state[key]= state[key].includes(v) ? state[key].filter(x=>x!==v) : [...state[key],v];
+    store.set(key,state[key]); sync(); renderProfile(); render();
   });
 });
 document.getElementById("toTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 document.getElementById("chips").addEventListener("click",ev=>{
   const b=ev.target.closest(".chip"); if(!b) return;
-  state.unit=b.dataset.u||null; buildChips(); renderProfile(); render();
+  state.unit=state.unit===b.dataset.u?null:b.dataset.u; buildChips(); renderProfile(); render();
 });
 function setFold(sec,open){
   const head=sec.querySelector("[data-fold]"); if(!head) return;
