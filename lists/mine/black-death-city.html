@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guild Mercenaries · Black Death City Reference</title>
+<style>
+:root{
+  --bg:#efe9e6; --surface:#faf6f4; --surface-2:#f3ecea; --ink:#24130f; --muted:#6d5d52;
+  --brass:#8a6a1f; --red:#8e1f17; --teal:#2f6f64; --blue:#2f5f9a; --line:#d9ccc8; --chip:#e8dfdb;
+  --head:"Avenir Next Condensed","Arial Narrow","DIN Condensed",sans-serif;
+  --body:Charter,"Iowan Old Style",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1e1a1c; --surface:#2b2427; --surface-2:#352c30; --ink:#ece3d6; --muted:#ab9b8d;
+    --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --blue:#7aa7d9; --line:#4f4146; --chip:#3a2f33;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1e1a1c; --surface:#2b2427; --surface-2:#352c30; --ink:#ece3d6; --muted:#ab9b8d;
+  --brass:#d1aa52; --red:#c9473c; --teal:#78b3a6; --blue:#7aa7d9; --line:#4f4146; --chip:#3a2f33;
+}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+button,a,summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.chip,summary{position:relative}
+.chip::after,summary::after{content:"";position:absolute;inset:-4px -2px}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.hero,.controls,main{max-width:1080px;margin:0 auto;padding-left:16px;padding-right:16px}
+.hero{padding-top:10px;padding-bottom:6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px}
+.hero .back{flex-basis:100%;font-family:var(--head);font-weight:600;font-size:1rem;color:var(--muted);text-decoration:none}
+.hero .back:hover{color:var(--red)}
+.hero h1{font-family:var(--head);font-weight:700;font-size:clamp(1.35rem,3.2vw,1.75rem);line-height:1.1;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:2px 18px;font-family:var(--head);font-size:1rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:700}
+.controls{padding-bottom:10px;display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.ctrl-label{font-family:var(--head);font-weight:600;color:var(--muted);font-size:1rem;margin-right:4px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 11px;font-family:var(--head);font-weight:600;font-size:.8rem;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+main{padding-bottom:40px;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.op{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:8px 12px 10px;min-width:0}
+.op.leader{border-left-color:var(--brass)}
+.two{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 18px;align-items:start}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.op-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.op h2{font-family:var(--head);font-weight:700;font-size:1.45rem;line-height:1.1;margin:0}
+.op h2 small{color:var(--brass);font-size:1rem;margin-left:4px}
+.cost{font-family:var(--head);font-weight:700;color:var(--brass);margin-left:auto;white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin:4px 0 0}
+.tags span{font-family:var(--head);font-weight:600;font-size:.88rem;line-height:1.2;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.op h3{font-family:var(--head);font-weight:700;font-size:1rem;color:var(--muted);margin:8px 0 2px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th{font-family:var(--head);font-weight:600;color:var(--muted);text-align:center;padding:2px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{text-align:center;padding:3px 4px;border-bottom:1px solid var(--line);font-family:var(--head);font-weight:600;font-size:1rem;white-space:nowrap}
+th:first-child,td:first-child,td.l{text-align:left}
+td.l{white-space:normal;min-width:5em;text-align:left}
+.rn{position:relative;border:1px solid var(--line);border-left:4px solid var(--brass);background:var(--chip);border-radius:999px;padding:1px 10px;margin:1px 3px 1px 0;font-family:var(--head);font-weight:600;font-size:.9rem;line-height:1.3;cursor:pointer}
+.rn::after{content:"";position:absolute;inset:-4px -2px}
+.rn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tt{margin:4px 0 0;font-size:.92rem;background:var(--surface-2);border-radius:3px;padding:4px 8px}
+.tt[hidden]{display:none}
+.tt b{font-family:var(--head);font-size:1.02rem;color:var(--brass)}
+tr:last-child td{border-bottom:0}
+.gear{display:flex;flex-wrap:wrap;gap:3px 6px;font-family:var(--head);font-weight:600}
+.gear span{background:var(--surface-2);border-radius:3px;padding:0 8px}
+.gear i{font-style:normal;color:var(--brass);margin-left:4px}
+.rule{margin:3px 0 0;font-size:.95rem}
+.rule b{font-family:var(--head);font-size:1.02rem}
+.gl{display:grid;gap:3px;margin:0;font-size:.9rem}
+.gl b{font-family:var(--head)}
+details{padding-top:2px}
+summary{cursor:pointer;font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--muted)}
+details p{font-size:.92rem;margin:3px 0 0}
+.lore{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}
+.sp{background:var(--surface-2);border-left:3px solid var(--blue);border-radius:3px;padding:4px 10px;font-size:.95rem;min-width:0}
+.lore.pr .sp{border-left-color:var(--brass)}
+.sp.sig{outline:2px solid var(--red)}
+.sp summary{display:flex;gap:8px;align-items:baseline;font-size:1.15rem;line-height:1.2;color:var(--ink);font-weight:700}
+.sp summary em{font-style:normal;color:var(--muted);font-weight:600;font-size:.95rem}
+.sp summary u{text-decoration:none;color:var(--red);font-size:.85rem}
+.sp summary b{margin-left:auto;color:var(--red);white-space:nowrap}
+.sp p{margin:2px 0 0}
+.sp .cr{color:var(--muted)}
+.sp .cr b{font-family:var(--head);color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="hero">
+  <a class="back" href="../../index.html">← All army lists</a>
+  <h1>Guild Mercenaries</h1>
+  <div class="meta"><span>Black Death City · Playtest 1.01</span><span id="tot"></span></div>
+</div>
+<div class="controls" id="chips"></div>
+<main id="ops"></main>
+<script>
+const WEAP = {
+  staff:["Arcane Staff",2,"-",1,"d3",["Arcane","Off-hand"]],
+  sword:["Sword",3,"-",1,"d3",["Guard","Off-hand"]],
+  flail:["Flail",3,"-",1,"d3",["Wrap"]],
+  hammer:["Warhammer",3,-1,2,"d3+1",["Bludgeon","Two-handed","Unwieldy"]],
+  bite:["Vicious Bite",3,"-",1,"d3",["Natural Weapon"]]
+};
+const STAT = ["Move","Blade","Bow","Armour","Initiative","Willpower","Life"];
+const FIGHTERS = {
+  wizard:{name:"High Wizard of the Guild",n:1,leader:1,tags:"Leader, Mercenary, Human, Wizard",cost:165,
+    stats:[`5"`,"4+","6+","6+",3,5,5],melee:["staff"],
+    gear:[["Arcane Staff",10],["Grimoire",15]],lore:"sanct",sig:["Eldritch Barrier","Flaming Weapon"],loreName:"Lore of Sanctioned Magic",
+    rules:[["Master of Spellcraft","This fighter knows the Lore of Sanctioned Magic. When they are recruited, pick 2 spells from it to be their signature spells. In addition, at the start of each battle they prepare 1 random spell from it."]]},
+  cleric:{name:"Guild Cleric",n:1,tags:"Champion, Mercenary, Human, Priest",cost:120,
+    stats:[`5"`,"4+","6+","6+",3,4,4],melee:["staff"],
+    gear:[["Arcane Staff",10],["Grimoire",15]],lore:"saints",sig:["Bless Thy Blade"],loreName:"Lore of the Saints",
+    rules:[["Holy Magic","This fighter knows the Lore of the Saints. When they are recruited, pick 1 spell from it to be their signature spell. In addition, at the start of each battle they prepare 1 random spell from it."]]},
+  champA:{name:"Guild Champion",sub:"Full-Plate, Sword, Flail",chip:"Champion (Sword, Flail)",n:1,tags:"Champion, Mercenary, Human",cost:90,
+    stats:[`5"`,"3+","4+","4+",3,3,5],melee:["sword","flail"],
+    gear:[["Full-Plate",40],["Sword",18],["Flail",14],["Wooden Stakes",5]],
+    rules:[["Skill: Right On Time","You can re-roll reinforcement rolls made for a battle group that includes this fighter."]]},
+  champB:{name:"Guild Champion",sub:"Full-Plate, Warhammer",chip:"Champion (Warhammer)",n:1,tags:"Champion, Mercenary, Human",cost:90,
+    stats:[`5"`,"3+","4+","4+",3,3,5],melee:["hammer"],
+    gear:[["Full-Plate",40],["Warhammer",38]],
+    rules:[["Skill: Feint","Once per melee attack action, after an enemy has successfully parried one of this fighter's hits, this fighter can attempt a feint. To do so, roll a dice. If the roll equals or exceeds the parry roll, the hit is not parried and it becomes a critical hit."]]},
+  dog:{name:"Hunting Dog",n:3,tags:"Beast, Mercenary, Dog",cost:30,
+    stats:[`7"`,"3+","-","6+",4,1,3],melee:["bite"],gear:[],
+    rules:[["Sniff 'em Out","Enemy fighters that are hidden are not hidden while they are within 9\" of this fighter."],["Trackers","Each aftermath sequence, when you search the city. If your search party includes any Hunting Dogs, you can re-roll the exploration roll."]]},
+  merc:{name:"Guild Mercenary",sub:"Shield, Sword",n:3,tags:"Henchman, Mercenary, Human",cost:50,
+    stats:[`5"`,"4+","4+","5+",3,3,4],melee:["sword"],
+    gear:[["Shield",10],["Sword",18]],armourNote:"6+, 5+ with Shield"}
+};
+const KEYS = Object.keys(FIGHTERS);
+const R = () => window.BDC_RULES || {t:{},g:{},l:{}};
+function total(){return KEYS.reduce((a,k)=>{const f=FIGHTERS[k];return a+f.n*(f.cost+f.gear.reduce((x,g)=>x+g[1],0))},0)}
+function silver(k){const f=FIGHTERS[k];return f.cost+f.gear.reduce((x,g)=>x+g[1],0)}
+function card(k){
+  const f=FIGHTERS[k], w=f.melee.map(x=>WEAP[x]);
+  const heldGear=f.gear.filter(g=>g[0]!=="Sword"&&g[0]!=="Flail"&&g[0]!=="Warhammer"&&g[0]!=="Arcane Staff");
+  const hasShield=f.gear.some(g=>g[0]==="Shield");
+  let h=`<section class="op${f.leader?" leader":""}" id="${k}"><div class="op-head"><h2>${f.name}${f.n>1?`<small>×${f.n}</small>`:""}${f.sub?`<small>${f.sub}</small>`:""}</h2><span class="cost">${silver(k)}s${f.n>1?` each · ${silver(k)*f.n}s`:""}</span></div>`;
+  h+=`<div class="tags">${f.tags.split(", ").map(t=>`<span>${t}</span>`).join("")}</div>`;
+  h+=`<div class="two"><div><h3>Stats</h3><div class="tw"><table><tr>${STAT.map(s=>`<th>${s}</th>`).join("")}</tr><tr>${f.stats.map(v=>`<td>${v}</td>`).join("")}</tr></table></div></div><div><h3>Melee weapons</h3><div class="tw"><table><tr><th>Name</th><th>Atk</th><th>Rend</th><th>Dmg</th><th>Crit</th><th>Traits</th></tr>${w.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${x[4]}</td><td class="l">${x[5].map(t=>`<button type="button" class="rn" data-t="${t}" aria-pressed="false">${t}</button>`).join("")}</td></tr>`).join("")}</table></div><p class="tt" hidden></p></div></div>`;
+  if(f.gear.length)h+=`<h3>Equipment</h3><div class="gear">${f.gear.map(g=>`<span>${g[0]}<i>${g[1]}s</i></span>`).join("")}</div>`;
+  if(f.armourNote)h+=`<p class="rule"><b>Armour:</b> ${f.armourNote}</p>`;
+  if(f.rules)h+=f.rules.map(r=>`<p class="rule"><b>${r[0]}:</b> ${r[1]}</p>`).join("");
+  const gk=heldGear.map(g=>g[0]);
+  h+=`<div class="gl" data-gl="${[...gk,...(hasShield?["Held"]:[])].join("|")}"></div>`;
+  if(f.lore)h+=`<h3>${f.loreName}</h3><div class="lore${f.lore==="saints"?" pr":""}" data-lore="${f.lore}" data-sig="${f.sig.join("|")}"></div>`;
+  return h+`</section>`;
+}
+function fill(){
+  const r=R();
+  document.querySelectorAll("[data-gl]").forEach(el=>{
+    const gs=el.dataset.gl?el.dataset.gl.split("|"):[];
+    let h="";
+    gs.forEach(n=>{if(r.g&&r.g[n])h+=`<p><b>${n==="Held"?"Held items":n}:</b> ${r.g[n]}</p>`});
+    el.innerHTML=h?`<details><summary>Rules reminders</summary>${h}</details>`:"";
+  });
+  document.querySelectorAll("[data-lore]").forEach(el=>{
+    const l=r.l&&r.l[el.dataset.lore]; if(!l||el.children.length)return;
+    const sig=el.dataset.sig.split("|");
+    el.innerHTML=l.map((s,i)=>`<details class="sp${sig.includes(s[0])?" sig":""}"><summary><span>${i+1} · ${s[0]}</span><em>${s[1]}</em>${sig.includes(s[0])?`<u>Signature</u>`:""}<b>${s[2]}</b></summary><p>${s[3]}</p><p class="cr"><b>Critical Cast [${s[5]}]:</b> ${s[4]}</p></details>`).join("");
+  });
+}
+let sel=null;
+try{sel=localStorage.getItem("bdc-sel")}catch(e){}
+if(!FIGHTERS[sel])sel=null;
+function render(){
+  document.getElementById("chips").innerHTML=`<span class="ctrl-label">Show fighter</span>`+KEYS.map(k=>`<button class="chip" data-k="${k}" aria-pressed="${sel===k}">${FIGHTERS[k].chip||FIGHTERS[k].name}</button>`).join("");
+  document.getElementById("ops").innerHTML=KEYS.filter(k=>!sel||k===sel).map(card).join("");
+  document.getElementById("tot").innerHTML=`<b>${total()}</b> silver · 10 fighters`;
+  fill();
+}
+document.getElementById("ops").addEventListener("click",e=>{
+  const b=e.target.closest(".rn"); if(!b)return;
+  const box=b.closest(".two"), p=box.querySelector(".tt"), on=b.getAttribute("aria-pressed")==="true", t=R().t[b.dataset.t];
+  box.querySelectorAll(".rn").forEach(x=>x.setAttribute("aria-pressed","false"));
+  if(on||!t){p.hidden=true;return}
+  b.setAttribute("aria-pressed","true");p.innerHTML=`<b>${b.dataset.t}:</b> ${t}`;p.hidden=false;
+});
+document.getElementById("chips").addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b)return;
+  sel=sel===b.dataset.k?null:b.dataset.k;
+  try{sel?localStorage.setItem("bdc-sel",sel):localStorage.removeItem("bdc-sel")}catch(x){}
+  render();
+});
+render();
+const s=document.createElement("script");s.src="../../js/black-death-city-rules.js";s.onload=fill;document.body.appendChild(s);
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Army Lists
 
-A small static website of table references for tabletop army lists (Warhammer 40,000, Age of Sigmar, Kill Team, Legions Imperialis). The main page lists every army; each army opens its own reference page.
+A small static website of table references for tabletop army lists (Warhammer 40,000, Age of Sigmar, Kill Team, Black Death City, Legions Imperialis). The main page lists every army; each army opens its own reference page.
 
 Hosted on GitHub Pages — plain HTML/CSS/JS, no build step.
 
@@ -15,9 +15,11 @@ lists/
     machine-spirit.html   Adeptus Mechanicus – The Inevitable Force of Machine Spirit
     cities-of-sigmar.html Age of Sigmar – Cities of Sigmar
     sanctifiers.html      Kill Team – Sanctifiers
+    black-death-city.html Black Death City – Guild Mercenaries
     legions-imperialis.html  Legions Imperialis – Ranger Brigade (Solar Auxilia)
   friendly/             Other players' lists
     ironwall.html         Legions Imperialis – BG-XIV «Ironwall» (Death Guard)
+rules/                  Source rulebook PDFs (Black Death City playtest 1.01)
 js/                     One <list>-rules.js per list: rule texts loaded after the first render
 context/                Per-game notes (sources, data layout, conventions, pitfalls)
 ```
