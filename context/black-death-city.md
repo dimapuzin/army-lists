@@ -4,9 +4,9 @@ Playtest rulebook 1.01 (`rules/BlackDeathCity-Playtest-1.01.pdf`, 97 MB; read pa
 
 ## Page `lists/mine/black-death-city.html`
 - Kill Team style: no phases, one card per distinct loadout (`FIGHTERS` in the page, weapons in `WEAP`). "Show fighter" chips filter to one card, tap again to show all (`localStorage` key `bdc-sel`).
-- Roster (994 silver): High Wizard (Arcane Staff, Grimoire), Guild Cleric (Arcane Staff, Grimoire), Guild Champion (Full-Plate, Sword, Flail, Wooden Stakes), Guild Champion (Full-Plate, Warhammer), Hunting Dog x3, Guild Mercenary x3 (Shield, Sword). Cost = recruit cost + gear.
-- Wizard and Cleric cards show all six spells of their lore (Sanctioned Magic / Saints), rendered by `fill()` from `window.BDC_RULES.l`. Gear text (`g`), held-item rule are in `js/black-death-city-rules.js` and appear under "Rules reminders"; weapon trait texts (`t`) open from the trait chips.
-- Spells are collapsed (`details`); signature spells are outlined red with a "Signature" tag: Wizard Eldritch Barrier + Flaming Weapon, Cleric Bless Thy Blade (`sig` in `FIGHTERS`).
+- Roster (994 silver): High Wizard (Arcane Staff, Grimoire), Guild Wizard (Arcane Staff, Grimoire; replaced the Guild Cleric), Guild Champion (Full-Plate, Sword, Flail, Wooden Stakes), Guild Champion (Full-Plate, Warhammer), Hunting Dog x3, Guild Mercenary x3 (Shield, Sword). Cost = recruit cost + gear.
+- Wizard and Guild Wizard cards show all six spells of the Lore of Sanctioned Magic (the Saints lore stays in the JS, unused), rendered by `fill()` from `window.BDC_RULES.l`. Gear text (`g`), held-item rule are in `js/black-death-city-rules.js` and appear under "Rules reminders"; weapon trait texts (`t`) open from the trait chips.
+- Spells are collapsed (`details`); signature spells are outlined red with a "Signature" tag: Wizard Eldritch Barrier + Flaming Weapon, Guild Wizard Eldritch Barrier (`sig` in `FIGHTERS`).
 - Armour shown is the effective value (Full-Plate 4+, Shield makes 6+ into 5+).
 
 ## Status

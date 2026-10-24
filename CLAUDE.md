@@ -61,10 +61,10 @@ Kill Team 3rd edition, Sanctifiers. Source: Wahapedia page (no roster file). Det
 
 ## Black Death City list (`lists/mine/black-death-city.html`)
 Black Death City playtest 1.01, Guild Mercenaries warband, 994 silver, 10 fighters. Source: `rules/BlackDeathCity-Playtest-1.01.pdf` (pp. 26-28 weapon traits, 51-70 Guild Mercenaries). Details and rulebook page map: `context/black-death-city.md`. Final version, do not restructure unless asked.
-- Kill Team style, no phases or trackers: Show fighter chips (tap the selected chip again to show all, key `bdc-sel`), then one full-width card per distinct loadout: High Wizard, Guild Cleric, Champion (Sword, Flail), Champion (Warhammer), Hunting Dog x3, Guild Mercenary x3. Data in `FIGHTERS` / `WEAP`.
+- Kill Team style, no phases or trackers: Show fighter chips (tap the selected chip again to show all, key `bdc-sel`), then one full-width card per distinct loadout: High Wizard, Guild Wizard, Champion (Sword, Flail), Champion (Warhammer), Hunting Dog x3, Guild Mercenary x3. Data in `FIGHTERS` / `WEAP`.
 - Card: name, silver cost, keyword tags, stats | melee weapons table (traits are tap-to-open chips showing the full trait text), equipment with silver costs, special rules and chosen skills (Champion Sword/Flail: Right On Time, Champion Warhammer: Feint; no Seasoned Warrior line), folded "Rules reminders" (gear, held items). Armour shown is the effective value.
-- Wizard and Cleric cards list all six spells of their lore as collapsed rows (name, type, casting value); signature spells are outlined red with a "Signature" tag (Wizard: Eldritch Barrier, Flaming Weapon; Cleric: Bless Thy Blade).
-- Rule texts (spells, gear, traits) live in `js/black-death-city-rules.js` (`window.BDC_RULES`: `t` traits, `g` gear, `l` lores), filled by `fill()` after load.
+- Wizard and Guild Wizard cards list all six spells of the Lore of Sanctioned Magic as collapsed rows (name, type, casting value); signature spells are outlined red with a "Signature" tag (Wizard: Eldritch Barrier, Flaming Weapon; Guild Wizard: Eldritch Barrier).
+- Rule texts (spells, gear, traits) live in `js/black-death-city-rules.js` (`window.BDC_RULES`: `t` traits, `g` gear, `l` lores; the Lore of the Saints entry is unused since the Cleric was swapped for a Guild Wizard), filled by `fill()` after load.
 
 ## Legions Imperialis lists (`lists/mine/legions-imperialis.html`, `lists/friendly/ironwall.html`)
 - Ranger Brigade (mine, Solar Auxilia, 750 pts: Sub-Cohort 370 + Pioneer Company 380) and BG-XIV «Ironwall» (friendly list, Loyalist Legiones Astartes / Death Guard, 750 pts: Demi-company 440 + Brethren of Iron 310). Source: pasted roster text plus Epic Heresy pages (Legion Builder cannot be read).
