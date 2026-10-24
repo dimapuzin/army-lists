@@ -6,7 +6,7 @@ Static website of army-list table references, hosted on GitHub Pages. See `READM
 - Per-game notes (roster JSON layout, phase tabs, card kinds, rule conventions) live in `context/`. Read `context/README.md` first, then the file for the game before building or editing a list.
 
 ## Layout
-- `index.html` — main page; one `.card` per army list, in two sections: "Lists" (my own) and "Friendly Lists" (other players' rosters).
+- `index.html` — main page; one `.card` per army list, grouped in collapsed `<details class="game">` sections per game (no JS); other players' rosters go under a "Friendly lists" sub-heading inside their game.
 - `lists/mine/*.html` — one page per list of mine, `lists/friendly/*.html` — one page per other player's list (inline `<style>` and `<script>`). Pages sit two levels deep: links to the main page are `../../index.html`.
 - `js/<name>-rules.js` — the rule texts of one list, loaded by that page after the first render (`../../js/<name>-rules.js`). HTML and JS files are never mixed in one folder.
 
@@ -51,6 +51,9 @@ Age of Sigmar, 4th edition, Cities of Sigmar. Roster 1990/2000 pts, battle forma
 - Phases (8 tabs): Battle round, Hero, Movement, Shooting, Charge, Combat, End of turn, Always on & setup. Battle tactic cards sit in End of turn; enhancements in Always on (Emergency Bellows in End of turn).
 - Card kinds: army = battle trait (ink), det = battle formation (red), unit = unit ability (grey), enh = enhancement (teal), spell = blue (`--blue` #2f5f9a / #7aa7d9), prayer = brass (both shown in a "Spells & prayers" column only in phases that have them).
 - AoS 4 convention: "non-HERO SIGMARITE CAVALRY" negates the whole keyword group, so it excludes only units having all of those keywords.
+
+## Focused Forces list (`lists/mine/focused-forces.html`)
+Age of Sigmar, Cities of Sigmar, 1500/2000 pts, General: Cavalier-Marshal. Source: `jsons/The Focused Forces of Combined Cities.json`. Reduced copy of the Cities page (same trackers: Full Power!, Special Ammunition, two battle tactic cards; prefix `ffc-`); gzipped 12.6 KB. Details: `context/age-of-sigmar.md`.
 
 ## Sanctifiers list (`lists/mine/sanctifiers.html`)
 Kill Team 3rd edition, Sanctifiers. Source: Wahapedia page (no roster file). Details in `context/kill-team.md`.

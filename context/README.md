@@ -5,7 +5,7 @@ One file per game system. Read the matching file before building or editing a li
 | Game | File | Lists using it |
 |---|---|---|
 | Warhammer 40,000 (11th edition) | `warhammer-40k.md` | `lists/mine/machine-spirit.html` |
-| Age of Sigmar (4th edition) | `age-of-sigmar.md` | `lists/mine/cities-of-sigmar.html` |
+| Age of Sigmar (4th edition) | `age-of-sigmar.md` | `lists/mine/cities-of-sigmar.html`, `lists/mine/focused-forces.html` |
 | Kill Team (3rd edition) | `kill-team.md` | `lists/mine/sanctifiers.html` |
 | Black Death City (Playtest 1.01) | `black-death-city.md` | `lists/mine/black-death-city.html` |
 | Legions Imperialis | `legions-imperialis.md` | `lists/mine/legions-imperialis.html`, `lists/friendly/ironwall.html` |
